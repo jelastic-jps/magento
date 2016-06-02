@@ -1,7 +1,7 @@
 # Jelastic Magento Add-on
 
 This repository provides [Magento](http://www.magentocommerce.com/) add-on for Jelastic Platform.
-[![GET IT HOSTED](https://raw.githubusercontent.com/JelasticJPS/Magento/master/images/getithosted.png)](http://go.jelastic.com/test?hoster-select=1&theme=modern&app=https://raw.githubusercontent.com/JelasticJPS/Magento/master/Magento-2.0.4.json)
+
 
 **Magento** is the eCommerce software and platform trusted by the world's leading brands.
 
