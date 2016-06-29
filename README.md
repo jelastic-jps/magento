@@ -1,35 +1,36 @@
-# Jelastic Magento Add-on
+[![Magento](../../raw/master/images/magento.png)](../../../magento)
+## Magento
 
-This repository provides [Magento](http://www.magentocommerce.com/) add-on for Jelastic Platform.
+The JPS package deploys Magento that initially contains 1 application server and 1 database container.
 
+### Highlights
+This package is designed to deploy Magento environment which represents an open-source e-commerce platform written in PHP.<br />Magento employs the MySQL relational database management system, the PHP programming language, and elements of the Zend Framework. It applies the conventions of object-oriented programming and model–view–controller architecture. Magento also uses the entity–attribute–value model to store data.
 
-**Magento** is the eCommerce software and platform trusted by the world's leading brands.
+### Environment Topology
 
-**Type of nodes this add-on can be applied to**:
-- apache2
-- mysql5
+![Magento Topology](https://docs.google.com/drawings/d/17QKNZokR_XOgG-gzTe2dyd3RaneuHM3mugbjAA8HPoQ/pub?w=505&h=216)
 
-### What it can be used for?
-Magento is the eCommerce software and platform trusted by the world's leading brands. Grow your online business with Magento!
+### Specifics
 
+Layer                |     Server    | Number of CTs <br/> by default | Cloudlets per CT <br/> (reserved/dynamic) | Options
+-------------------- | --------------| :----------------------------: | :---------------------------------------: | :-----:
+AS                   | Apache 2 (MOD_PHP) |       1                        |           1 / 16                          | -
+DB                   |    MySQL      |       1                        |           1 / 16                           | -
 
-### What Jelastic add-on is?
+* AS - Application server 
+* DB - Database 
+* CT - Container
 
-Jelastic add-on represents a package with a kind of a patch, that can be applied to an environment in order to improve and complement its functionality. The full list of the available at a platform add-ons can be seen at the corresponding same-named section of [Jelastic Marketplace](https://docs.jelastic.com/marketplace#add-ons].
+**Magento Version**: 2.0.4<br/>
+**PHP Engine**: PHP 5.5.36<br/>
+**MySQL Database**: 5.7.12
 
-### How to install an add-on?
-###### For Developers
+### Deployment
 
-In case you can’t find the desired package within the list of available ones, copy and save the content of add-on’s manifest as a *.json* file and [import](https://docs.jelastic.com/environment-export-import#import) it to the dashboard. Herewith, you can apply any necessary adjustments to an add-on through this file (if such are required) and install its customized version in the similar way.
+In order to get this solution instantly deployed, click the "Get It Hosted Now" button, specify your email address within the widget, choose one of the [Jelastic Public Cloud providers](https://jelastic.cloud) and press Install.
 
-###### For Cluster Admins
+[![GET IT HOSTED](https://raw.githubusercontent.com/jelastic-jps/jpswiki/master/images/getithosted.png)](https://jelastic.com/install-application/?manifest=https%3A%2F%2Fgithub.com%2Fjelastic-jps%2Fmagento%2Fraw%2Fmaster%2Fmanifest.jps)
 
-In order to add the desired add-on to your platform and make it available for users, perform the following:
-- copy the content of its manifest 
-- switch to the [Marketplace](http://ops-docs.jelastic.com/marketplace-46) section of your JCA panel and choose **Add > Add-on** menu option
-- paste the copied strings into the appeared frame and **Save** the template
-- choose your newly added add-on within the list and click on **Publish** above
+To deploy this package to Jelastic Private Cloud, import [this JPS manifest](../../raw/master/manifest.jps) within your dashboard ([detailed instruction](https://docs.jelastic.com/environment-export-import#import)).
 
-Also, you are able to adjust the given add-on template according to your needs and provide its customized version.
-
-
+More information about Jelastic JPS package and about installation widget for your website can be found in the [Jelastic JPS Application Package](https://github.com/jelastic-jps/jpswiki/wiki/Jelastic-JPS-Application-Package) reference.
