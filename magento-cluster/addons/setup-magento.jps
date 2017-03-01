@@ -1,0 +1,22 @@
+{
+    "jpsType": "update",
+    "name": "Magento setup addon",
+    "homepage": "https://Jelastic.com",
+    "description": "This package for Magento configurations",
+    "globals": {
+        "MAGE_ROOT": "/var/www/webroot/ROOT",
+        "ADMIN_PASSWD": "${settings.admin_passwd}",
+        "DB_HOST": "${settings.db_host}",
+        "DB_NAME": "magento",
+        "DB_USER": "${settings.db_user}",
+        "DB_PASS": "${settings.db_pass}"
+    },
+    "onInstall": {
+        "cmd[${nodes.cp[0].id}]": [
+            "mysql -u${globals.DB_USER} -p${globals.DB_PASS} -h ${globals.DB_HOST} -e \"CREATE DATABASE IF NOT EXISTS ${globals.DB_NAME};\" ",
+            "mysql -u${globals.DB_USER} -p${globals.DB_PASS} -h ${globals.DB_HOST} ${globals.DB_NAME} < ${globals.MAGE_ROOT}/magento-sample.sql",
+            "php ${globals.MAGE_ROOT}/bin/magento admin:user:create --admin-user=admin --admin-password=${globals.ADMIN_PASSWD} --admin-firstname=Admin --admin-lastname=Admin --admin-email=${user.email}",
+            "chown nginx:nginx -R ${globals.MAGE_ROOT}/*"
+        ]
+    }
+}

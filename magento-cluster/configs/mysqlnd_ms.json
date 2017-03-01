@@ -1,0 +1,20 @@
+{
+  "appname": {
+    "master": {
+      "master_0": {
+        "host": "DB_1"
+      },
+      "master_1": {
+        "host": "DB_2"
+      }
+    },
+    "slave": {},
+    "filters": {
+      "roundrobin": {}
+    },
+    "failover": {
+      "strategy": "loop_before_master",
+      "remember_failed": true
+    }
+  }
+}
