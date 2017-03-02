@@ -34,7 +34,7 @@ ST     |  Shared Storage |          1                     |           1/8       
 **Memcached Version**: 1.4.15
 
 ### Additional functionality:
-* pair of MySQL databases with either configured asynchronous master-master replication (within PHP 5.6.20-based solution) or extra slavev DB instance for backups (within PHP 5.7-based solution);
+* pair of MySQL databases with either configured asynchronous master-master replication (within PHP 5.6.20-based solution) or extra slave DB instance for backups (within PHP 5.7-based solution);
 * horizontal scaling enabled on compute nodes by CPU load. New AppServer will be added while 70% loading;
 * failover sql connection between MySQL and CP nodes based on [mysqlnd_ms](http://php.net/manual/ru/book.mysqlnd-ms.php) plugin;
 * Memcached HA for session storage.
