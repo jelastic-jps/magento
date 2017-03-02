@@ -7,7 +7,7 @@
     {
       "cmd[${nodes.sqldb[0].id}]": [
         "mysql -u${settings.DB_USER} -p${settings.DB_PASS} -e \"CREATE DATABASE IF NOT EXISTS ${settings.DB_NAME};\" ",
-        "wget -qO- https://download.jelastic.com/public.php?service=files&t=24c44e3c1166dd0ac22f2e9ffe816e93&download | mysql -u${settings.DB_USER} -p${settings.DB_PASS} ${settings.DB_NAME}"  
+        "wget -qO- 'https://download.jelastic.com/public.php?service=files&t=24c44e3c1166dd0ac22f2e9ffe816e93&download' | mysql -u${settings.DB_USER} -p${settings.DB_PASS} ${settings.DB_NAME}"  
       ]
     },
     {
