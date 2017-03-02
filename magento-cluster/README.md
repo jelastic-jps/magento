@@ -47,10 +47,10 @@ ST     |  Shared Storage |          1                     |           1/8       
 
 In order to get this solution instantly deployed, click the "Deploy to Jelastic" button, specify your email address within the widget, choose one of the [Jelastic Public Cloud providers](https://jelastic.cloud) and press Install.
 
-For PHP 5.6-powered version with asynchronous MySQL master-master replication:
+For PHP 5.6-powered version with asynchronous MySQL master-master replication:<br/>
 [![Deploy](https://github.com/jelastic-jps/git-push-deploy/raw/master/images/deploy-to-jelastic.png)](https://jelastic.com/install-application/?manifest=https%3A%2F%2Fraw.githubusercontent.com%2Fjelastic-jps%2Fmagento%2Fmaster%2Fmagento-cluster%2Fphp5.6-manifest.jps) 
 
-For PHP 7-powered version with additional slave MySQL instance for backups:
+For PHP 7-powered version with additional slave MySQL instance for backups:<br/>
 [![Deploy](https://github.com/jelastic-jps/git-push-deploy/raw/master/images/deploy-to-jelastic.png)](https://jelastic.com/install-application/?manifest=https%3A%2F%2Fgithub.com%2Fjelastic-jps%2Fmagento%2Fraw%2Fmaster%2Fmagento-cluster%2Fphp7-manifest.jpshp7-manifest.jps)
 
 ### Private Cloud 
