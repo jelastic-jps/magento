@@ -53,7 +53,7 @@ For PHP 5.6-powered version with asynchronous MySQL master-master replication:
 
 For PHP 7-powered version with additional slave MySQL instance for backups:
 
-[![Deploy](https://github.com/jelastic-jps/git-push-deploy/raw/master/images/deploy-to-jelastic.png)](https://jelastic.com/install-application/?manifest=https%3A%2F%2Fgithub.com%2Fjelastic-jps%2Fmagento%2Fraw%2Fmaster%2Fmagento-cluster%2Fphp7-manifest.jpshp7-manifest.jps)
+[![Deploy](https://github.com/jelastic-jps/git-push-deploy/raw/master/images/deploy-to-jelastic.png)](https://jelastic.com/install-application/?manifest=https%3A%2F%2Fraw.githubusercontent.com%2Fjelastic-jps%2Fmagento%2Fmaster%2Fmagento-cluster%2Fphp7-manifest.jps)
 
 ### Private Cloud 
 To deploy the required package to Jelastic Private Cloud, import the required JPS manifest (see them above within repo files) via your dashboard ([detailed instruction](https://docs.jelastic.com/environment-export-import#import)).
