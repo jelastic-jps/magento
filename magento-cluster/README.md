@@ -1,7 +1,5 @@
 # Highly Available and Auto-Scalable Magento Cluster
 
-[![Deploy](https://github.com/jelastic-jps/git-push-deploy/raw/master/images/deploy-to-jelastic.png)](https://jelastic.com/install-application/?manifest=https%3A%2F%2Fgithub.com%2Fjelastic-jps%2Fmagento-cluster%2Fraw%2Fmaster%2Fmanifest.jps) 
-
 Get the highly available and scalable clustered solution for Magento - an extremely popular open source e-commerce platform. The given implementation ensures tracking and distribution of the incoming load, with automatic adjusting of the allocated resources amount according to it.
 
 ##Highlights
