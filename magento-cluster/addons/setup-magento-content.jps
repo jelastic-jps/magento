@@ -6,10 +6,8 @@
   "onInstall": [
     {
       "cmd[${nodes.sqldb[0].id}]": [
-        "wget https://git.jelastic.com/site/magento-cluster-jps/raw/master/magento2/magento-sample.sql -O  /tmp/magento-sample.sql",
         "mysql -u${settings.DB_USER} -p${settings.DB_PASS} -h ${settings.DB_HOST} -e \"CREATE DATABASE IF NOT EXISTS ${settings.DB_NAME};\" ",
-        "mysql -u${settings.DB_USER} -p${settings.DB_PASS} -h ${settings.DB_HOST} ${settings.DB_NAME} < /tmp/magento-sample.sql",
-        "rm /tmp/magento-sample.sql"
+        "wget -qO- "https://download.jelastic.com/public.php?service=files&t=24c44e3c1166dd0ac22f2e9ffe816e93&download" | mysql -u${settings.DB_USER} -p${settings.DB_PASS}"  
       ]
     },
     {
