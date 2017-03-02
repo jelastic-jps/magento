@@ -24,13 +24,13 @@
         "nodeGroup": "storage",
         "displayName": "Storage"
     }, {
-        "image": "devbeta/mysql57:5.7.14",
+        "image": "devbeta/mysql57:5.7.14-latest",
         "count": 2,
         "cloudlets": 8,
         "nodeGroup": "sqldb",
         "displayName": "Database"
     }, {
-        "image": "devbeta/memcached:1.4.24",
+        "image": "devbeta/memcached:1.4.24-latest",
         "cloudlets": 4,
         "count": 2,
         "nodeGroup": "memcached",
@@ -65,7 +65,7 @@
     "onAfterScaleIn[nodeGroup:cp]": {
         "forEach(event.response.nodes)": {
             "cmd[bl]": [
-                "sed -i '/${@i.id}/d' /etc/varnish/default.vcl",
+                "sed -i '/${@i.intIP}/d' /etc/varnish/default.vcl",
                 "/etc/init.d/varnish reload"
             ]
         }
