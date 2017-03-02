@@ -8,7 +8,7 @@ This package is designed to deploy Magento environment which represents an open-
 
 ### Environment Topology
 
-![Magento Topology](https://docs.google.com/drawings/d/17QKNZokR_XOgG-gzTe2dyd3RaneuHM3mugbjAA8HPoQ/pub?w=505&h=216)
+![Magento Topology](images/magento-apache.png)
 
 ### Specifics
 
