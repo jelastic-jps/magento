@@ -1,0 +1,21 @@
+{
+    "jpsType": "update",
+    "name": "Magento setup addon",
+    "homepage": "https://Jelastic.com",
+    "description": "This package for Magento configurations",
+    "onInstall": [
+        {
+          "cmd[${nodes.sqldb[0].id}]": [
+              "wget https://download.jelastic.com/public.php?service=files&t=a7b742235493eda8ede55043c3d4568c&download -O  /tmp/magento-sample.sql",
+              "mysql -u${settings.DB_USER} -p${settings.DB_PASS} -h ${settings.DB_HOST} -e \"CREATE DATABASE IF NOT EXISTS ${settings.DB_NAME};\" ",
+              "mysql -u${settings.DB_USER} -p${settings.DB_PASS} -h ${settings.DB_HOST} ${settings.DB_NAME} < /tmp/magento-sample.sql"
+              "rm /tmp/magento-sample.sql"
+          ],
+        }, {
+          "cmd[${nodes.cp[0].id}]": [
+              "php ${settings.MAGE_ROOT}/bin/magento admin:user:create --admin-user=admin --admin-password=${settings.ADMIN_PASSWD} --admin-firstname=Admin --admin-lastname=Admin --admin-email=${user.email}",
+              "chown nginx:nginx -R ${settings.MAGE_ROOT}/*"
+          ]
+        }
+    ]
+}
