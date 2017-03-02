@@ -56,6 +56,11 @@
 				"filter": "${@i.id}"
 			}
 		}
+	}, {
+		"cmd[${@i.id}]": [
+            "/etc/init.d/nginx restart",
+        	"/etc/init.d/php-fpm restart"
+        ]
 	}],
 	"onAfterScaleIn[nodeGroup:cp]": {
 		"forEach(event.response.nodes)": {
@@ -95,7 +100,7 @@
 		"call": "ScaleNodes"
 	}, {
 		"cmd[storage]": [
-			"wget -qO- \"https://git.jelastic.com/site/magento-cluster-jps/raw/master/magento2/magento-sample.tar.gz\" | tar xz -C /data",
+			"wget -qO- \"https://download.jelastic.com/public.php?service=files&t=a7b742235493eda8ede55043c3d4568c&download\" | tar xz -C /data",
 			"wget ${globals.PATH}/configs/env.php -O /data/app/etc/env.php",
 			"sed -ri 's|DB_USER|${globals.DB_USER}|g' /data/app/etc/env.php",
 			"sed -ri 's|DB_PASS|${globals.DB_PASS}|g' /data/app/etc/env.php",
@@ -104,7 +109,6 @@
 	}, {
 		"forEach(memcached:nodes.memcached)": {
 			"cmd[cp]": [
-				"grep \"MEMCACHED_1\" /etc/php.ini && sed -i \"s|MEMCACHED_1|\"${@memcached.intIP}\"|g\" /etc/php.ini || sed -i \"s|MEMCACHED_2|\"${@memcached.intIP}\"|g\" /etc/php.ini",
 				"grep \"MEMCACHED_1\" ${globals.MAGE_ROOT}/app/etc/env.php && sed -i \"s|MEMCACHED_1|\"${@memcached.intIP}\"|g\" ${globals.MAGE_ROOT}/app/etc/env.php || sed -i \"s|MEMCACHED_2|\"${@memcached.intIP}\"|g\" ${globals.MAGE_ROOT}/app/etc/env.php"
 			]
 		}
