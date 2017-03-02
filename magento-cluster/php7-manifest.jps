@@ -97,11 +97,11 @@
 				"DB_USER": "${globals.DB_USER}",
 				"DB_PASS": "${globals.DB_PASS}",
 				"ADMIN_PASSWD": "${globals.ADMIN_PASSWD}",
-                "MAGE_ROOT": "${globals.MAGE_ROOT}"
+                		"MAGE_ROOT": "${globals.MAGE_ROOT}"
 			}
 		}
 	}, {
-		"cmd[cp]": "/etc/init.d/nginx restart"
+		"cmd[cp]": [ "/etc/init.d/nginx stop", "/etc/init.d/nginx start" ]
 	}],
 	"onAfterScaleOut[nodeGroup:cp]": [{
 		"forEach(event.response.nodes)": {
@@ -123,8 +123,8 @@
 			"cmd[${this.filter}]": [
 				"wget -O - ${globals.PATH}/scripts/setupCP_php7.sh | bash",
 				"wget ${globals.PATH}/configs/nginx.conf -O /etc/nginx/nginx.conf",
-				"/etc/init.d/nginx restart",
-				"/etc/init.d/php-fpm restart"
+				"/etc/init.d/nginx stop",
+				"/etc/init.d/nginx start"
 			]
 		}, {
 			"cmd[bl]": [
@@ -135,7 +135,7 @@
 		}],
 		"removeNode": {
 			"cmd[bl]": [
-				"sed -i '/${this.intIP}/d' /etc/varnish/default.vcl",
+				"jem balancer RemoveCommonHost -h ${this.intIP}",
 				"service varnish reload"
 			]
 		}
