@@ -47,7 +47,7 @@ ST     |  Shared Storage |          1                     |           1/8       
 
 In order to get this solution instantly deployed, click the "Deploy to Jelastic" button, specify your email address within the widget, choose one of the [Jelastic Public Cloud providers](https://jelastic.cloud) and press Install.
 
-**Note** that for the given packages to be properly deployed, you need to have a billing account already registered and upgraded at any of Jelastic Platform installations, as the number of required servers and functionality to be enabled exceed the usual trial account limits. To give a try of Magento in Jelastic with a trial account, start with deployment of a [non-clustered Magento solution](https://github.com/jelastic-jps/magento), which represents a bundle of application server and database instance.
+**Note** that for the given packages to be properly deployed, you need to have a billing account already registered and upgraded at any of Jelastic Platform installations, as the number of required servers and needed functionality exceed the usual trial account limits. To give a try of Magento in Jelastic with a trial account, start with deployment of a [non-clustered Magento solution](https://github.com/jelastic-jps/magento), which represents a bundle of application server and database instance.
 
 To deploy PHP 5.6-powered Magento cluster with asynchronous MySQL master-master replication:
 
