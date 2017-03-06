@@ -25,14 +25,22 @@ sed -i 's|;extension=intl.so|extension=intl.so|g' /etc/php.ini;
 sed -i 's|.*extension=xsl.so|extension=xsl.so|g' /etc/php.ini;
 
 ## - memcached
-sed -i '465s|;session.save_path="tcp.*|session.save_path="tcp://MEMCACHED_1:11211, tcp://MEMCACHED_2:11211"|g' /etc/php.ini;
-sed -i '462s/;extension=memcache.so/extension=memcache.so/' /etc/php.ini;
-sed -i '464s/;session.save_handler = memcache/session.save_handler = memcache/' /etc/php.ini;
-sed -i '468s/memcache.allow_failover = 0/memcache.allow_failover = 1/' /etc/php.ini;
-sed -i '469s/memcache.max_failover_attempts = 20;/memcache.max_failover_attempts = 2;/' /etc/php.ini;
-sed -i '472i memcache.redundancy = 1;' /etc/php.ini;
-sed -i '473i memcache.session_redundancy = 3;' /etc/php.ini;
-sed -i '474i memcache.hash_strategy = "consistent";' /etc/php.ini;
+sed -i '481s|;session.save_path="tcp.*|session.save_path="tcp://MEMCACHED_1:11211, tcp://MEMCACHED_2:11211"|g' /etc/php.ini;
+sed -i '478s/;extension=memcached_2_2_0.so/extension=memcached_2_2_0.so/' /etc/php.ini;
+sed -i '480s/;session.save_handler=memcached/session.save_handler=memcache/' /etc/php.ini;
+sed -i '482i memcache.redundancy = 1;' /etc/php.ini;
+sed -i '483i memcache.session_redundancy = 3;' /etc/php.ini;
+sed -i '484i memcache.hash_strategy = "consistent";' /etc/php.ini;
+sed -i '485i memcache.allow_failover = 1;' /etc/php.ini;
+
+#sed -i '465s|;session.save_path="tcp.*|session.save_path="tcp://MEMCACHED_1:11211, tcp://MEMCACHED_2:11211"|g' /etc/php.ini;
+#sed -i '462s/;extension=memcache.so/extension=memcache.so/' /etc/php.ini;
+#sed -i '464s/;session.save_handler = memcache/session.save_handler = memcache/' /etc/php.ini;
+#sed -i '468s/memcache.allow_failover = 0/memcache.allow_failover = 1/' /etc/php.ini;
+#sed -i '469s/memcache.max_failover_attempts = 20;/memcache.max_failover_attempts = 2;/' /etc/php.ini;
+#sed -i '472i memcache.redundancy = 1;' /etc/php.ini;
+#sed -i '473i memcache.session_redundancy = 3;' /etc/php.ini;
+#sed -i '474i memcache.hash_strategy = "consistent";' /etc/php.ini;
 
 ## - opcache
 sed -i 's|.*zend_extension=opcache.so|zend_extension=opcache.so|g' /etc/php.ini;
