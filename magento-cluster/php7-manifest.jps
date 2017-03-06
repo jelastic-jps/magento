@@ -36,14 +36,14 @@
 		"nodeGroup": "memcached",
 		"displayName": "Memcached"
 	}, {
-		"image": "devbeta/varnish:4.1.1-latest",
+		"image": "devbeta/varnish:4.1.5",
 		"cloudlets": 8,
 		"count": 2,
 		"nodeGroup": "bl",
 		"displayName": "Balancer"
 	}],
 	"globals": {
-		"PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/master/magento-cluster",
+		"PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/dev/magento-cluster",
 		"DB_USER": "jelastic-${fn.random}",
 		"DB_PASS": "${fn.password(20)}",
 		"MAGE_ROOT": "/var/www/webroot/ROOT",
