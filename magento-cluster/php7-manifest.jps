@@ -36,7 +36,7 @@
 		"nodeGroup": "memcached",
 		"displayName": "Memcached"
 	}, {
-		"image": "devbeta/varnish:4.1.5",
+		"image": "devbeta/varnish:4.1.1-latest",
 		"cloudlets": 8,
 		"count": 2,
 		"nodeGroup": "bl",
