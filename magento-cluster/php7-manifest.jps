@@ -4,7 +4,7 @@
 	"logo": "https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/images/magento_70x70.png",
 	"name": "Magento Cluster Template",
 	"nodes": [{
-		"image": "devbeta/nginxphp:1.10.1-php-7.0.13",
+		"image": "devbeta/nginxphp:1.10.1-php-7.0.10",
 		"count": 1,
 		"cloudlets": 8,
 		"nodeGroup": "cp",
@@ -59,7 +59,7 @@
 		"log": "DB Cluster Setup"
 	}, {
 		"installJps": {
-			"jps": "https://raw.githubusercontent.com/jelastic-jps/mysql-cluster/master/scripts/cluster-configuration.jps",
+			"jps": "https://raw.githubusercontent.com/jelastic-jps/mysql-cluster/dev/scripts/master-slave-configuration.jps",
 			"settings": {
 				"db_user": "${globals.DB_USER}",
 				"db_pass": "${globals.DB_PASS}"
