@@ -4,7 +4,7 @@
     "logo": "https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/images/magento_70x70.png",
     "name": "Magento Cluster Template",
     "nodes": [{
-        "image": "devbeta/nginxphp:1.10.1-php56-5.6.25",
+        "image": "devbeta/nginxphp:1.8.1-php56-5.6.25-latest",
         "count": 2,
         "cloudlets": 8,
         "links": ["sqldb:DB", "memcached:MEMCACHED"],
@@ -123,6 +123,7 @@
 			"cmd[${this.filter}]": [
 				"wget -O - ${globals.PATH}/scripts/setupCP.sh | bash",
 				"wget ${globals.PATH}/configs/nginx.conf -O /etc/nginx/nginx.conf",
+				"wget ${globals.PATH}/configs/mysqlnd_ms.json -O /var/lib/jelastic/mysqlnd_ms.json",
 				"/etc/init.d/nginx restart"
 			]
 		}, {
