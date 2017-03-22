@@ -24,19 +24,19 @@
         "nodeGroup": "storage",
         "displayName": "Storage"
     }, {
-        "image": "devbeta/mysql57:5.7.14-latest",
+        "image": "jelastic/mysql:5.7.14",
         "count": 2,
         "cloudlets": 8,
         "nodeGroup": "sqldb",
         "displayName": "Database"
     }, {
-        "image": "devbeta/memcached:1.4.24-latest",
+        "image": "devbeta/memcached:1.4.24",
         "cloudlets": 4,
         "count": 2,
         "nodeGroup": "memcached",
         "displayName": "Memcached"
     }, {
-        "image": "devbeta/varnish:4.1.1-latest",
+        "image": "devbeta/varnish:4.1.5",
         "cloudlets": 8,
         "count": 2,
         "nodeGroup": "bl",
@@ -59,7 +59,7 @@
 		"log": "DB Cluster Setup"
 	}, {
 		"installJps": {
-			"jps": "https://raw.githubusercontent.com/jelastic-jps/mysql-cluster/master/scripts/cluster-configuration.jps",
+			"jps": "https://raw.githubusercontent.com/sych74/mysql-cluster/master/multimaster-configuration.jps",
 			"settings": {
 				"db_user": "${globals.DB_USER}",
 				"db_pass": "${globals.DB_PASS}"
