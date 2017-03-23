@@ -25,13 +25,13 @@ sed -i 's|;extension=intl.so|extension=intl.so|g' /etc/php.ini;
 sed -i 's|.*extension=xsl.so|extension=xsl.so|g' /etc/php.ini;
 
 ## - memcached
-sed -i '481s|;session.save_path="tcp.*|session.save_path="tcp://MEMCACHED_1:11211, tcp://MEMCACHED_2:11211"|g' /etc/php.ini;
-sed -i '478s/;extension=memcached_2_2_0.so/extension=memcached_2_2_0.so/' /etc/php.ini;
-sed -i '480s/;session.save_handler=memcached/session.save_handler=memcache/' /etc/php.ini;
-sed -i '482i memcache.redundancy = 1;' /etc/php.ini;
-sed -i '483i memcache.session_redundancy = 3;' /etc/php.ini;
-sed -i '484i memcache.hash_strategy = "consistent";' /etc/php.ini;
-sed -i '485i memcache.allow_failover = 1;' /etc/php.ini;
+#sed -i '481s|;session.save_path="tcp.*|session.save_path="tcp://MEMCACHED_1:11211, tcp://MEMCACHED_2:11211"|g' /etc/php.ini;
+#sed -i '478s/;extension=memcached_2_2_0.so/extension=memcached_2_2_0.so/' /etc/php.ini;
+#sed -i '480s/;session.save_handler=memcached/session.save_handler=memcache/' /etc/php.ini;
+#sed -i '482i memcache.redundancy = 1;' /etc/php.ini;
+#sed -i '483i memcache.session_redundancy = 3;' /etc/php.ini;
+#sed -i '484i memcache.hash_strategy = "consistent";' /etc/php.ini;
+#sed -i '485i memcache.allow_failover = 1;' /etc/php.ini;
 
 #sed -i '465s|;session.save_path="tcp.*|session.save_path="tcp://MEMCACHED_1:11211, tcp://MEMCACHED_2:11211"|g' /etc/php.ini;
 #sed -i '462s/;extension=memcache.so/extension=memcache.so/' /etc/php.ini;
@@ -48,7 +48,7 @@ sed -i 's|.*opcache.memory_consumption.*|opcache.memory_consumption = 512M ; The
 sed -i 's|.*opcache.max_accelerated_files.*|opcache.max_accelerated_files = 100000 ; Only numbers between 200 and 100000 are allowed. number in the set of prime numbers that is bigger than the configured value|g' /etc/php.ini;
 sed -i 's|.*opcache.validate_timestamps.*|opcache.validate_timestamps=1|g' /etc/php.ini;
 sed -i 's|.*opcache.revalidate_freq.*|opcache.revalidate_freq=2 ; How often to check script timestamps for updates, in seconds. 0 will result in OPcache checking for updates on every request. This configuration directive is ignored if opcache.validate_timestamps is disabled.|g' /etc/php.ini;
-sed -i 's|.*opcache.save_comments.*|opcache.save_comments=0|g' /etc/php.ini;
+sed -i 's|.*opcache.save_comments.*|opcache.save_comments=1|g' /etc/php.ini;
 sed -i 's|.*opcache.enable_file_override.*|opcache.enable_file_override=0|g' /etc/php.ini;
 sed -i 's|.*opcache.enable_cli.*|opcache.enable_cli=0|g' /etc/php.ini;
 sed -i 's|.*opcache.max_wasted_percentage.*|opcache.max_wasted_percentage=10|g' /etc/php.ini;
