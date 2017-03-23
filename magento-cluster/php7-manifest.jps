@@ -115,6 +115,7 @@
 			"cmd[${this.filter}]": [
 				"wget -O - ${globals.PATH}/scripts/setupCP_php7.sh | bash",
 				"wget ${globals.PATH}/configs/nginx.conf -O /etc/nginx/nginx.conf",
+				"wget ${globals.PATH}/configs/varnish-probe.php -O /data/varnish-probe.php",
 				"/etc/init.d/nginx restart"
 			]
 		}, {
