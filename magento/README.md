@@ -21,8 +21,8 @@ DB                   |    MySQL      |       1                        |         
 * DB - Database 
 * CT - Container
 
-**Magento Version**: 2.0.4<br/>
-**PHP Engine**: PHP 5.5.36<br/>
+**Magento Version**: 2.1.6<br/>
+**PHP Engine**: PHP 5.6.x<br/>
 **MySQL Database**: 5.7.12
 
 ### Deployment
