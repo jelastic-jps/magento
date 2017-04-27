@@ -2,15 +2,15 @@
 
 Get the highly available and scalable clustered solution for Magento - an extremely popular open source e-commerce platform. The given implementation ensures tracking and distribution of the incoming load, with automatic adjusting of the allocated resources amount according to it.
 
-##Highlights
+## Highlights
 This JPS package automatically deploys Magento 2 to the environment, which initially contains 2 balancers, 2 application servers, 2 MySQL databases, 2 Memcached and 1 Storage containers. Herewith, we provide two cluster version for you to choose the most suitable one according to your preferences:
 - run on PHP 5.6 version with a pair of replicated MySQL instances (master-master)
 - run on PHP 7 version, with 1 DB instance to process requests and 1 more slave one for backups
 
-##Environment Topology
+## Environment Topology
 ![Cluster Topology](images/magento-cluster-topology.png)
 
-###Specifics
+### Specifics
  Layer | Server          | Number of CTs <br/> by default | Cloudlets per CT <br/> (reserved/dynamic) | Options
 -------|-----------------| :-----------------------------:|:-----------------------------------------:|:-----:
 LB     | Varnish(+Nginx 443 port)|           2                    |          1/8                               |   -
