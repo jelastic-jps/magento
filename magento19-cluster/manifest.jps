@@ -89,6 +89,7 @@
         "cmd[storage]": [
             "wget -qO- 'https://codeload.github.com/OpenMage/magento-mirror/tar.gz/${globals.MAGENTO_VERSION}' | tar xz -C /tmp",
             "mv /tmp/magento-mirror-${globals.MAGENTO_VERSION}/* /tmp/magento-mirror-${globals.MAGENTO_VERSION}/.htaccess /data",
+            "wget -qO- '${globals.PATH}/scripts/patchMG.sh' | bash",
             "wget ${globals.PATH}/configs/varnish-probe.php -O /data/varnish-probe.php"
         ]
     }, {
