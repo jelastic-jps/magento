@@ -5,7 +5,7 @@
     "name": "Magento Cluster Template",
     "nodes": [{
             "image": "jelastic/nginxphp:1.10.1-php-7.0.10",
-            "count": 1,
+            "count": 2,
             "cloudlets": 8,
             "nodeGroup": "cp",
             "links": ["sqldb:DB", "rdc:RDC", "rds:RDS"],
