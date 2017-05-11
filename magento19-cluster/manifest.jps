@@ -104,7 +104,7 @@
                 "locale": "${globals.LOCALE}",
                 "timezone": "${globals.TIMEZONE}",
                 "currency": "${globals.CURRENCY}",
-                "db_host": "DB_2",
+                "db_host": "DB",
                 "db_user": "${globals.DB_USER}",
                 "db_pass": "${globals.DB_PASS}"
             }
@@ -132,6 +132,7 @@
             "cmd[${this.filter}]": [
                 "wget -O - ${globals.PATH}/scripts/setupCP.sh | bash",
                 "wget ${globals.PATH}/configs/nginx.conf -O /etc/nginx/nginx.conf",
+                "echo "${nodes.sqldb[0].intIP} DB db" >> /etc/hosts",
                 "/etc/init.d/nginx restart"
             ]
         }, {
