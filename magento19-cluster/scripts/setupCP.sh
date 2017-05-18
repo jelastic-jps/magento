@@ -22,6 +22,8 @@ sed -i 's|;extension=intl.so|extension=intl.so|g' /etc/php.ini;
 ## - The requested PHP extension ext-xsl * is missing from your system. Install or enable PHP's xsl extension.
 sed -i 's|.*extension=xsl.so|extension=xsl.so|g' /etc/php.ini;
 
+sed -i '|;extension=imagick.so|extension=imagick.so|g' /etc/php.ini;
+
 ## - opcache
 sed -i 's|.*zend_extension=opcache.so|zend_extension=opcache.so|g' /etc/php.ini;
 sed -i 's|.*opcache.memory_consumption.*|opcache.memory_consumption = 512M ; The size of the shared memory storage used by OPcache, in megabytes|g' /etc/php.ini;
