@@ -9,6 +9,8 @@ sed -i 's|; Jelastic autoconfiguration mark||g' /etc/php-fpm.conf;
 sed -i 's|pm = dynamic|pm = ondemand|g' /etc/php-fpm.conf;
 sed -i 's|pm.max_children = 50|pm.max_children = 16\npm.process_idle_timeout = 60s|g' /etc/php-fpm.conf;
 
+
+sed -i 's|short_open_tag = Off|short_open_tag = On|g' /etc/php.ini;
 echo "always_populate_raw_post_data = -1" >> /etc/php.ini;
 
 sed -i 's|memory_limit = 128M|memory_limit = 512M|g' /etc/php.ini;
