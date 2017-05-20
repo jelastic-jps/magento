@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -d /etc/nginx/conf.d/sites-enables ] || mkdir /etc/nginx/conf.d/sites-enables
+[ -d /etc/nginx/conf.d/sites-enabled ] || mkdir /etc/nginx/conf.d/sites-enabled
 wget https://raw.githubusercontent.com/jelastic-jps/magento/master/magento19-cluster/configs/sites-enables/default.conf -O /etc/nginx/conf.d/sites-enables/default.conf;
 
 echo "clear_env = no" >> /etc/php-fpm.conf;
