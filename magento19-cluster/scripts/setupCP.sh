@@ -1,7 +1,7 @@
 #!/bin/bash
 
-[ -d /etc/nginx/conf.d/sites-enabled ] || mkdir /etc/nginx/conf.d/sites-enabled
-wget https://raw.githubusercontent.com/jelastic-jps/magento/master/magento19-cluster/configs/sites-enables/default.conf -O /etc/nginx/conf.d/sites-enabled/default.conf;
+[ -d /etc/nginx/sites-enabled ] || mkdir /etc/nginx/sites-enabled
+wget https://raw.githubusercontent.com/jelastic-jps/magento/master/magento19-cluster/configs/sites-enabled/default.conf -O /etc/nginx/sites-enabled/default.conf;
 
 echo "clear_env = no" >> /etc/php-fpm.conf;
 echo "security.limit_extensions = .php .php3 .php4 .php5 .php7" >> /etc/php-fpm.conf;
