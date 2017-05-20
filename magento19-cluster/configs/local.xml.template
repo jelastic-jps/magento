@@ -71,6 +71,20 @@
                     <active>1</active>
                 </connection>
             </default_setup>
+            <default_read>
+                <connection>
+                    <use />
+	                <host><![CDATA[DB_SLAVE]]></host>
+                    <username>{{db_user}}</username>
+                    <password>{{db_pass}}</password>
+                    <dbname>{{db_name}}</dbname>
+                    <type>{{db_type}}</type>
+                    <model>{{db_model}}</model>
+                    <initStatements>{{db_init_statemants}}</initStatements>
+                    <pdoType>{{db_pdo_type}}</pdoType>
+	                <active>1</active>
+                </connection>
+            </default_read>
         </resources>
         <session_save>{{session_save}}</session_save>
     </global>
