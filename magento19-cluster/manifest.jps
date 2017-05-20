@@ -8,7 +8,7 @@
             "count": 2,
             "cloudlets": 8,
             "nodeGroup": "cp",
-            "links": ["sqldb:DB", "rdc:RDC", "rds:RDS"],
+            "links": ["rdc:RDC", "rds:RDS"],
             "volumes": ["/var/www/webroot/ROOT"],
             "displayName": "AppServer",
             "volumeMounts": {
