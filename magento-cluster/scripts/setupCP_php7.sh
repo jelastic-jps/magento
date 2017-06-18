@@ -29,10 +29,10 @@ sed -i '468s|;session.save_path="tcp.*|session.save_path="tcp://MEMCACHED_1:1121
 sed -i '465s/;extension=memcache.so/extension=memcache.so/' /etc/php.ini;
 sed -i '467s/;session.save_handler = memcache/session.save_handler = memcache/' /etc/php.ini;
 sed -i '471s/memcache.allow_failover = 0/memcache.allow_failover = 1/' /etc/php.ini;
-sed -i '469s/memcache.max_failover_attempts = 20;/memcache.max_failover_attempts = 2;/' /etc/php.ini;
-sed -i '472i memcache.redundancy = 1;' /etc/php.ini;
-sed -i '473i memcache.session_redundancy = 3;' /etc/php.ini;
-sed -i '474i memcache.hash_strategy = "consistent";' /etc/php.ini;
+sed -i '472s/memcache.max_failover_attempts = 20;/memcache.max_failover_attempts = 2;/' /etc/php.ini;
+sed -i '473i memcache.redundancy = 1;' /etc/php.ini;
+sed -i '474i memcache.session_redundancy = 3;' /etc/php.ini;
+sed -i '475i memcache.hash_strategy = "consistent";' /etc/php.ini;
 
 ## - opcache
 sed -i 's|.*zend_extension=opcache.so|zend_extension=opcache.so|g' /etc/php.ini;
