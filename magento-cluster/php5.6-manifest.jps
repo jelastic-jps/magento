@@ -5,7 +5,7 @@
     "logo": "https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/images/magento_70x70.png",
     "name": "Magento Cluster Template",
     "nodes": [{
-        "image": "devbeta/nginxphp:1.8.1-php56-5.6.25-latest",
+        "image": "jelastic/nginxphp:1.10.1-php-5.6.28",
         "count": 2,
         "cloudlets": 8,
         "links": ["sqldb:DB", "memcached:MEMCACHED"],
@@ -25,19 +25,19 @@
         "nodeGroup": "storage",
         "displayName": "Storage"
     }, {
-        "image": "devbeta/mysql57:5.7.14-latest",
+        "image": "jelastic/mysql:5.7.14",
         "count": 2,
         "cloudlets": 8,
         "nodeGroup": "sqldb",
         "displayName": "Database"
     }, {
-        "image": "devbeta/memcached:1.4.24-latest",
+        "image": "jelastic/memcached:1.4.24",
         "cloudlets": 4,
         "count": 2,
         "nodeGroup": "memcached",
         "displayName": "Memcached"
     }, {
-        "image": "devbeta/varnish:4.1.5",
+        "image": "jelastic/varnish:4.1.5",
         "cloudlets": 8,
         "count": 2,
         "nodeGroup": "bl",
