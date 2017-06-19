@@ -31,13 +31,13 @@
 		"nodeGroup": "sqldb",
 		"displayName": "Database"
 	}, {
-		"image": "devbeta/memcached:1.4.24",
+		"image": "jelastic/memcached:1.4.24",
 		"cloudlets": 4,
 		"count": 2,
 		"nodeGroup": "memcached",
 		"displayName": "Memcached"
 	}, {
-		"image": "devbeta/varnish:4.1.1-latest",
+		"image": "jelastic/varnish:4.1.5",
 		"cloudlets": 8,
 		"count": 2,
 		"nodeGroup": "bl",
