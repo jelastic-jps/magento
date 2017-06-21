@@ -5,7 +5,7 @@
     "logo": "https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/images/magento_70x70.png",
     "name": "Magento Cluster Template",
     "nodes": [{
-        "image": "jelastic/nginxphp:1.10.1-php-5.6.28",
+        "image": "jelastic/nginxphp:1.10.1-php-5.5.38",
         "count": 2,
         "cloudlets": 8,
         "links": ["sqldb:DB", "memcached:MEMCACHED"],
