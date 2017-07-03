@@ -99,7 +99,7 @@
     }, {
         "log": "Setup Magento Content"
     }, {
-        "cmd[nodes.cp.first.id]": [
+        "cmd[${nodes.cp.first.id}]": [
             "mysql -u${globals.DB_USER} -p${globals.DB_PASS} -h ${globals.DB_HOST} -e \"CREATE DATABASE IF NOT EXISTS ${globals.DB_NAME};\" ",
             "mysql -u${globals.DB_USER} -p${globals.DB_PASS} -h ${globals.DB_HOST} ${globals.DB_NAME} < ${globals.MAGE_ROOT}/magento-sample.sql",
             "wget ${globals.PATH}/scripts/setupMG.sh -O /tmp/setupMG.sh && bash /tmp/setupMG.sh ${globals.DB_USER} ${globals.DB_PASS} DB_MASTER ${globals.DB_NAME} ${globals.ADMIN_PASSWD} ${globals.MAGE_ROOT} ${env.url} ${user.email}"
