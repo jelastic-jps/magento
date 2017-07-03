@@ -3,6 +3,16 @@
     "description": "Get your highly available and scalable clustered solution for Magento, the extremely popular open source e-commerce platform. This package is designed to ensure the load tracking and distribution, as well as automatic adjusting the amount of allocated resources according to it.",
     "logo": "https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/images/magento_70x70.png",
     "name": "Magento Cluster Package",
+    "globals": {
+        "PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/mg19-php7-varnish-redis-storage",
+        "MAGENTO_VERSION": "1.9.3.3",
+        "MAGE_ROOT": "/var/www/webroot/ROOT",
+        "DB_USER": "jelastic-${fn.random}",
+        "DB_PASS": "${fn.password(20)}",
+        "DB_NAME": "magento",
+        "ADMIN_PASSWD": "${fn.password(10)}"
+    },
+    "success": "Below you will find your admin panel link, username and password.</br></br> <table style='font-size:13px; border: none;'><tr><td>Admin panel URL:</td><td style='padding-left: 10px;'><a href='${env.protocol}://${env.domain}/admin/' target='_blank'>${env.protocol}://${env.domain}/admin/</a></td></tr>  <tr><td>Admin name:</td><td style='padding-left: 10px;'>admin</td></tr><tr><td>Password:</td><td style='padding-left: 10px;'>${globals.ADMIN_PASSWD}</td></tr></table></br>To add custom domain name for your Magento Cluster installation follow the steps described in our <a href='http://docs.jelastic.com/custom-domains' target='_blank'>documentation</a>",
     "nodes": [{
         "image": "jelastic/nginxphp:1.10.1-php-7.0.10",
         "count": 2,
@@ -47,16 +57,21 @@
         "nodeGroup": "rds",
         "displayName": "Redis storage"
     }],
-    "globals": {
-        "PATH": "https://raw.githubusercontent.com/sych74/magento19-cluster/mg19-php7-varnish-redis-storage",
-        "MAGENTO_VERSION": "1.9.3.3",
-        "MAGE_ROOT": "/var/www/webroot/ROOT",
-        "DB_USER": "jelastic-${fn.random}",
-        "DB_PASS": "${fn.password(20)}",
-        "DB_NAME": "magento",
-        "ADMIN_PASSWD": "${fn.password(10)}"
+    "onAfterScaleOut[nodeGroup:cp]": [{
+        "forEach(event.response.nodes)": {
+            "setupCPNode": {
+                "filter": "${@i.id}",
+                "intIP": "${@i.intIP}"
+            }
+        }
+    }],
+    "onBeforeScaleIn[nodeGroup:cp]": {
+        "forEach(event.response.nodes)": {
+            "removeCPNode": {
+                "intIP": "${@i.intIP}"
+            }
+        }
     },
-    "success": "Below you will find your admin panel link, username and password.</br></br> <table style='font-size:13px; border: none;'><tr><td>Admin panel URL:</td><td style='padding-left: 10px;'><a href='${env.protocol}://${env.domain}/admin/' target='_blank'>${env.protocol}://${env.domain}/admin/</a></td></tr>  <tr><td>Admin name:</td><td style='padding-left: 10px;'>admin</td></tr><tr><td>Password:</td><td style='padding-left: 10px;'>${globals.ADMIN_PASSWD}</td></tr></table></br>To add custom domain name for your Magento Cluster installation follow the steps described in our <a href='http://docs.jelastic.com/custom-domains' target='_blank'>documentation</a>",
     "onInstall": [{
         "log": "Auto Scaling Triggers"
     }, {
@@ -79,44 +94,31 @@
             }
         }
     }, {
-        "log": "Downloading, Unpacking, Installation and Patching Magento"
-    }, {
-        "cmd[admin]": [
-            "wget ${globals.PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf && wget ${globals.PATH}/configs/nginx/site-default.conf -O /etc/nginx/conf.d/site-default.conf",
-            "wget -qO- 'https://codeload.github.com/OpenMage/magento-mirror/tar.gz/${globals.MAGENTO_VERSION}' | tar xz -C /tmp",
-            "mv /tmp/magento-mirror-${globals.MAGENTO_VERSION}/* /tmp/magento-mirror-${globals.MAGENTO_VERSION}/.htaccess ${globals.MAGE_ROOT}",
-            "wget ${globals.PATH}/configs/varnish/varnish-probe.php -O ${globals.MAGE_ROOT}/varnish-probe.php",
-            "wget ${globals.PATH}/configs/magento/local.xml.template -O ${globals.MAGE_ROOT}/app/etc/local.xml.template",
-            "wget -O - ${globals.PATH}/scripts/setupMG.sh ${globals.DB_USER} ${globals.DB_PASS} ${nodes.sqlbl.intIP} ${globals.DB_NAME} ${globals.ADMIN_PASSWD} ${globals.MAGE_ROOT} ${env.url} ${user.email} | bash",
-            "chown nginx:nginx -R ${globals.MAGE_ROOT}/*",
-            "service nginx restart"
-        ]
-    }, {
         "forEach(nodes.cp)": {
             "setupCPNode": {
                 "filter": "${@i.id}",
                 "intIP": "${@i.intIP}"
             }
         }
+    }, {
+        "log": "Downloading, Unpacking, Installation and Patching Magento"
+    }, {
+        "cmd[admin]": [
+            "echo ${nodes.sqldb[0].intIP} DB_MASTER >> /etc/hosts && echo ${nodes.sqldb[1].intIP} DB_SLAVE >> /etc/hosts",
+            "wget ${globals.PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf && wget ${globals.PATH}/configs/nginx/site-default.conf -O /etc/nginx/conf.d/site-default.conf",
+            "wget -qO- 'https://codeload.github.com/OpenMage/magento-mirror/tar.gz/${globals.MAGENTO_VERSION}' | tar xz -C /tmp",
+            "mv /tmp/magento-mirror-${globals.MAGENTO_VERSION}/* /tmp/magento-mirror-${globals.MAGENTO_VERSION}/.htaccess ${globals.MAGE_ROOT}",
+            "wget ${globals.PATH}/configs/varnish/varnish-probe.php -O ${globals.MAGE_ROOT}/varnish-probe.php",
+            "wget ${globals.PATH}/configs/magento/local.xml.template -O ${globals.MAGE_ROOT}/app/etc/local.xml.template",
+            "wget ${globals.PATH}/scripts/setupMG.sh -O /tmp/setupMG.sh && bash /tmp/setupMG.sh ${globals.DB_USER} ${globals.DB_PASS} DB_MASTER ${globals.DB_NAME} ${globals.ADMIN_PASSWD} ${globals.MAGE_ROOT} ${env.url} ${user.email}",
+            "chown nginx:nginx -R ${globals.MAGE_ROOT}/*",
+            "service nginx restart"
+        ]
     }],
-    "onAfterScaleOut[nodeGroup:cp]": [{
-        "forEach(event.response.nodes)": {
-            "setupCPNode": {
-                "filter": "${@i.id}",
-                "intIP": "${@i.intIP}"
-            }
-        }
-    }],
-    "onBeforeScaleIn[nodeGroup:cp]": {
-        "forEach(event.response.nodes)": {
-            "removeCPNode": {
-                "intIP": "${@i.intIP}"
-            }
-        }
-    },
     "actions": {
         "setupCPNode": [{
             "cmd[${this.filter}]": [
+                "echo ${nodes.sqldb[0].intIP} DB_MASTER >> /etc/hosts && echo ${nodes.sqldb[1].intIP} DB_SLAVE >> /etc/hosts",
                 "wget ${globals.PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf && wget ${globals.PATH}/configs/nginx/site-default.conf -O /etc/nginx/conf.d/site-default.conf",
                 "service nginx restart"
             ]
