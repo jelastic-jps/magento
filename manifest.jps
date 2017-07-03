@@ -82,6 +82,13 @@
             }
         }
     }, {
+        "forEach(nodes.bl)": {
+            "setupBLNode": {
+                "filter": "${@i.id}",
+                "intIP": "${@i.intIP}"
+            }
+        }
+    }, {
         "log": "CP Layer Setup"
     }, {
         "forEach(nodes.cp)": {
@@ -128,6 +135,9 @@
                 "jem balancer RemoveCommonHost -h ${this.intIP}",
                 "service varnish reload"
             ]
+        },
+        "setupBLNode": {
+            "cmd[bl]": "wget ${globals.PATH}/configs/varnish/default.vcl -O /etc/varnish/default.vcl"
         }
     }
 }
