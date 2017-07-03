@@ -1,4 +1,4 @@
-[![Magento](../../raw/master/images/magento.png)](../../../magento)
+[![Magento](../../raw/master/magento/images/magento.png)](../../../magento)
 ## Magento
 
 The JPS package deploys Magento that initially contains 1 application server and 1 database container.
