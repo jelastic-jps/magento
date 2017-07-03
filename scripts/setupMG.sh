@@ -17,8 +17,8 @@ php ${MG_PATH}/bin/magento admin:user:create \
 --admin-user=admin \
 --admin-password=${MG_ADMIN} \
 --admin-firstname=Admin \
---admin-lastname=AdminLast 
---admin-email=${USER_EMAIL}"
+--admin-lastname=AdminLast \
+--admin-email=${USER_EMAIL}
 
 #php ${MG_PATH}/bin/magento setup:install -s \
 #--backend-frontname=admin \
