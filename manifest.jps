@@ -111,7 +111,7 @@
             "cmd[${this.filter}]": [
                 "echo ${nodes.sqldb[0].intIP} DB_MASTER >> /etc/hosts && echo ${nodes.sqldb[1].intIP} DB_SLAVE >> /etc/hosts",
                 "wget -O - ${globals.PATH}/scripts/setupCP.sh | bash",
-                "wget ",
+                "wget ${globals.PATH}/configs/php/memcache.ini -O /etc/php.d/memcache.ini && wget ${globals.PATH}/configs/php/opcache.ini -O /etc/php.d/opcache.ini",
                 "wget ${globals.PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf",
                 "/etc/init.d/nginx restart"
             ]
