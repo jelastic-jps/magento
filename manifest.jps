@@ -7,6 +7,7 @@
         "PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/mg21-php7-varnish-memcache-storage-dbcluster",
         "DB_USER": "jelastic-${fn.random}",
         "DB_PASS": "${fn.password(20)}",
+        "DB_HOST": "DB_MASTER",
         "DB_NAME": "magento",
         "MAGE_ROOT": "/var/www/webroot/ROOT",
         "ADMIN_PASSWD": "${fn.password(10)}"
@@ -103,7 +104,7 @@
         "cmd[${nodes.cp.first.id}]": [
             "mysql -u${globals.DB_USER} -p${globals.DB_PASS} -h ${globals.DB_HOST} -e \"CREATE DATABASE IF NOT EXISTS ${globals.DB_NAME};\" ",
             "mysql -u${globals.DB_USER} -p${globals.DB_PASS} -h ${globals.DB_HOST} ${globals.DB_NAME} < ${globals.MAGE_ROOT}/magento-sample.sql",
-            "wget ${globals.PATH}/scripts/setupMG.sh -O /tmp/setupMG.sh && bash /tmp/setupMG.sh ${globals.DB_USER} ${globals.DB_PASS} DB_MASTER ${globals.DB_NAME} ${globals.ADMIN_PASSWD} ${globals.MAGE_ROOT} ${env.url} ${user.email}"
+            "wget ${globals.PATH}/scripts/setupMG.sh -O /tmp/setupMG.sh && bash /tmp/setupMG.sh ${globals.DB_USER} ${globals.DB_PASS} ${globals.DB_HOST} ${globals.DB_NAME} ${globals.ADMIN_PASSWD} ${globals.MAGE_ROOT} ${env.url} ${user.email}"
         ]
     }],
     "actions": {
