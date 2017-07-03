@@ -4,10 +4,10 @@
     "logo": "https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/images/magento_70x70.png",
     "name": "Magento Cluster Template",
     "globals": {
-        "PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/mg21-php7-varnish-memcache-storage-dbcluster",
+        "PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/mg21-php7-varnish-memcache-storage-proxysql",
         "DB_USER": "jelastic-${fn.random}",
         "DB_PASS": "${fn.password(20)}",
-        "DB_HOST": "DB_MASTER",
+        "DB_HOST": "DB",
         "DB_NAME": "magento",
         "MAGE_ROOT": "/var/www/webroot/ROOT",
         "ADMIN_PASSWD": "${fn.password(10)}"
@@ -18,7 +18,7 @@
         "count": 2,
         "cloudlets": 8,
         "nodeGroup": "cp",
-        "links": ["sqldb:DB", "memcached:MEMCACHED"],
+        "links": ["sqlbl:DB", "memcached:MEMCACHED"],
         "volumes": ["${globals.MAGE_ROOT}"],
         "displayName": "AppServer",
         "volumeMounts": {
