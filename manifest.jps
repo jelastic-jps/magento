@@ -5,7 +5,7 @@
 		"id": "magento",
 		"name": "Magento",
 		"version": "2.0.4",
-		"logo": "https://raw.githubusercontent.com/jelastic-jps/magento/master/magento/images/magento.png",
+		"logo": "https://raw.githubusercontent.com/jelastic-jps/magento/apachephp5-mysql/images/magento.png",
 		"type": "php",
 		"categories": [
 				"apps/e-commerce"
@@ -46,7 +46,7 @@
 				"onCall": [{
 						"deploy": [{
 								"nodeMission": "cp",
-								"archive": "https://raw.githubusercontent.com/jelastic-jps/magento/master/magento/dumps/Magento-CE-2.0.4-2016-03-31-10-48-19.zip",
+								"archive": "https://raw.githubusercontent.com/jelastic-jps/magento/apachephp5-mysql/dumps/Magento-CE-2.0.4-2016-03-31-10-48-19.zip",
 								"name": "Magento-2.0.4.zip",
 								"context": "ROOT"
 							}
