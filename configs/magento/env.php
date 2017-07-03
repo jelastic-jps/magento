@@ -24,13 +24,28 @@ return array (
     array (
       'default' =>
       array (
-        'host' => 'DB_1',
+        'host' => 'DB_MASTER',
         'dbname' => 'magento',
         'username' => 'DB_USER',
         'password' => 'DB_PASS',
         'active' => '1',
       ),
     ),
+    'slave_connection' =>
+    array (
+      'default' =>
+      array (
+        'host' => 'DB_SLAVE',
+        'dbname' => 'magento',
+        'username' => 'DB_USER',
+        'password' => 'DB_PASS',
+        'active' => '1',
+        'model' => 'mysql4',
+        'engine' => 'innodb',
+        'initStatements' => 'SET NAMES utf8;',
+      ),
+    ),
+    
   ),
   'resource' =>
   array (
