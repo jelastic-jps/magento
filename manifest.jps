@@ -40,6 +40,10 @@
         "nodeGroup": "sqldb",
         "displayName": "Database"
     }, {
+        "image": "devbeta/proxysql",
+        "cloudlets": 8,
+        "nodeGroup": "sqlbl"
+    }, {
         "image": "jelastic/memcached:1.4.24",
         "cloudlets": 4,
         "count": 2,
@@ -75,10 +79,32 @@
         "log": "DB Cluster Setup"
     }, {
         "installJps": {
-            "jps": "https://raw.githubusercontent.com/jelastic-jps/mysql-cluster/orchestrator/scripts/cluster-configuration.jps",
+            "jps": "https://raw.githubusercontent.com/jelastic-jps/mysql-cluster/orchestrator1/scripts/cluster-configuration.jps",
             "settings": {
                 "db_user": "${globals.DB_USER}",
                 "db_pass": "${globals.DB_PASS}"
+            }
+        }
+    }, {
+        "log": "ProxySQL Setup"
+    }, {
+        "installJps": {
+            "jps": "https://raw.githubusercontent.com/jelastic-jps/mysql-cluster/orchestrator1/scripts/proxy-configuration.jps",
+            "settings": {
+                "db_user": "${globals.DB_USER}",
+                "db_pass": "${globals.DB_PASS}",
+                "proxy_ng": "sqlbl"
+            }
+        }
+    }, {
+        "log": "Orchestrator Setup"
+    }, {
+        "installJps": {
+            "jps": "https://raw.githubusercontent.com/jelastic-jps/mysql-cluster/orchestrator1/scripts/orchestrator-configuration.jps",
+            "settings": {
+                "db_user": "${globals.DB_USER}",
+                "db_pass": "${globals.DB_PASS}",
+                "proxy_ng": "sqlbl"
             }
         }
     }, {
