@@ -95,7 +95,7 @@
         "cmd[storage]": [
             "wget -qO- \"https://download.jelastic.com/public.php?service=files&t=a7b742235493eda8ede55043c3d4568c&download\" | tar xz -C /data",
             "wget ${globals.PATH}/configs/magento/varnish-probe.php -O /data/varnish-probe.php",
-            "wget ${globals.PATH}/configs/magento/env.php -O -O /data/app/etc/env.php"
+            "wget ${globals.PATH}/configs/magento/env.php -O /data/app/etc/env.php"
         ]
     }, {
         "log": "Setup Magento Content"
