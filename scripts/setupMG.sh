@@ -33,7 +33,5 @@ php ${MG_PATH}/bin/magento admin:user:create \
 #--admin-user=admin \
 #--admin-password=${MG_ADMIN};
 
-#$SED -i 's|getBlock(\$callback\[0\])->\$callback\[1\]|getBlock(\$callback\[0\])->{\$callback\[1\]}|g' ${MG_PATH}/app/code/core/Mage/Core/Model/Layout.php;
-#$SED -i 's|false|true|g' ${MG_PATH}/app/etc/modules/Cm_RedisSession.xml;
 rm -rf ${MG_PATH}/var/*;
 chown nginx:nginx ${MG_PATH}/* -R;
