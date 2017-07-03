@@ -1,0 +1,7 @@
+[mysqld]
+query_cache_type            = 1
+query_cache_limit        = 64M
+query_cache_size        = 512M
+query_cache_min_res_unit = 256
+query_prealloc_size = 65K
+range_alloc_block_size = 128K
