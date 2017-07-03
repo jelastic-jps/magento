@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[ -d /etc/php.d ] || mkdir -p /etc/php.d
+
 echo "clear_env = no" >> /etc/php-fpm.conf;
 echo "security.limit_extensions = .php .php3 .php4 .php5 .php7" >> /etc/php-fpm.conf;
 
