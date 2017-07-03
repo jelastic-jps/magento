@@ -5,7 +5,6 @@
     "name": "Magento Cluster Template",
     "globals": {
         "PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/mg21-php7-varnish-memcache-storage-dbcluster",
-        "MAGENTO_VERSION": "2.1.7",
         "DB_USER": "jelastic-${fn.random}",
         "DB_PASS": "${fn.password(20)}",
         "DB_NAME": "magento",
@@ -94,14 +93,15 @@
         "log": "Download and Unpack Content"
     }, {
         "cmd[storage]": [
-            "wget -qO- 'https://codeload.github.com/magento/magento2/tar.gz/${globals.MAGENTO_VERSION}' | tar xz -C /tmp",
-            "mv /tmp/magento2-${globals.MAGENTO_VERSION}/* /tmp/magento2-${globals.MAGENTO_VERSION}/.htaccess ${globals.MAGE_ROOT}",
-            "wget ${globals.PATH}/configs/varnish/varnish-probe.php -O ${globals.MAGE_ROOT}/varnish-probe.php"
+            "wget -qO- \"https://download.jelastic.com/public.php?service=files&t=a7b742235493eda8ede55043c3d4568c&download\" | tar xz -C /data",
+            "wget ${globals.PATH}/configs/varnish-probe.php -O /data/varnish-probe.php"
         ]
     }, {
         "log": "Setup Magento Content"
     }, {
-        "cmd[nodes.cp.first]": [
+        "cmd[nodes.cp.first.id]": [
+            "mysql -u${globals.DB_USER} -p${globals.DB_PASS} -h ${globals.DB_HOST} -e \"CREATE DATABASE IF NOT EXISTS ${globals.DB_NAME};\" ",
+            "mysql -u${globals.DB_USER} -p${globals.DB_PASS} -h ${globals.DB_HOST} ${globals.DB_NAME} < ${globals.MAGE_ROOT}/magento-sample.sql",
             "wget ${globals.PATH}/scripts/setupMG.sh -O /tmp/setupMG.sh && bash /tmp/setupMG.sh ${globals.DB_USER} ${globals.DB_PASS} DB_MASTER ${globals.DB_NAME} ${globals.ADMIN_PASSWD} ${globals.MAGE_ROOT} ${env.url} ${user.email}"
         ]
     }],
