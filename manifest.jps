@@ -52,7 +52,7 @@
     }, {
         "image": "jelastic/varnish:4.1.5",
         "cloudlets": 8,
-        "count": 1,
+        "count": 2,
         "nodeGroup": "bl",
         "displayName": "Balancer"
     }],
@@ -129,7 +129,9 @@
         "cmd[storage]": [
             "wget -qO- \"https://download.jelastic.com/public.php?service=files&t=a7b742235493eda8ede55043c3d4568c&download\" | tar xz -C /data",
             "wget ${globals.PATH}/configs/magento/varnish-probe.php -O /data/varnish-probe.php",
-            "wget ${globals.PATH}/configs/magento/env.php -O /data/app/etc/env.php"
+            "wget ${globals.PATH}/configs/magento/env.php -O /data/app/etc/env.php",
+            "sed -ri 's|DB_USER|${globals.DB_USER}|g' /data/app/etc/env.php",
+            "sed -ri 's|DB_PASS|${globals.DB_PASS}|g' /data/app/etc/env.php"
         ]
     }, {
         "log": "Setup Magento Content"
@@ -143,7 +145,6 @@
     "actions": {
         "setupNode": [{
             "cmd[${this.filter}]": [
-                "echo ${nodes.sqldb[0].intIP} DB_MASTER >> /etc/hosts && echo ${nodes.sqldb[1].intIP} DB_SLAVE >> /etc/hosts",
                 "wget -O - ${globals.PATH}/scripts/setupCP.sh | bash",
                 "wget ${globals.PATH}/configs/php/memcache.ini -O /etc/php.d/memcache.ini && wget ${globals.PATH}/configs/php/opcache.ini -O /etc/php.d/opcache.ini",
                 "wget ${globals.PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf",
