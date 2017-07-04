@@ -47,12 +47,12 @@
         "nodeGroup": "bl",
         "displayName": "Balancer"
     }, {
-        "image": "redis",
+        "image": "devbeta/redis:3.2.9",
         "cloudlets": 8,
         "nodeGroup": "rdc",
         "displayName": "Redis cache"
     }, {
-        "image": "redis",
+        "image": "devbeta/redis:3.2.9",
         "cloudlets": 8,
         "nodeGroup": "rds",
         "displayName": "Redis storage"
