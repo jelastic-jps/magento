@@ -97,8 +97,7 @@
     }, {
         "forEach(nodes.bl)": {
             "setupBLNode": {
-                "filter": "${@i.id}",
-                "intIP": "${@i.intIP}"
+                "filter": "${@i.id}"
             }
         }
     }, {
@@ -143,11 +142,19 @@
                 "service varnish reload"
             ]
         },
-        "setupBLNode": {
-            "cmd[bl]": [
+        "setupBLNode": [{
+            "cmd[${this.filter}]": [
                 "wget ${globals.PATH}/scripts/varnish/jem_overrides/varnish_balancer.lib -O /var/lib/jelastic/overrides/varnish_balancer.lib",
                 "wget ${globals.PATH}/configs/varnish/default.vcl -O /etc/varnish/default.vcl"
             ]
-        }
+        }, {
+            "forEach(nodes.cp)": {
+                "cmd[${this.filter}]": [
+                    "jem balancer addCommonHost -h ${@i.intIP} ",
+                    "grep -q \".url = \"/\"\" /etc/varnish/default.vcl ||  sed -ri 's| .url = \"/\"|.url = \"/varnish-probe.php\"|g' /etc/varnish/default.vcl",
+                    "service varnish reload"
+                ]
+            }
+        }]
     }
 }
