@@ -106,7 +106,7 @@
     }, {
         "cmd[admin]": [
             "echo ${nodes.sqldb[0].intIP} DB_MASTER >> /etc/hosts && echo ${nodes.sqldb[1].intIP} DB_SLAVE >> /etc/hosts",
-            "wget ${globals.PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf && wget ${globals.PATH}/configs/nginx/site-default.conf -O /etc/nginx/conf.d/site-default.conf",
+            "mkdir -p /etc/nginx/sites-enabled && wget ${globals.PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf && wget ${globals.PATH}/configs/nginx/site-default.conf -O /etc/nginx/sites-enabled/site-default.conf",
             "wget -qO- 'https://codeload.github.com/OpenMage/magento-mirror/tar.gz/${globals.MAGENTO_VERSION}' | tar xz -C /tmp",
             "mv /tmp/magento-mirror-${globals.MAGENTO_VERSION}/* /tmp/magento-mirror-${globals.MAGENTO_VERSION}/.htaccess ${globals.MAGE_ROOT}",
             "wget ${globals.PATH}/configs/varnish/varnish-probe.php -O ${globals.MAGE_ROOT}/varnish-probe.php",
@@ -120,7 +120,7 @@
         "setupCPNode": [{
             "cmd[${this.filter}]": [
                 "echo ${nodes.sqldb[0].intIP} DB_MASTER >> /etc/hosts && echo ${nodes.sqldb[1].intIP} DB_SLAVE >> /etc/hosts",
-                "wget ${globals.PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf && wget ${globals.PATH}/configs/nginx/site-default.conf -O /etc/nginx/conf.d/site-default.conf",
+                "mkdir -p /etc/nginx/sites-enabled && wget ${globals.PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf && wget ${globals.PATH}/configs/nginx/site-default.conf -O /etc/nginx/sites-enabled/site-default.conf",
                 "service nginx restart"
             ]
         }, {
