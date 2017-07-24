@@ -22,7 +22,7 @@
         "volumes": ["/var/www/webroot/ROOT", "/mnt"],
         "volumeMounts": {
             "/mnt": {
-                "readOnly": true,
+                "readOnly": false,
                 "sourceNodeGroup": "cp"
             },
             "/var/www/webroot/ROOT": {
@@ -99,7 +99,7 @@
     }, {
         "cmd[${nodes.bl.first.id}]": [
             "wget ${globals.PATH}/scripts/varnish/jem_overrides/varnish_balancer.lib -O /mnt/varnish_balancer.lib",
-            "wget ${globals.PATH}/configs/varnish/default.vcl /mnt/default.vcl"
+            "wget ${globals.PATH}/configs/varnish/default.vcl -O /mnt/default.vcl"
         ]
     }, {
         "cmd[${nodes.cp.first.id}]": [
