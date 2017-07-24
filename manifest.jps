@@ -20,18 +20,17 @@
         "nodeGroup": "cp",
         "links": ["rdc:RDC", "rds:RDS"],
         "volumes": ["/var/www/webroot/ROOT", "/mnt"],
-        "volumeMounts": [{
+        "volumeMounts": {
             "/mnt": {
                 "readOnly": true,
                 "sourceNodeGroup": "cp"
-            }
-        }, {
+            },
             "/var/www/webroot/ROOT": {
                 "readOnly": false,
                 "sourcePath": "/var/www/webroot/ROOT",
                 "sourceNodeGroup": "admin"
             }
-        }],
+        },
         "displayName": "AppServer"
     }, {
         "image": "jelastic/nginxphp:1.10.1-php-7.0.10",
