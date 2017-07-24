@@ -19,20 +19,20 @@
         "cloudlets": 8,
         "nodeGroup": "cp",
         "links": ["rdc:RDC", "rds:RDS"],
-        "volumes": ["/var/www/webroot/ROOT","/mnt"],
-        "displayName": "AppServer",
+        "volumes": ["/var/www/webroot/ROOT", "/mnt"],
         "volumeMounts": [{
+            "/mnt": {
+                "readOnly": true,
+                "sourceNodeGroup": "cp"
+            }
+        }, {
             "/var/www/webroot/ROOT": {
                 "readOnly": false,
                 "sourcePath": "/var/www/webroot/ROOT",
                 "sourceNodeGroup": "admin"
             }
-
-            "/mnt": { "readOnly": true, "sourceNodeGroup": "cp" }
-
-
-
-}]
+        }],
+        "displayName": "AppServer"
     }, {
         "image": "jelastic/nginxphp:1.10.1-php-7.0.10",
         "cloudlets": 8,
@@ -50,6 +50,13 @@
         "cloudlets": 8,
         "count": 1,
         "nodeGroup": "bl",
+        "volumes": ["/mnt"],
+        "volumeMounts": {
+            "/mnt": {
+                "readOnly": true,
+                "sourceNodeGroup": "bl"
+            }
+        },
         "displayName": "Balancer"
     }, {
         "image": "devbeta/redis:3.2.9",
@@ -88,6 +95,18 @@
         "log": "Auto Scaling Triggers"
     }, {
         "script": "https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/scripts/addTriggers.js"
+    }, {
+        "log": "Artefacts downloading"
+    }, {
+        "cmd[${nodes.bl.first.id}]": [
+            "wget ${globals.PATH}/scripts/varnish/jem_overrides/varnish_balancer.lib -O /mnt/varnish_balancer.lib",
+            "wget ${globals.PATH}/configs/varnish/default.vcl /mnt/default.vcl"
+        ]
+    }, {
+        "cmd[${nodes.cp.first.id}]": [
+            "wget ${globals.PATH}/configs/nginx/nginx.conf -O /mnt/nginx.conf",
+            "wget ${globals.PATH}/configs/nginx/site-default.conf -O /mnt/site-default.conf"
+        ]
     }, {
         "log": "DB Cluster Setup"
     }, {
@@ -131,7 +150,7 @@
         "setupCPNode": [{
             "cmd[${this.filter}]": [
                 "echo ${nodes.sqldb[0].intIP} DB_MASTER >> /etc/hosts && echo ${nodes.sqldb[1].intIP} DB_SLAVE >> /etc/hosts",
-                "mkdir -p /etc/nginx/sites-enabled && wget ${globals.PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf && wget ${globals.PATH}/configs/nginx/site-default.conf -O /etc/nginx/sites-enabled/site-default.conf",
+                "mkdir -p /etc/nginx/sites-enabled && cp /mnt/nginx.conf /etc/nginx/nginx.conf && cp /mnt/site-default.conf /etc/nginx/sites-enabled/site-default.conf",
                 "service nginx restart"
             ]
         }, {
@@ -142,16 +161,10 @@
             ]
         }],
         "removeCPNode": {
-            "cmd[bl]": [
-                "jem balancer RemoveCommonHost -h ${this.intIP}",
-                "service varnish reload"
-            ]
+            "cmd[bl]": "jem balancer RemoveCommonHost -h ${this.intIP} && service varnish reload"
         },
         "setupBLNode": [{
-            "cmd[${this.filter}]": [
-                "wget ${globals.PATH}/scripts/varnish/jem_overrides/varnish_balancer.lib -O /var/lib/jelastic/overrides/varnish_balancer.lib",
-                "wget ${globals.PATH}/configs/varnish/default.vcl -O /etc/varnish/default.vcl"
-            ]
+            "cmd[${this.filter}]": "cp /mnt/varnish_balancer.lib /var/lib/jelastic/overrides/varnish_balancer.lib && cp /mnt/default.vcl /etc/varnish/default.vcl"
         }, {
             "forEach(nodes.cp)": {
                 "cmd[${this.filter}]": [
