@@ -30,8 +30,7 @@
                 "sourcePath": "/var/www/webroot/ROOT",
                 "sourceNodeGroup": "admin"
             }
-        },
-        "displayName": "AppServer"
+        }
     }, {
         "image": "jelastic/nginxphp:1.10.1-php-7.0.10",
         "cloudlets": 8,
@@ -42,8 +41,7 @@
         "image": "jelastic/mysql:5.7-latest",
         "count": 2,
         "cloudlets": 8,
-        "nodeGroup": "sqldb",
-        "displayName": "Database"
+        "nodeGroup": "sqldb"
     }, {
         "image": "jelastic/varnish:4.1.5",
         "cloudlets": 8,
@@ -55,8 +53,7 @@
                 "readOnly": true,
                 "sourceNodeGroup": "bl"
             }
-        },
-        "displayName": "Balancer"
+        }
     }, {
         "image": "devbeta/redis:3.2.9",
         "cloudlets": 8,
@@ -73,6 +70,9 @@
             "setupCPNode": {
                 "filter": "${@i.id}",
                 "intIP": "${@i.intIP}"
+            },
+            "setEnvs": {
+                "filter": "${@i.id}"
             }
         }
     },
@@ -128,13 +128,19 @@
             "setupCPNode": {
                 "filter": "${@i.id}",
                 "intIP": "${@i.intIP}"
+            },
+            "setEnvs": {
+                "filter": "${@i.id}"
             }
+        }
+    }, {
+        "setEnvs": {
+            "filter": "admin"
         }
     }, {
         "log": "Downloading, Unpacking, Installation and Patching Magento"
     }, {
         "cmd[admin]": [
-            "echo ${nodes.sqldb[0].intIP} DB_MASTER >> /etc/hosts && echo ${nodes.sqldb[1].intIP} DB_SLAVE >> /etc/hosts",
             "mkdir -p /etc/nginx/sites-enabled && wget ${globals.PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf && wget ${globals.PATH}/configs/nginx/site-default.conf -O /etc/nginx/sites-enabled/site-default.conf",
             "wget -qO- 'https://codeload.github.com/OpenMage/magento-mirror/tar.gz/${globals.MAGENTO_VERSION}' | tar xz -C /tmp",
             "mv /tmp/magento-mirror-${globals.MAGENTO_VERSION}/* /tmp/magento-mirror-${globals.MAGENTO_VERSION}/.htaccess ${globals.MAGE_ROOT}",
@@ -146,12 +152,23 @@
         ]
     }],
     "actions": {
+        "setEnvs": {
+            "forEach(nodes.sqldb)": {
+                "if (${@i.ismaster})": {
+                    "cmd [${this.filter}]": "echo ${@i.intIP} DB_MASTER >> /etc/hosts"
+                },
+                "if (!${@i.ismaster})": {
+                    "cmd [${this.filter}]": "echo ${@i.intIP} DB_SLAVE >> /etc/hosts"
+                }
+            }
+        },
         "setupCPNode": [{
             "cmd[${this.filter}]": [
-                "echo ${nodes.sqldb[0].intIP} DB_MASTER >> /etc/hosts && echo ${nodes.sqldb[1].intIP} DB_SLAVE >> /etc/hosts",
                 "mkdir -p /etc/nginx/sites-enabled && cp /mnt/nginx.conf /etc/nginx/nginx.conf && cp /mnt/site-default.conf /etc/nginx/sites-enabled/site-default.conf",
                 "service nginx restart"
             ]
+        }, {
+            "setNodeDisplayName[${this.filter}]": "AppServer"
         }, {
             "cmd[bl]": [
                 "jem balancer addCommonHost -h ${this.intIP} ",
@@ -172,6 +189,8 @@
                     "service varnish reload"
                 ]
             }
+        }, {
+            "setNodeDisplayName[${this.filter}]": "Balancer"
         }]
     }
 }
