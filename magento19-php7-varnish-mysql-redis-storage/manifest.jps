@@ -50,7 +50,7 @@
         "volumes": ["/mnt"],
         "volumeMounts": {
             "/mnt": {
-                "readOnly": true,
+                "readOnly": false,
                 "sourceNodeGroup": "bl"
             }
         }
