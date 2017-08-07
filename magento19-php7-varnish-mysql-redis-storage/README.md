@@ -65,6 +65,6 @@ Within the installation window, type _Environment_ name and optional _Display Na
 
 Wait a few minutes for Jelastic to prepare and configure an environment. Once the cluster is up, you'll see an informational box with your admin data.
 
-![magento-installed](images/magento-installed.png)
+![magento-installed](images/magento-successful-install.png)
 
 Here, you can click **Open in browser** to access the _Magento Admin Panel_ and start executing the required management functions.
