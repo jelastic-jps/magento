@@ -37,7 +37,7 @@ Two MySQL database servers with asynchronous master-slave replication to  achiev
 
 Each container within a cluster comes with predefined [vertical scaling](https://docs.jelastic.com/automatic-vertical-scaling) limit up to _**8 cloudlets**_ (equals to 1 GiB of RAM and 3.2 GHz of CPU) and a set of [load alerts](https://docs.jelastic.com/load-alerts) (to notify you when the resources consumption is close to the limit).
 
-Also, when [scaling](https://docs.jelastic.com/multi-nodes) either Load Balancer or Application Server layer, the appropriate LB configs (at either newly created or the already existing instance(s) respectively) are adjusted to include data on all application server nodes the load should be distributed across. In addition, the NGINX application server is automatically scaled by the system horizontally based on the amount of incoming traffic (more details on the appropriate auto-scaling settings are provisioned within the [next section](##Auto-Scaling Settings)).
+Also, when [scaling](https://docs.jelastic.com/multi-nodes) either Load Balancer or Application Server layer, the appropriate LB configs (at either newly created or the already existing instance(s) respectively) are adjusted to include data on all application server nodes the load should be distributed across. In addition, the NGINX application server is automatically scaled by the system horizontally based on the amount of incoming traffic (more details on the appropriate auto-scaling settings are provisioned within the [next section](#auto-scaling-settings)).
 
 ## Auto-Scaling Settings
 
