@@ -59,12 +59,12 @@ In order to get Magento Cluster up and running, click the **Deploy to Jelastic**
 
 Alternatively, you can deploy the package manually by entering your Jelastic dashboard and [importing](https://docs.jelastic.com/environment-import) link to the _**manifest.jps**_ file above.
 
-![magento-install](images/magento-install.png)
+![magento-installation](images/magento-installation.png)
 
 Within the installation window, type _Environment_ name and optional _Display Name_ ([environment alias](https://docs.jelastic.com/environment-aliases)), select the preferable [region](https://docs.jelastic.com/environment-regions) (if several ones are available) and click **Install**.
 
 Wait a few minutes for Jelastic to prepare and configure an environment. Once the cluster is up, you'll see an informational box with your admin data.
 
-![magento-installed](images/magento-successful-install.png)
+![magento-successful-install](images/magento-successful-install.png)
 
 Here, you can click **Open in browser** to access the _Magento Admin Panel_ and start executing the required management functions.
