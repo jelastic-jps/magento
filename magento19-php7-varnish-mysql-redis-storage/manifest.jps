@@ -12,7 +12,7 @@
     "logo": "magento-cluster/master/images/magento_70x70.png",
     "name": "Auto-Scalable Magento Cluster",
     "globals": {
-        "PATH": "magento/master/magento19-php7-varnish-mysql-redis-storage",
+        "PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/master/magento19-php7-varnish-mysql-redis-storage",
         "MAGENTO_VERSION": "1.9.3.3",
         "MAGE_ROOT": "/var/www/webroot/ROOT",
         "DB_USER": "jelastic-${fn.random}",
