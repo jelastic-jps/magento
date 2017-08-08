@@ -3,9 +3,7 @@
 Get the highly available and scalable clustered solution for Magento - an extremely popular open source e-commerce platform. The given implementation ensures tracking and distribution of the incoming load, with automatic adjusting of the allocated resources amount according to it.
 
 ## Highlights
-This JPS package automatically deploys Magento 2 to the environment, which initially contains 2 balancers, 2 application servers, 2 MySQL databases, 2 Memcached and 1 Storage containers. Herewith, we provide two cluster version for you to choose the most suitable one according to your preferences:
-- run on PHP 5.6 version with a pair of replicated MySQL instances (master-master)
-- run on PHP 7 version, with 1 DB instance to process requests and 1 more slave one for backups
+This JPS package automatically deploys Magento 2 to the environment, which initially contains 2 balancers, 2 application servers, 2 MySQL databases, 2 Memcached and 1 Storage containers.
 
 ## Environment Topology
 ![Cluster Topology](images/magento-cluster-topology.png)
@@ -34,7 +32,7 @@ ST     |  Shared Storage |          1                     |           1/8       
 **Memcached Version**: 1.4.15
 
 ### Additional functionality:
-* pair of MySQL databases with either configured asynchronous master-master replication (within PHP 5.6.20-based solution) or extra slave DB instance for backups (within PHP 5.7-based solution);
+* pair of MySQL databases with either configured asynchronous master-master replication;
 * horizontal scaling enabled on compute nodes by CPU load. New AppServer will be added while 70% loading;
 * failover sql connection between MySQL and CP nodes based on [mysqlnd_ms](http://php.net/manual/en/book.mysqlnd-ms.php) plugin;
 * Memcached HA for session storage.
@@ -52,10 +50,6 @@ In order to get this solution instantly deployed, click the "Deploy to Jelastic"
 To deploy PHP 5.6-powered Magento cluster with asynchronous MySQL master-master replication:
 
 [![Deploy](https://github.com/jelastic-jps/git-push-deploy/raw/master/images/deploy-to-jelastic.png)](https://jelastic.com/install-application/?manifest=https%3A%2F%2Fraw.githubusercontent.com%2Fjelastic-jps%2Fmagento%2Fmaster%2Fmagento-cluster%2Fphp5.6-manifest.jps) 
-
-To deploy PHP 7-powered Magento cluster with additional slave MySQL instance for backups:
-
-[![Deploy](https://github.com/jelastic-jps/git-push-deploy/raw/master/images/deploy-to-jelastic.png)](https://jelastic.com/install-application/?manifest=https%3A%2F%2Fraw.githubusercontent.com%2Fjelastic-jps%2Fmagento%2Fmaster%2Fmagento-cluster%2Fphp7-manifest.jps)
 
 ### Private Cloud 
 To deploy the required package to Jelastic Private Cloud, import the required JPS manifest (see them above within repo files) via your dashboard ([detailed instruction](https://docs.jelastic.com/environment-export-import#import)).
