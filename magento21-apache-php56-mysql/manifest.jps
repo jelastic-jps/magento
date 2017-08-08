@@ -25,13 +25,15 @@
             "extip": false,
             "count": 1,
             "cloudlets": 16,
-            "nodeType": "apache2"
+            "nodeType": "apache2",
+            "nodeGroup": "cp"
           },
           {
             "nodeType": "mysql5",
             "extip": false,
             "count": 1,
-            "cloudlets": 16
+            "cloudlets": 16,
+            "nodeGroup": "sqldb"
           }
         ]
       }
