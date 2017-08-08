@@ -48,7 +48,7 @@ In order to get this solution instantly deployed, click the "Deploy to Jelastic"
 
 To deploy Magento cluster with additional slave MySQL instance for backups:
 
-[![Deploy](https://github.com/jelastic-jps/git-push-deploy/raw/master/images/deploy-to-jelastic.png)](https://jelastic.com/install-application/?manifest=https%3A%2F%2Fraw.githubusercontent.com%2Fjelastic-jps%2Fmagento%2Fmaster%2Fmagento-cluster%2Fphp7-manifest.jps)
+[![Deploy](https://github.com/jelastic-jps/git-push-deploy/raw/master/images/deploy-to-jelastic.png)](https://jelastic.com/install-application/?manifest=https%3A%2F%2Fraw.githubusercontent.com%2Fjelastic-jps%2Fmagento%2Fmaster%2Fmagento21-php7-varnish-memcache-storage%2Fmanifest.jps)
 
 ### Private Cloud 
 To deploy the required package to Jelastic Private Cloud, import the required JPS manifest (see them above within repo files) via your dashboard ([detailed instruction](https://docs.jelastic.com/environment-export-import#import)).
