@@ -26,10 +26,10 @@ ST     |  Shared Storage |          1                     |           1/8       
 
 **Magento Version**: 2.0.4<br/>
 **Varnish Version**: 4.1.1<br/>
-**Nginx Version**: 1.8.0<br/>
-**Php Version**: PHP 5.6.20 / PHP 7<br/>
-**MySQL Database**: 5.6.31<br/>
-**Memcached Version**: 1.4.15
+**Nginx Version**: 1.10.1<br/>
+**Php Version**: PHP 5.6.20<br/>
+**MySQL Database**: 5.7.14<br/>
+**Memcached Version**: 1.4.24
 
 ### Additional functionality:
 * pair of MySQL databases with either configured asynchronous master-master replication;
