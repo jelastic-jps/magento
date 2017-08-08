@@ -20,7 +20,7 @@
             }
         }
     }, {
-        "image": "jelastic/storaged",
+        "image": "jelastic/storage",
         "cloudlets": 8,
         "nodeGroup": "storage",
         "displayName": "Storage"
@@ -59,8 +59,7 @@
         }
     }, {
         "cmd[${@i.id}]": [
-            "/etc/init.d/nginx restart",
-            "/etc/init.d/php-fpm restart"
+            "/etc/init.d/nginx restart"
         ]
     }],
     "onAfterScaleIn[nodeGroup:cp]": {
@@ -85,7 +84,7 @@
         "script": "https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/scripts/addTriggers.js"
     }, {
         "installJps": {
-            "jps": "https://raw.githubusercontent.com/jelastic-jps/mysql-cluster/master/scripts/cluster-configuration.jps",
+            "jps": "https://raw.githubusercontent.com/jelastic-jps/mysql-cluster/master/scripts/multimaster-configuration.jps",
             "settings": {
                 "db_user": "${globals.DB_USER}",
                 "db_pass": "${globals.DB_PASS}"
@@ -132,7 +131,6 @@
                 "wget -O - ${globals.PATH}/scripts/setupCP.sh | bash",
                 "wget ${globals.PATH}/configs/nginx.conf -O /etc/nginx/nginx.conf",
                 "wget ${globals.PATH}/configs/mysqlnd_ms.json -O /var/lib/jelastic/mysqlnd_ms.json",
-                "/etc/init.d/php-fpm restart",
                 "/etc/init.d/nginx restart"
             ]
         },
