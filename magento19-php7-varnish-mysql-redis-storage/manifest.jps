@@ -5,7 +5,6 @@
         "text": "Auto-scalable and highly-available Magento eCommerce cluster with out-of-box auto-scaling, even load and traffic distribution, master-slave data replication, page caching and user session storage, run in Docker containers.",
         "short": "Auto-scalable and highly-available Magento cluster with load balancing, data replication, content caching and user session storage."
     },
-    "baseUrl": "https://raw.githubusercontent.com/jelastic-jps",
     "categories": [
         "apps/clusters"
     ],
