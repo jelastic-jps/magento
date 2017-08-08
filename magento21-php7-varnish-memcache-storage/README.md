@@ -3,9 +3,7 @@
 Get the highly available and scalable clustered solution for Magento - an extremely popular open source e-commerce platform. The given implementation ensures tracking and distribution of the incoming load, with automatic adjusting of the allocated resources amount according to it.
 
 ## Highlights
-This JPS package automatically deploys Magento 2 to the environment, which initially contains 2 balancers, 2 application servers, 2 MySQL databases, 2 Memcached and 1 Storage containers. Herewith, we provide two cluster version for you to choose the most suitable one according to your preferences:
-- run on PHP 5.6 version with a pair of replicated MySQL instances (master-master)
-- run on PHP 7 version, with 1 DB instance to process requests and 1 more slave one for backups
+This JPS package automatically deploys Magento 2 to the environment, which initially contains 2 balancers, 2 application servers, 2 MySQL databases, 2 Memcached and 1 Storage containers.
 
 ## Environment Topology
 ![Cluster Topology](images/magento-cluster-topology.png)
@@ -27,16 +25,15 @@ ST     |  Shared Storage |          1                     |           1/8       
 * CT - Container
 
 **Magento Version**: 2.0.4<br/>
-**Varnish Version**: 4.1.1<br/>
-**Nginx Version**: 1.8.0<br/>
-**Php Version**: PHP 5.6.20 / PHP 7<br/>
-**MySQL Database**: 5.6.31<br/>
-**Memcached Version**: 1.4.15
+**Varnish Version**: 4.1.5<br/>
+**Nginx Version**: 1.10.1<br/>
+**Php Version**: PHP 7<br/>
+**MySQL Database**: 5.7.14<br/>
+**Memcached Version**: 1.4.24
 
 ### Additional functionality:
-* pair of MySQL databases with either configured asynchronous master-master replication (within PHP 5.6.20-based solution) or extra slave DB instance for backups (within PHP 5.7-based solution);
+* pair of MySQL databases with either configured asynchronous master-slave replication with extra slave DB instance for backups;
 * horizontal scaling enabled on compute nodes by CPU load. New AppServer will be added while 70% loading;
-* failover sql connection between MySQL and CP nodes based on [mysqlnd_ms](http://php.net/manual/en/book.mysqlnd-ms.php) plugin;
 * Memcached HA for session storage.
 
 ---
@@ -49,11 +46,7 @@ In order to get this solution instantly deployed, click the "Deploy to Jelastic"
 
 **Note** that for the given packages to be properly deployed, you need to have a billing account already registered and upgraded at any of Jelastic Platform installations, as the number of required servers and needed functionality exceed the usual trial account limits. To give a try of Magento in Jelastic with a trial account for free, start with deployment of a [non-clustered Magento solution](https://github.com/jelastic-jps/magento/tree/master/magento), which represents a bundle of application server and database instance.
 
-To deploy PHP 5.6-powered Magento cluster with asynchronous MySQL master-master replication:
-
-[![Deploy](https://github.com/jelastic-jps/git-push-deploy/raw/master/images/deploy-to-jelastic.png)](https://jelastic.com/install-application/?manifest=https%3A%2F%2Fraw.githubusercontent.com%2Fjelastic-jps%2Fmagento%2Fmaster%2Fmagento-cluster%2Fphp5.6-manifest.jps) 
-
-To deploy PHP 7-powered Magento cluster with additional slave MySQL instance for backups:
+To deploy Magento cluster with additional slave MySQL instance for backups:
 
 [![Deploy](https://github.com/jelastic-jps/git-push-deploy/raw/master/images/deploy-to-jelastic.png)](https://jelastic.com/install-application/?manifest=https%3A%2F%2Fraw.githubusercontent.com%2Fjelastic-jps%2Fmagento%2Fmaster%2Fmagento-cluster%2Fphp7-manifest.jps)
 
