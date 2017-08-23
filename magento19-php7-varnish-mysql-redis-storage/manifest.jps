@@ -12,7 +12,7 @@
     "name": "Auto-Scalable Magento Cluster",
     "globals": {
         "PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/master/magento19-php7-varnish-mysql-redis-storage",
-        "MAGENTO_VERSION": "1.9.3.3",
+        "MAGENTO_VERSION": "1.9.3.4",
         "MAGE_ROOT": "/var/www/webroot/ROOT",
         "DB_USER": "jelastic-${fn.random}",
         "DB_PASS": "${fn.password(20)}",
@@ -149,8 +149,8 @@
     }, {
         "cmd[admin]": [
             "mkdir -p /etc/nginx/sites-enabled && wget ${globals.PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf && wget ${globals.PATH}/configs/nginx/site-default.conf -O /etc/nginx/sites-enabled/site-default.conf",
-            "wget -qO- 'https://codeload.github.com/OpenMage/magento-mirror/tar.gz/${globals.MAGENTO_VERSION}' | tar xz -C /tmp",
-            "mv /tmp/magento-mirror-${globals.MAGENTO_VERSION}/* /tmp/magento-mirror-${globals.MAGENTO_VERSION}/.htaccess ${globals.MAGE_ROOT}",
+            "wget -qO- 'https://github.com/jelastic-jps/magento/raw/master/images/magento-${globals.MAGENTO_VERSION}.tar.gz' | tar xz -C /tmp",
+            "mv /tmp/magento/* /tmp/magento/.htaccess ${globals.MAGE_ROOT}",
             "wget ${globals.PATH}/configs/varnish/varnish-probe.php -O ${globals.MAGE_ROOT}/varnish-probe.php",
             "wget ${globals.PATH}/configs/magento/local.xml.template -O ${globals.MAGE_ROOT}/app/etc/local.xml.template",
             "wget ${globals.PATH}/scripts/setupMG.sh -O /tmp/setupMG.sh && bash -x /tmp/setupMG.sh ${globals.DB_USER} ${globals.DB_PASS} DB_MASTER ${globals.DB_NAME} ${globals.ADMIN_PASSWD} ${globals.MAGE_ROOT} ${env.url} ${user.email} &>> /var/log/run.log",
