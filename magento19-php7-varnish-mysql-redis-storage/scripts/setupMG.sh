@@ -32,6 +32,8 @@ php -f ${MG_PATH}/install.php -- \
 --admin_email ${USER_EMAIL} \
 --admin_username admin \
 --admin_password ${MG_ADMIN};
-$SED -i 's|getBlock(\$callback\[0\])->\$callback\[1\]|getBlock(\$callback\[0\])->{\$callback\[1\]}|g' ${MG_PATH}/app/code/core/Mage/Core/Model/Layout.php;
+#$SED -i 's|getBlock(\$callback\[0\])->\$callback\[1\]|getBlock(\$callback\[0\])->{\$callback\[1\]}|g' ${MG_PATH}/app/code/core/Mage/Core/Model/Layout.php;
 $SED -i 's|false|true|g' ${MG_PATH}/app/etc/modules/Cm_RedisSession.xml;
-#rm -rf ${MG_PATH}/var/*;
+$MYSQL -u${DB_USER} -p${DB_PASS} -h ${DB_HOST} -e "INSERT INTO ${DB_NAME}.core_config_data (path,value) VALUES ('admin/security/validate_formkey_checkout',1);";
+php -f ${MG_PATH}/shell/indexer.php reindexall;
+rm -rf ${MG_PATH}/var/cache;
