@@ -20,12 +20,12 @@
                     "name": "magento-data",
                     "caption": "Magento content",
                     "type": "string",
-                    "value": "https://download.jelastic.com/public.php?service=files&t=c69c44d32a0ae69a145560e01b4cbbb1&download"
+                    "value": "https://github.com/sych74/magento-data/raw/master/sample-data.tar.gz"
                 }, {
                     "name": "magento-database",
                     "caption": "Magento database",
                     "type": "string",
-                    "value": "https://download.jelastic.com/public.php?service=files&t=5e555a131212a275dcf5545314e3c861&download"
+                    "value": "https://github.com/sych74/magento-data/raw/master/sample-database.tar.gz"
                 }],
                 "user": [{
                     "name": "magento-data",
@@ -47,7 +47,8 @@
     "onInstall": {
         "cmd[admin]": [
             "rm -rf /tmp/magento-data; mkdir /tmp/magento-data; wget -qO- '${settings.magento-data}' | tar xz -C /tmp/magento-data",
-            "rm -rf /tmp/magento-database; mkdir /tmp/magento-database; wget -qO- '${settings.magento-database}' | tar xz -C /tmp/magento-database"
+            "rm -rf /tmp/magento-database; mkdir /tmp/magento-database; wget -qO- '${settings.magento-database}' | tar xz -C /tmp/magento-database",
+            "wget https://raw.githubusercontent.com/jelastic-jps/magento/master/addons/migration/migrationMG.sh -O /tmp/migrationMG.sh"
         ]
     }
 }
