@@ -1,11 +1,11 @@
 #!/bin/bash
 
 WORK_DIR=/var/www/webroot/ROOT;
-CUSTOM_WORK_DIR=$(find /tmp/magento-data -type f -name mage -printf '%h\n');
+CUSTOM_DATA_DIR=$(find /tmp/magento-data -type f -name mage -printf '%h\n');
 CUSTOM_DB_DUMP=$(find /tmp/magento-database -type f -name *.sql);
 
 ORIG_LOCAL_XML=/tmp/local.xml;
-CUSTOM_LOCAL_XML=${CUSTOM_WORK_DIR}/app/etc/local.xml;
+CUSTOM_LOCAL_XML=${CUSTOM_DATA_DIR}/app/etc/local.xml;
 
 MYSQL=`which mysql`;
 SED=`which sed`;
