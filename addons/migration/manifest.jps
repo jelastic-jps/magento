@@ -3,7 +3,7 @@
     "name": "Magento migration",
     "homepage": "https://Jelastic.com",
     "description": "This package for Magento migration",
-     "settings": {
+    "settings": {
         "fields": [{
             "default": "demo",
             "values": {
@@ -44,11 +44,16 @@
             "type": "radio-fieldset"
         }]
     },
-    "onInstall": {
+    "onInstall": [{
         "cmd[admin]": [
             "rm -rf /tmp/magento-data; mkdir /tmp/magento-data; wget -qO- '${settings.magento-data}' | tar xz -C /tmp/magento-data",
             "rm -rf /tmp/magento-database; mkdir /tmp/magento-database; wget -qO- '${settings.magento-database}' | tar xz -C /tmp/magento-database",
-            "wget https://raw.githubusercontent.com/jelastic-jps/magento/master/addons/migration/migrationMG.sh -O /tmp/migrationMG.sh"
+            "wget https://raw.githubusercontent.com/jelastic-jps/magento/master/addons/migration/migrationMG.sh -O /tmp/migrationMG.sh",
+            "bash /tmp/migrationMG.sh &>> /var/log/migration.log"
         ]
-    }
+    }, {
+        "cmd[rdc,rds]": [
+            "redis-cli flushall"
+        ]
+    }]
 }
