@@ -1,0 +1,53 @@
+{
+    "jpsType": "update",
+    "name": "Magento migration",
+    "homepage": "https://Jelastic.com",
+    "description": "This package for Magento migration",
+     "settings": {
+        "fields": [{
+            "default": "demo",
+            "values": {
+                "demo": {
+                    "en": "Demo data"
+                },
+                "user": {
+                    "en": "User data"
+                }
+            },
+            "name": "optional",
+            "showIf": {
+                "demo": [{
+                    "name": "magento-data",
+                    "caption": "Magento content",
+                    "type": "string",
+                    "value": "https://download.jelastic.com/public.php?service=files&t=c69c44d32a0ae69a145560e01b4cbbb1&download"
+                }, {
+                    "name": "magento-database",
+                    "caption": "Magento database",
+                    "type": "string",
+                    "value": "https://download.jelastic.com/public.php?service=files&t=5e555a131212a275dcf5545314e3c861&download"
+                }],
+                "user": [{
+                    "name": "magento-data",
+                    "caption": "Magento content",
+                    "type": "string",
+                    "default": "",
+                    "required": true
+                }, {
+                    "name": "magento-database",
+                    "caption": "Magento database",
+                    "type": "string",
+                    "default": "",
+                    "required": true
+                }]
+            },
+            "type": "radio-fieldset"
+        }]
+    },
+    "onInstall": {
+        "cmd[admin]": [
+            "rm -rf /tmp/magento-data; mkdir /tmp/magento-data; wget -qO- '${settings.magento-data}' | tar xz -C /tmp/magento-data",
+            "rm -rf /tmp/magento-database; mkdir /tmp/magento-database; wget -qO- '${settings.magento-database}' | tar xz -C /tmp/magento-database"
+        ]
+    }
+}
