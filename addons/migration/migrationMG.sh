@@ -52,11 +52,21 @@ $MYSQL -u$db_username -p$db_password -h$db_host $custom_dbname < $CUSTOM_DB_DUMP
 $MYSQL -u$db_username -p$db_password -h$db_host $custom_dbname -se "UPDATE ${custom_db_prefix}core_config_data SET value='${web_unsecure_base_url}' WHERE path='web/unsecure/base_url'";
 $MYSQL -u$db_username -p$db_password -h$db_host $custom_dbname -se "UPDATE ${custom_db_prefix}core_config_data SET value='${web_secure_base_url}' WHERE path='web/secure/base_url'";
 
-##### Deploy content ####
+##### Move content ####
 rm -rf $WORK_DIR/* $WORK_DIR/.ht*
-#mv $CUSTOM_DATA_DIR/* $CUSTOM_DATA_DIR/.ht* $WORK_DIR
+find $CUSTOM_DATA_DIR -maxdepth 1 -mindepth 1 -exec mv -t $WORK_DIR {} +;
+
 cp $ORIG_LOCAL_XML $WORK_DIR/app/etc
 cp /tmp/varnish-probe.php $WORK_DIR
 
 #### Set permissions ####
+find $WORK_DIR -type f -exec chmod 644 {} \;
+find $WORK_DIR -type d -exec chmod 755 {} \;
+chmod -R 777 $WORK_DIR/media $WORK_DIR/var $WORK_DIR/app/etc
+
+#### Cache cleaning and context reindexing
+rm -rf $WORK_DIR/var/{cache,report,session}
+php -f $WORK_DIR/shell/indexer.php reindexall
 chown nginx:nginx -hR $WORK_DIR
+echo 'Magento data was migrated'
+####
