@@ -20,12 +20,12 @@
                     "name": "magento-data",
                     "caption": "Magento content",
                     "type": "string",
-                    "value": "https://github.com/sych74/magento-data/raw/master/sample-data.tar.gz"
+                    "value": "https://www.dropbox.com/s/puk044nbnirz6ni/sample-data.tar.gz?dl=0"
                 }, {
                     "name": "magento-database",
                     "caption": "Magento database",
                     "type": "string",
-                    "value": "https://github.com/sych74/magento-data/raw/master/sample-database.tar.gz"
+                    "value": "https://www.dropbox.com/s/jkie6zeeongouwx/sample-database.tar.gz?dl=0"
                 }],
                 "user": [{
                     "name": "magento-data",
