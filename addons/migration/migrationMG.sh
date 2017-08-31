@@ -24,6 +24,7 @@ if [[ ! -f $CUSTOM_LOCAL_XML ]] ; then
 fi
 
 MYSQL=`which mysql`;
+
 SED=`which sed`;
 
 cp $WORK_DIR/app/etc/local.xml /tmp;
@@ -45,12 +46,13 @@ $SED -i "s|.*<dbname>.*|${db_name_config}|g" $ORIG_LOCAL_XML;
 
 ##### Deploy and configure DB dump #######
 
-web_unsecure_base_url=$($MYSQL -u$db_username -p$db_password -h$db_host $dbname -se "SELECT value FROM ${db_prefix}core_config_data WHERE path='web/unsecure/base_url'");
-web_secure_base_url=$($MYSQL -u$db_username -p$db_password -h$db_host $dbname -se "SELECT value FROM ${db_prefix}core_config_data WHERE path='web/secure/base_url'");
-$MYSQL -u$db_username -p$db_password -h$db_host -e "DROP DATABASE IF EXISTS ${custom_dbname}; CREATE DATABASE ${custom_dbname}";
-$MYSQL -u$db_username -p$db_password -h$db_host $custom_dbname < $CUSTOM_DB_DUMP;
-$MYSQL -u$db_username -p$db_password -h$db_host $custom_dbname -se "UPDATE ${custom_db_prefix}core_config_data SET value='${web_unsecure_base_url}' WHERE path='web/unsecure/base_url'";
-$MYSQL -u$db_username -p$db_password -h$db_host $custom_dbname -se "UPDATE ${custom_db_prefix}core_config_data SET value='${web_secure_base_url}' WHERE path='web/secure/base_url'";
+MYSQL_ARG="-u$db_username -p$db_password -h$db_host"
+web_unsecure_base_url=$($MYSQL $MYSQL_ARG $dbname -se "SELECT value FROM ${db_prefix}core_config_data WHERE path='web/unsecure/base_url'");
+web_secure_base_url=$($MYSQL $MYSQL_ARG $dbname -se "SELECT value FROM ${db_prefix}core_config_data WHERE path='web/secure/base_url'");
+$MYSQL $MYSQL_ARG -e "DROP DATABASE IF EXISTS ${custom_dbname}; CREATE DATABASE ${custom_dbname}";
+$MYSQL $MYSQL_ARG $custom_dbname < $CUSTOM_DB_DUMP;
+$MYSQL $MYSQL_ARG $custom_dbname -se "UPDATE ${custom_db_prefix}core_config_data SET value='${web_unsecure_base_url}' WHERE path='web/unsecure/base_url'";
+$MYSQL $MYSQL_ARG $custom_dbname -se "UPDATE ${custom_db_prefix}core_config_data SET value='${web_secure_base_url}' WHERE path='web/secure/base_url'";
 
 ##### Move content ####
 rm -rf $WORK_DIR/* $WORK_DIR/.ht*
@@ -69,4 +71,4 @@ rm -rf $WORK_DIR/var/{cache,report,session}
 php -f $WORK_DIR/shell/indexer.php reindexall
 chown nginx:nginx -hR $WORK_DIR
 echo 'Magento data was migrated'
-####
+#####
