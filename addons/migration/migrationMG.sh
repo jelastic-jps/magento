@@ -41,7 +41,7 @@ $MYSQL -u$db_username -p$db_password -h$db_host $custom_dbname -se "UPDATE ${cus
 
 ##### Deploy content ####
 rm -rf $WORK_DIR/* $WORK_DIR/.ht*
-mv $CUSTOM_WORK_DIR/* $CUSTOM_WORK_DIR/.ht* $WORK_DIR
+mv $CUSTOM_DATA_DIR/* $CUSTOM_DATA_DIR/.ht* $WORK_DIR
 cp $ORIG_LOCAL_XML $WORK_DIR/app/etc
 cp /tmp/varnish-probe.php $WORK_DIR
 
