@@ -61,6 +61,8 @@ find $CUSTOM_DATA_DIR -maxdepth 1 -mindepth 1 -exec mv -t $WORK_DIR {} +;
 cp $ORIG_LOCAL_XML $WORK_DIR/app/etc
 cp /tmp/varnish-probe.php $WORK_DIR
 
+sed -i 's|getBlock(\$callback\[0\])->\$callback\[1\]|getBlock(\$callback\[0\])->{\$callback\[1\]}|g' $WORK_DIR/app/code/core/Mage/Core/Model/Layout.php;
+
 #### Set permissions ####
 find $WORK_DIR -type f -exec chmod 644 {} \;
 find $WORK_DIR -type d -exec chmod 755 {} \;
