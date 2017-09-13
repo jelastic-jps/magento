@@ -11,8 +11,8 @@
     "logo": "https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/images/magento_70x70.png",
     "name": "Auto-Scalable Magento Cluster",
     "globals": {
-        "PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/master/magento19-php7-varnish-mysql-redis-storage",
-        "MAGENTO_VERSION": "1.9.3.4",
+        "PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/magento2-php7-varnish-mysql-redis-memcache-storage/magento2-php7-varnish-mysql-redis-memcache-storage",
+        "MAGENTO_VERSION": "2.1.8",
         "MAGE_ROOT": "/var/www/webroot/ROOT",
         "DB_USER": "jelastic-${fn.random}",
         "DB_PASS": "${fn.password(20)}",
@@ -21,11 +21,11 @@
     },
     "success": "Below you will find your admin panel URL, username and password.</br></br> <table style='font-size:13px; border: none;'><tr><td>Admin panel URL:</td><td style='padding-left: 10px;'><a href='${env.protocol}://${env.domain}/admin/' target='_blank'>${env.protocol}://${env.domain}/admin/</a></td></tr>  <tr><td>Admin name:</td><td style='padding-left: 10px;'>admin</td></tr><tr><td>Password:</td><td style='padding-left: 10px;'>${globals.ADMIN_PASSWD}</td></tr></table></br>To add a custom domain name for your Magento Cluster installation, follow the steps described in our <a href='http://docs.jelastic.com/custom-domains' target='_blank'>documentation</a>",
     "nodes": [{
-        "image": "jelastic/nginxphp:1.10.1-php-7.0.10",
+        "image": "jelastic/nginxphp:1.10.1-php-7.0.21",
         "count": 2,
         "cloudlets": 8,
         "nodeGroup": "cp",
-        "links": ["rdc:RDC", "rds:RDS"],
+        "links": ["cache:CACHE", "session:SESSION"],
         "volumes": ["/var/www/webroot/ROOT", "/mnt"],
         "volumeMounts": {
             "/mnt": {
@@ -39,7 +39,7 @@
             }
         }
     }, {
-        "image": "jelastic/nginxphp:1.10.1-php-7.0.10",
+        "image": "jelastic/nginxphp:1.10.1-php-7.0.21",
         "cloudlets": 8,
         "nodeGroup": "admin",
         "volumes": ["/var/www/webroot/ROOT"],
@@ -50,9 +50,9 @@
         "cloudlets": 8,
         "nodeGroup": "sqldb"
     }, {
-        "image": "jelastic/varnish:4.1.5",
+        "image": "jelastic/varnish:4.1.8",
         "cloudlets": 8,
-        "count": 2,
+        "count": 1,
         "nodeGroup": "bl",
         "volumes": ["/mnt"],
         "volumeMounts": {
@@ -64,13 +64,13 @@
     }, {
         "image": "devbeta/redis:3.2.9",
         "cloudlets": 8,
-        "nodeGroup": "rdc",
+        "nodeGroup": "cache",
         "displayName": "Redis cache"
     }, {
-        "image": "devbeta/redis:3.2.9",
+        "image": "jelastic/memcached:1.4.24",
         "cloudlets": 8,
-        "nodeGroup": "rds",
-        "displayName": "Redis storage"
+        "nodeGroup": "session",
+        "displayName": "Session storage"
     }],
     "onAfterScaleOut[nodeGroup:cp]": {
         "forEach(event.response.nodes)": {
@@ -148,13 +148,6 @@
         "log": "Downloading, Unpacking, Installation and Patching Magento"
     }, {
         "cmd[admin]": [
-            "mkdir -p /etc/nginx/sites-enabled && wget ${globals.PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf && wget ${globals.PATH}/configs/nginx/site-default.conf -O /etc/nginx/sites-enabled/site-default.conf",
-            "wget -qO- 'https://github.com/jelastic-jps/magento/raw/master/images/magento-${globals.MAGENTO_VERSION}.tar.gz' | tar xz -C /tmp",
-            "mv /tmp/magento/* /tmp/magento/.htaccess ${globals.MAGE_ROOT}",
-            "wget ${globals.PATH}/configs/varnish/varnish-probe.php -O ${globals.MAGE_ROOT}/varnish-probe.php",
-            "wget ${globals.PATH}/configs/magento/local.xml.template -O ${globals.MAGE_ROOT}/app/etc/local.xml.template",
-            "wget ${globals.PATH}/scripts/setupMG.sh -O /tmp/setupMG.sh && bash -x /tmp/setupMG.sh ${globals.DB_USER} ${globals.DB_PASS} DB_MASTER ${globals.DB_NAME} ${globals.ADMIN_PASSWD} ${globals.MAGE_ROOT} ${env.url} ${user.email} &>> /var/log/run.log",
-            "chown nginx:nginx -R ${globals.MAGE_ROOT}/*",
             "service nginx restart"
         ]
     }],
@@ -171,7 +164,7 @@
         },
         "setupCPNode": [{
             "cmd[${this.filter}]": [
-                "mkdir -p /etc/nginx/sites-enabled && cp /mnt/nginx.conf /etc/nginx/nginx.conf && cp /mnt/site-default.conf /etc/nginx/sites-enabled/site-default.conf",
+                "#mkdir -p /etc/nginx/sites-enabled && cp /mnt/nginx.conf /etc/nginx/nginx.conf && cp /mnt/site-default.conf /etc/nginx/sites-enabled/site-default.conf",
                 "service nginx restart"
             ]
         }, {
