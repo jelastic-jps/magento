@@ -25,7 +25,7 @@
         "count": 2,
         "cloudlets": 8,
         "nodeGroup": "cp",
-        "links": ["cache:CACHE", "session:SESSION"],
+        "links": ["cache:REDIS", "session:MEMCACHE"],
         "volumes": ["/var/www/webroot/ROOT", "/mnt"],
         "volumeMounts": {
             "/mnt": {
@@ -111,7 +111,8 @@
     }, {
         "cmd[${nodes.cp.first.id}]": [
             "wget ${globals.PATH}/configs/nginx/nginx.conf -O /mnt/nginx.conf",
-            "wget ${globals.PATH}/configs/nginx/site-default.conf -O /mnt/default.conf"
+            "wget ${globals.PATH}/configs/nginx/site-default.conf -O /mnt/default.conf",
+            "wget ${globals.PATH}/configs/php/magento.ini -O /mnt/magento.ini"
         ]
     }, {
         "log": "DB Cluster Setup"
@@ -170,6 +171,7 @@
         "setupCPNode": [{
             "cmd[${this.filter}]": [
                 "mkdir -p /etc/nginx/sites-enabled && cp /mnt/nginx.conf /etc/nginx/nginx.conf && cp /mnt/default.conf /etc/nginx/sites-enabled/default.conf",
+                "cp /mnt/magento.ini /etc/php.d/magento.ini",
                 "service nginx restart"
             ]
         }, {
