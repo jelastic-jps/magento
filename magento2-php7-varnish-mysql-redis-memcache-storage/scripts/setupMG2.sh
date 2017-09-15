@@ -12,28 +12,22 @@ ENV_URL=$7
 USER_EMAIL=$8
 
 $MYSQL -u${DB_USER} -p${DB_PASS} -h ${DB_HOST} -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME};"
-php -f ${MG_PATH}/install.php -- \
---license_agreement_accepted "yes" \
---locale "en_US" \
---timezone "America/Los_Angeles" \
---default_currency "USD" \
---db_host ${DB_HOST} \
---db_name ${DB_NAME} \
---db_user ${DB_USER} \
---db_pass ${DB_PASS} \
---url ${ENV_URL} \
---skip_url_validation "yes" \
---use_rewrites "no" \
---use_secure "no" \
---secure_base_url "" \
---use_secure_admin "no" \
---admin_firstname Admin \
---admin_lastname AdminLast \
---admin_email ${USER_EMAIL} \
---admin_username admin \
---admin_password ${MG_ADMIN};
-#$SED -i 's|getBlock(\$callback\[0\])->\$callback\[1\]|getBlock(\$callback\[0\])->{\$callback\[1\]}|g' ${MG_PATH}/app/code/core/Mage/Core/Model/Layout.php;
-$SED -i 's|false|true|g' ${MG_PATH}/app/etc/modules/Cm_RedisSession.xml;
-$MYSQL -u${DB_USER} -p${DB_PASS} -h ${DB_HOST} -e "INSERT INTO ${DB_NAME}.core_config_data (path,value) VALUES ('admin/security/validate_formkey_checkout',1);";
-php -f ${MG_PATH}/shell/indexer.php reindexall;
-rm -rf ${MG_PATH}/var/cache;
+
+php -f ${MG_PATH}/bin/magento setup:install -s \
+--backend-frontname=admin \
+--db-host=${DB_HOST} \
+--db-name=${DB_NAME} \
+--db-user=${DB_USER} \
+--db-password=${DB_PASS} \
+--base-url=${ENV_URL} \
+--admin-firstname=Admin \
+--admin-lastname=AdminLast \
+--admin-email=${USER_EMAIL} \
+--admin-user=admin \
+--admin-password=${MG_ADMIN};
+
+$MYSQL -u${DB_USER} -p${DB_PASS} -h ${DB_HOST} ${DB_NAME} -e \
+"INSERT INTO core_config_data ( scope, scope_id, path, value ) VALUES ( 'default', '0', 'system/full_page_cache/caching_application', '2') ON DUPLICATE KEY UPDATE value = 2;"
+
+php ${MG_PATH}/bin/magento indexer:reindex;
+php ${MG_PATH}/bin/magento cache:flush
