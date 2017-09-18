@@ -65,7 +65,7 @@
         "image": "devbeta/redis:3.2.9",
         "cloudlets": 8,
         "nodeGroup": "cache",
-        "displayName": "Redis cache"
+        "displayName": "Cache storage"
     }, {
         "image": "jelastic/memcached:1.4.24",
         "cloudlets": 8,
@@ -153,7 +153,7 @@
             "wget ${globals.PATH}/configs/php/magento.ini -O /etc/php.d/magento.ini",
             "rm -rf ${globals.MAGE_ROOT}/* && wget -qO- 'https://www.dropbox.com/s/9gu3yni40kd9mz4/magento-2.1.9.tar.gz?dl=0' | tar xz -C ${globals.MAGE_ROOT}",
             "wget ${globals.PATH}/configs/varnish/varnish-probe.php -O ${globals.MAGE_ROOT}/varnish-probe.php",
-            "wget ${globals.PATH}/scripts/setupMG2.sh -O /tmp/setupMG2.sh && bash -x /tmp/setupMG.sh ${globals.DB_USER} ${globals.DB_PASS} DB_MASTER ${globals.DB_NAME} ${globals.ADMIN_PASSWD} ${globals.MAGE_ROOT} ${env.url} ${user.email} &>> /var/log/run.log",
+            "wget ${globals.PATH}/scripts/setupMG2.sh -O /tmp/setupMG2.sh && bash -x /tmp/setupMG2.sh ${globals.DB_USER} ${globals.DB_PASS} DB_MASTER ${globals.DB_NAME} ${globals.ADMIN_PASSWD} ${globals.MAGE_ROOT} ${env.url} ${user.email} &>> /var/log/run.log",
             "service nginx restart"
         ]
     }],
