@@ -112,7 +112,8 @@
         "cmd[${nodes.cp.first.id}]": [
             "wget ${globals.PATH}/configs/nginx/nginx.conf -O /mnt/nginx.conf",
             "wget ${globals.PATH}/configs/nginx/default.conf -O /mnt/default.conf",
-            "wget ${globals.PATH}/configs/php/magento.ini -O /mnt/magento.ini"
+            "wget ${globals.PATH}/configs/php/extensions.ini -O /mnt/extensions.ini",
+            "wget ${globals.PATH}/configs/php/memcache.ini -O /mnt/memcache.ini"
         ]
     }, {
         "log": "DB Cluster Setup"
@@ -150,10 +151,11 @@
     }, {
         "cmd[admin]": [
             "mkdir -p /etc/nginx/sites-enabled && wget ${globals.PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf && wget ${globals.PATH}/configs/nginx/default.conf -O /etc/nginx/sites-enabled/default.conf",
-            "wget ${globals.PATH}/configs/php/magento.ini -O /etc/php.d/magento.ini",
+            "wget ${globals.PATH}/configs/php/extensions.ini -O /etc/php.d/extensions.ini",
             "rm -rf ${globals.MAGE_ROOT}/* && wget -qO- 'https://www.dropbox.com/s/9gu3yni40kd9mz4/magento-2.1.9.tar.gz?dl=0' | tar xz -C ${globals.MAGE_ROOT}",
             "wget ${globals.PATH}/configs/varnish/varnish-probe.php -O ${globals.MAGE_ROOT}/pub/varnish-probe.php",
             "wget ${globals.PATH}/scripts/setupMG2.sh -O /tmp/setupMG2.sh && bash -x /tmp/setupMG2.sh ${globals.DB_USER} ${globals.DB_PASS} DB_MASTER ${globals.DB_NAME} ${globals.ADMIN_PASSWD} ${globals.MAGE_ROOT} ${env.url} ${user.email} &>> /var/log/run.log",
+            "wget ${globals.PATH}/configs/php/memcache.ini -O /etc/php.d/memcache.ini",
             "service nginx restart"
         ]
     }],
@@ -171,7 +173,7 @@
         "setupCPNode": [{
             "cmd[${this.filter}]": [
                 "mkdir -p /etc/nginx/sites-enabled && cp /mnt/nginx.conf /etc/nginx/nginx.conf && cp /mnt/default.conf /etc/nginx/sites-enabled/default.conf",
-                "cp /mnt/magento.ini /etc/php.d/magento.ini",
+                "cp /mnt/extensions.ini /etc/php.d/extensions.ini && cp /mnt/memcache.ini /etc/php.d/memcache.ini",
                 "service nginx restart"
             ]
         }, {
