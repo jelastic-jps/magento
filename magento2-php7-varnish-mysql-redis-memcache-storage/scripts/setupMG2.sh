@@ -31,3 +31,5 @@ $MYSQL -u${DB_USER} -p${DB_PASS} -h ${DB_HOST} ${DB_NAME} -e \
 
 php ${MG_PATH}/bin/magento indexer:reindex;
 php ${MG_PATH}/bin/magento cache:flush
+
+chown nginx:nginx -Rh ${MG_PATH}
