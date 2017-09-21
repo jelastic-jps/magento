@@ -52,7 +52,7 @@
     }, {
         "image": "jelastic/varnish:4.1.8",
         "cloudlets": 8,
-        "count": 2,
+        "count": 1,
         "nodeGroup": "bl",
         "volumes": ["/mnt"],
         "volumeMounts": {
