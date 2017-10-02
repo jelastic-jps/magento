@@ -147,6 +147,8 @@
             "filter": "admin"
         }
     }, {
+        "cmd[session]": "chkconfig memcached on && service memcached restart"    
+    }, {
         "log": "Downloading, Unpacking, Installation and Patching Magento"
     }, {
         "cmd[admin]": [
