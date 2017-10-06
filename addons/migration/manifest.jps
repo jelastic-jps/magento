@@ -3,7 +3,7 @@
     "name": "Magento Data Migration",
     "homepage": "https://github.com/jelastic-jps/magento/tree/master/addons/migration",
     "description":  {
-        "text": "This add-on allows to migrate data from 3rd-party Magento installation to the <a href=\"https://github.com/jelastic-jps/magento/tree/master/magento19-php7-varnish-mysql-redis-storage\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">Auto-Scalable Magento Cluster</a> by Jelastic.<br><br>Choose either <b>Demo data</b> option to test the migration process with a sample data or <b>User data</b> to integrate your own <i>Magento content</i> and <i>Magento database</i> dump archives by providing the appropriate URLs. ",
+        "text": "This add-on allows to migrate data from legacy Magento installation to the <a href=\"https://github.com/jelastic-jps/magento/tree/master/magento19-php7-varnish-mysql-redis-storage\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">Auto-Scalable Magento Cluster</a> by Jelastic.<br><br>Choose either <b>Demo data</b> option to test the migration process with a sample data or <b>User data</b> to integrate your own <i>Magento content</i> and <i>Magento database</i> dump archives by providing the appropriate URLs. ",
         "short": "Migrate data from 3rd-party Magento installation to the Auto-Scalable Magento Cluster by Jelastic."
     },
     "success": "Your Magento data was successfully migrated to Jelastic. Check the import details within the <b>migration.log</b> file on the Admin Node.",
@@ -21,25 +21,25 @@
             "name": "optional",
             "showIf": {
                 "demo": [{
-                    "name": "magento-data",
-                    "caption": "Magento content",
-                    "type": "string",
-                    "value": "https://www.dropbox.com/s/puk044nbnirz6ni/sample-data.tar.gz?dl=0"
-                }, {
                     "name": "magento-database",
-                    "caption": "Magento database",
+                    "caption": "Database",
                     "type": "string",
                     "value": "https://www.dropbox.com/s/jkie6zeeongouwx/sample-database.tar.gz?dl=0"
+                }, {
+                    "name": "magento-data",
+                    "caption": "Content",
+                    "type": "string",
+                    "value": "https://www.dropbox.com/s/puk044nbnirz6ni/sample-data.tar.gz?dl=0"
                 }],
                 "user": [{
-                    "name": "magento-data",
-                    "caption": "Magento content",
+                    "name": "magento-database",
+                    "caption": "Database",
                     "type": "string",
                     "default": "",
                     "required": true
                 }, {
-                    "name": "magento-database",
-                    "caption": "Magento database",
+                    "name": "magento-data",
+                    "caption": "Content",
                     "type": "string",
                     "default": "",
                     "required": true
