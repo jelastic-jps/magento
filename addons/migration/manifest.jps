@@ -1,6 +1,7 @@
 {
     "jpsType": "update",
     "name": "Magento Data Migration",
+    "logo": "https://raw.githubusercontent.com/jelastic-jps/magento/master/addons/migration/images/magento-migration.png",
     "homepage": "https://github.com/jelastic-jps/magento/tree/master/addons/migration",
     "description":  {
         "text": "This add-on allows to migrate data from sole Magento installation to the <a href=\"https://github.com/jelastic-jps/magento/tree/master/magento19-php7-varnish-mysql-redis-storage\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">Auto-Scalable Magento Cluster</a> by Jelastic.<br><br>Choose either <b>Demo data</b> option to test the migration process with a sample data or <b>User data</b> to integrate your own Magento <i>Database</i> dump and <i>Content</i> archives by providing the appropriate URLs. ",
