@@ -1,6 +1,6 @@
 {
     "jpsType": "install",
-    "homepage": "https://github.com/jelastic-jps/magento/tree/master/magento19-php7-varnish-mysql-redis-storage",
+    "homepage": "https://github.com/jelastic-jps/magento/tree/master/magento2-php7-varnish-mysql-redis-memcache-storage",
     "description":  {
         "text": "Auto-scalable and highly-available Magento eCommerce cluster with out-of-box auto-scaling, even load and traffic distribution, master-slave data replication, page caching and user session storage, run in Docker containers.",
         "short": "Auto-scalable and highly-available Magento cluster with load balancing, data replication, content caching and user session storage."
@@ -11,7 +11,7 @@
     "logo": "https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/images/magento_70x70.png",
     "name": "Auto-Scalable Magento Cluster",
     "globals": {
-        "PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/magento2-php7-varnish-mysql-redis-memcache-storage/magento2-php7-varnish-mysql-redis-memcache-storage",
+        "PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/master/magento2-php7-varnish-mysql-redis-memcache-storage",
         "MAGENTO_VERSION": "2.1.8",
         "MAGE_ROOT": "/var/www/webroot/ROOT",
         "DB_USER": "jelastic-${fn.random}",
@@ -21,7 +21,7 @@
     },
     "success": "Below you will find your admin panel URL, username and password.</br></br> <table style='font-size:13px; border: none;'><tr><td>Admin panel URL:</td><td style='padding-left: 10px;'><a href='${env.protocol}://${env.domain}/admin/' target='_blank'>${env.protocol}://${env.domain}/admin/</a></td></tr>  <tr><td>Admin name:</td><td style='padding-left: 10px;'>admin</td></tr><tr><td>Password:</td><td style='padding-left: 10px;'>${globals.ADMIN_PASSWD}</td></tr></table></br>To add a custom domain name for your Magento Cluster installation, follow the steps described in our <a href='http://docs.jelastic.com/custom-domains' target='_blank'>documentation</a>",
     "nodes": [{
-        "image": "jelastic/nginxphp:1.10.1-php-7.0.21",
+        "image": "jelastic/nginxphp:1.10.1-php-7.1.7",
         "count": 2,
         "cloudlets": 8,
         "nodeGroup": "cp",
@@ -39,7 +39,7 @@
             }
         }
     }, {
-        "image": "jelastic/nginxphp:1.10.1-php-7.0.21",
+        "image": "jelastic/nginxphp:1.10.1-php-7.1.7",
         "cloudlets": 8,
         "nodeGroup": "admin",
         "volumes": ["/var/www/webroot/ROOT"],
