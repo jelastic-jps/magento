@@ -1,7 +1,7 @@
 {
     "jpsType": "install",
     "homepage": "https://github.com/jelastic-jps/magento/tree/master/magento2-php7-varnish-mysql-redis-memcache-storage",
-    "description":  {
+    "description": {
         "text": "Auto-scalable and highly-available Magento eCommerce cluster with out-of-box auto-scaling, even load and traffic distribution, master-slave data replication, page caching and user session storage, run in Docker containers.",
         "short": "Auto-scalable and highly-available Magento cluster with load balancing, data replication, content caching and user session storage."
     },
@@ -10,6 +10,19 @@
     ],
     "logo": "https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/images/magento_70x70.png",
     "name": "Auto-Scalable Magento Cluster",
+    "settings": {
+        "fields": {
+            "name": "magento_version",
+            "caption": "Magento version",
+            "type": "list",
+            "values": {
+                "https://www.dropbox.com/s/tyfa58jwa6w3n3w/Magento-CE-2.2.0.tar.gz?dl=0": "Magento CE 2.2.0",
+                "https://www.dropbox.com/s/36ws835tvp7efrx/Magento-CE-2.1.9.tar.gz?dl=0": "Magento CE 2.1.9",
+                "https://www.dropbox.com/s/eu8bifravqgh0g0/Magento-CE-2.0.16.tar.gz?dl=0": "Magento CE 2.0.16"
+            },
+            "default": "https://www.dropbox.com/s/tyfa58jwa6w3n3w/Magento-CE-2.2.0.tar.gz?dl=0"
+        }
+    },
     "globals": {
         "PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/master/magento2-php7-varnish-mysql-redis-memcache-storage",
         "MAGENTO_VERSION": "2.1.8",
@@ -147,14 +160,14 @@
             "filter": "admin"
         }
     }, {
-        "cmd[session]": "chkconfig memcached on && service memcached restart"    
+        "cmd[session]": "chkconfig memcached on && service memcached restart"
     }, {
         "log": "Downloading, Unpacking, Installation and Patching Magento"
     }, {
         "cmd[admin]": [
             "mkdir -p /etc/nginx/sites-enabled && wget ${globals.PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf && wget ${globals.PATH}/configs/nginx/default.conf -O /etc/nginx/sites-enabled/default.conf",
             "wget ${globals.PATH}/configs/php/extensions.ini -O /etc/php.d/extensions.ini",
-            "rm -rf ${globals.MAGE_ROOT}/* && wget -qO- 'https://www.dropbox.com/s/9gu3yni40kd9mz4/magento-2.1.9.tar.gz?dl=0' | tar xz -C ${globals.MAGE_ROOT}",
+            "rm -rf ${globals.MAGE_ROOT}/* && wget -qO- 'https://www.dropbox.com/s/9gu3yni40kd9mz4/magento-CE-${settings.magento_version}.tar.gz?dl=0' | tar xz -C ${globals.MAGE_ROOT}",
             "wget ${globals.PATH}/configs/varnish/varnish-probe.php -O ${globals.MAGE_ROOT}/pub/varnish-probe.php",
             "wget ${globals.PATH}/scripts/setupMG2.sh -O /tmp/setupMG2.sh && bash -x /tmp/setupMG2.sh ${globals.DB_USER} ${globals.DB_PASS} DB_MASTER ${globals.DB_NAME} ${globals.ADMIN_PASSWD} ${globals.MAGE_ROOT} ${env.url} ${user.email} &>> /var/log/run.log",
             "wget ${globals.PATH}/configs/php/memcache.ini -O /etc/php.d/memcache.ini",
