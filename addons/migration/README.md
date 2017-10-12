@@ -6,7 +6,7 @@ Herewith, the Magento Data Migration add-on contains two options:
 * _**Demo data**_ - choose it to test importing procedure using a predefined Magento data sample
 * _**User data**_ - intended for actual import of your data from the legacy Magento installation of the equal version (currently, only _**1.9.x**_ Magento is supported)
 
-> **Note:** If your Magento installation contains extensive custom configurations, you’ll need to re-apply them manually after migration 
+> **Note:** If your Magento installation contains extensive custom configurations, you’ll need to re-apply them manually after migration.
 
 For more information about [Jelastic Add-Ons](https://github.com/jelastic-jps/jpswiki/wiki/Jelastic-Addons) and their usage, refer to the linked guide.
 
