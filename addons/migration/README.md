@@ -33,3 +33,5 @@ Select the destination _Environment name_ within the list of available ones and 
 Wait a minute till importing is finished. To get the additional details on its completion, you can check the _**migration.log**_ file on the **Admin Node** (use the **Log** button next to it).
 
 ![magento-migration-log](images/magento-migration-log.png)
+
+For more information on [importing Magento](https://blog.jelastic.com/2017/10/12/transferring-data-to-scalable-magento-cluster/), refer to the linked article.
