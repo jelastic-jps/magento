@@ -9,7 +9,7 @@
         "apps/clusters"
     ],
     "logo": "https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/images/magento_70x70.png",
-    "name": "Auto-Scalable Magento Cluster",
+    "name": "Auto-Scalable Magento 1.9 Cluster",
     "globals": {
         "PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/master/magento19-php7-varnish-mysql-redis-storage",
         "MAGENTO_VERSION": "1.9.3.4",
