@@ -9,7 +9,7 @@
         "apps/clusters"
     ],
     "logo": "https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/images/magento_70x70.png",
-    "name": "Auto-Scalable Magento Cluster",
+    "name": "Auto-Scalable Magento 2.x Cluster",
     "settings": {
         "fields": {
             "name": "magento_version",
