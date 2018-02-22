@@ -71,7 +71,7 @@
         }
     },
     "globals": {
-        "PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/master/magento-cluster",
+        "PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/master/magento21-php56-varnish-memcache-storage",
         "DB_USER": "jelastic-${fn.random}",
         "DB_PASS": "${fn.password(20)}",
         "MAGE_ROOT": "/var/www/webroot/ROOT",
