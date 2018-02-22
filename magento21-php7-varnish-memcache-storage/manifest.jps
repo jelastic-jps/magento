@@ -20,7 +20,7 @@
 			}
 		}
 	}, {
-		"image": "jelastic/storaged",
+		"image": "jelastic/storage",
 		"cloudlets": 8,
 		"nodeGroup": "storage",
 		"displayName": "Storage"
