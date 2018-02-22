@@ -25,7 +25,7 @@
 		"nodeGroup": "storage",
 		"displayName": "Storage"
 	}, {
-		"image": "jelastic/mysql:5.7.14",
+		"image": "jelastic/mysql:5.7.19",
 		"count": 2,
 		"cloudlets": 8,
 		"nodeGroup": "sqldb",
