@@ -3,12 +3,13 @@
     "master": {
       "master_0": {
         "host": "DB_1"
-      },
+      }
+    },
+    "slave": {
       "master_1": {
         "host": "DB_2"
       }
     },
-    "slave": {},
     "filters": {
       "roundrobin": {}
     },
