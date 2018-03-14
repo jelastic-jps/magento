@@ -125,7 +125,7 @@
     }, {
         "cmd[cp]": "/etc/init.d/nginx restart"
     }, {
-        "cmd[storage]": "rm -rf /data/var/cache/*"
+        "cmd[storage]": "rm -rf /data/var/cache/*; curl \"${env.protocol}://${env.domain}?$(date +%s)\" > /dev/null 2>&1"
     }],
     "actions": {
         "configurationAppServers": {
