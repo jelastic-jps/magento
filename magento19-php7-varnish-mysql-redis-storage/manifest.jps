@@ -2,8 +2,8 @@
     "jpsType": "install",
     "homepage": "https://github.com/jelastic-jps/magento/tree/master/magento19-php7-varnish-mysql-redis-storage",
     "description":  {
-        "text": "Auto-scalable and highly-available Magento 1.9.3.4 eCommerce cluster with out-of-box auto-scaling, even load and traffic distribution, master-slave data replication, page caching and user session storage, run in Docker containers.",
-        "short": "Auto-scalable and highly-available Magento 1.9.3.4 cluster with load balancing, data replication, content caching and user session storage."
+        "text": "Auto-scalable and highly-available Magento 1.9.3.8 eCommerce cluster with out-of-box auto-scaling, even load and traffic distribution, master-slave data replication, page caching and user session storage, run in Docker containers.",
+        "short": "Auto-scalable and highly-available Magento 1.9.3.8 cluster with load balancing, data replication, content caching and user session storage."
     },
     "categories": [
         "apps/clusters"
@@ -12,7 +12,7 @@
     "name": "Auto-Scalable Magento 1.9 Cluster",
     "globals": {
         "PATH": "https://raw.githubusercontent.com/jelastic-jps/magento/master/magento19-php7-varnish-mysql-redis-storage",
-        "MAGENTO_VERSION": "1.9.3.4",
+        "MAGENTO_VERSION": "1.9.3.8",
         "MAGE_ROOT": "/var/www/webroot/ROOT",
         "DB_USER": "jelastic-${fn.random}",
         "DB_PASS": "${fn.password(20)}",
