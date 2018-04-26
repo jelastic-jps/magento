@@ -62,12 +62,12 @@
             }
         }
     }, {
-        "image": "devbeta/redis-custom",
+        "image": "jelastic/redis",
         "cloudlets": 8,
         "nodeGroup": "rdc",
         "displayName": "Redis cache"
     }, {
-        "image": "devbeta/redis-custom",
+        "image": "jelastic/redis",
         "cloudlets": 8,
         "nodeGroup": "rds",
         "displayName": "Redis storage"
