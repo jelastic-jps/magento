@@ -1,3 +1,5 @@
+# **Please use [**Auto-Scalable Magento Cluster**](https://github.com/jelastic-jps/magento-cluster) as more up-to-date version.
+
 # Auto-Scalable Magento 1.9 Cluster in Docker Containers
 
 Advanced highly reliable and auto-scalable Magento cluster on top of Docker containers with embedded load balancing, a pair of replicated database servers, separate cache & session storages, and dedicated admin node for the whole cluster management.
