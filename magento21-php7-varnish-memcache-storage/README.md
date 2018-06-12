@@ -1,3 +1,5 @@
+## Please use [**Auto-Scalable Magento Cluster**](https://github.com/jelastic-jps/magento-cluster) as more up-to-date version.
+
 # Highly Available and Auto-Scalable Magento Cluster
 
 Get the highly available and scalable clustered solution for Magento - an extremely popular open source e-commerce platform. The given implementation ensures tracking and distribution of the incoming load, with automatic adjusting of the allocated resources amount according to it.
