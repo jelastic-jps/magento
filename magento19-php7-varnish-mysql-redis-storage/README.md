@@ -1,4 +1,5 @@
-# **Please use [**Auto-Scalable Magento Cluster**](https://github.com/jelastic-jps/magento-cluster) as more up-to-date version.
+## Please use [**Auto-Scalable Magento Cluster**](https://github.com/jelastic-jps/magento-cluster) as more up-to-date version.
+
 
 # Auto-Scalable Magento 1.9 Cluster in Docker Containers
 
