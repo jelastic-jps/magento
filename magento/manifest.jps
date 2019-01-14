@@ -40,8 +40,8 @@ onInstall:
 actions:
   createDb:
     - cmd[sqldb]: |-
-        mysql -uroot -p${nodes.sqldb.password} -e "CREATE DATABASE IF NOT EXISTS magento;"
-        mysql -uroot -p${nodes.sqldb.password} -e "CREATE USER '${globals.DB_USER}'@'%' IDENTIFIED BY '${globals.DB_PASS}'; GRANT ALL ON magento.* TO '${globals.DB_USER}'@'%'; FLUSH PRIVILEGES;"
+        mysql -uroot -p${nodes.mysql.password} -e "CREATE DATABASE IF NOT EXISTS magento;"
+        mysql -uroot -p${nodes.mysql.password} -e "CREATE USER '${globals.DB_USER}'@'%' IDENTIFIED BY '${globals.DB_PASS}'; GRANT ALL ON magento.* TO '${globals.DB_USER}'@'%'; FLUSH PRIVILEGES;"
 
   deployMagento:
     - deploy:
