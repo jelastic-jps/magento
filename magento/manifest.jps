@@ -1,57 +1,82 @@
-type: install
-jpsVersion: 0.3
+jpsType: install
+jpsVersion: '1.5.2'
 id: magento
 name: Magento
-version: 2.1.6
 logo: https://raw.githubusercontent.com/jelastic-jps/magento/master/magento/images/magento.png
 categories:
-- apps/e-commerce
-- apps/sales-and-marketing
+    - apps/e-commerce
+    - apps/sales-and-marketing
 homepage: http://www.magentocommerce.com/
-description: Magento is the eCommerce software and platform trusted by the world's
-  leading brands. Grow your online business with Magento!
-env:
-  engine: php5.6
-  nodes:
-  - cloudlets: 8
-    nodeType: apache2
-  - nodeType: mysql5
+description:
+  en: Magento is the eCommerce software and platform trusted by the world's leading
+      brands. Grow your online business with Magento!
+
+baseUrl: https://raw.githubusercontent.com/sych74/magento/master
+
+globals:
+  DB_USER: jelastic-${fn.random}
+  DB_PASS: ${fn.password(20)}
+  ADMIN_PASSWD: ${fn.password(20)}
+
+ssl: false
+nodes:
+  - nodeType: nginxphp
+    count: 1
     cloudlets: 8
+    nodeGroup: cp
+    links: sqldb:DB
+
+  - nodeType: mysql
+    count: 1
+    cloudlets: 8
+    nodeGroup: sqldb
+
 onInstall:
-  - deployApp
-  - createDb
-  - replaceInFiles
-  - bindDomain
+    - createDb
+    - deployMagento
+    - replaceInFiles
+    - bindDomain
+
 actions:
-  deployApp:
-  - deploy:
-      nodeMission: cp
-      archive: https://github.com/jelastic-jps/magento/blob/master/magento/dumps/Magento-CE-2.1.6-2017-03-29-12-40-05.zip?raw=true
-      name: Magento-2.1.6.zip
-      context: ROOT
   createDb:
-  - prepareSqlDatabase:
-    - nodeMission: sqldb
-      loginCredentials:
-        user: root
-        password: ${nodes.mysql5.password}
-      newDatabaseName: magento
-      newDatabaseUser:
-        name: magento
-        password: magento
-  replaceInFiles:
-  - replaceInFile [cp]:
-    - nodeMission: cp
-      path: ${SYSTEM_ETC}/php.ini
-      replacements:
-      - pattern: ;extension=gd.so
-        replacement: extension=gd.so \rextension=intl.so \rextension=xsl.so
-  - restartNodes:
-      nodeMission: cp
-  bindDomain:
-  - cmd [cp]:
-    - cd /var/www/webroot/ROOT/bin && chmod a+x magento
-    - /usr/bin/php magento setup:install -s '--backend-frontname=admin' '--db-host=${nodes.mysql5.address}' '--db-name=magento' '--db-user=root' '--db-password=${nodes.mysql5.password}' '--base-url=${env.url}' '--admin-firstname=admin' '--admin-lastname=adminlast'       '--admin-email=${user.email}' '--admin-user=admin' '--admin-password=${user.appPassword}'      &> /dev/null
-    - /usr/bin/php magento indexer:reindex && /usr/bin/php magento cache:flush &> /dev/null
-    - sed -i "162s/select]/select->limit(10000000000)]/"  /var/www/webroot/ROOT/vendor/magento/framework/Search/Adapter/Mysql/Mapper.php
-success: 'Below you will find your admin panel link, username and password.</br></br> <table style=''font-size:13px; border: none;''><tr><td width="70px">Admin URL:</td><td   style=''padding-left: 10px;''><a href=''${env.url}index.php/admin/'' target=''_blank''>${env.url}index.php/admin/</a></td></tr>  <tr><td>Admin name:</td><td style=''padding-left: 10px;''>admin</td></tr><tr><td>Password:</td><td style=''padding-left: 10px;''>${user.appPassword}</td></tr></table></br>To add custom domain name for your Magento installation follow the steps described in our <a href=''http://docs.jelastic.com/custom-domains'' target=''_blank''>documentation</a>'
+    - cmd[sqldb]: |-
+        mysql -uroot -p${nodes.sqldb.password} -e "CREATE DATABASE IF NOT EXISTS magento;"
+        mysql -uroot -p${nodes.sqldb.password} -e "CREATE USER '${globals.DB_USER}'@'%' IDENTIFIED BY '${globals.DB_PASS}'; GRANT ALL ON magento.* TO '${globals.DB_USER}'@'%'; FLUSH PRIVILEGES;"
+
+  deployMagento:
+    - deploy:
+        archive: https://github.com/sych74/magento/raw/master/magento/dumps/Magento-CE-2.3.0.tar.bz2
+        name: Magento-CE-2.3.0.tar.bz2
+        context: ROOT
+
+
+  setupCP:
+    - cmd[cp]: 
+        sed -i "s/;extension=gd.so/extension=gd.so/g" /etc/php.ini
+        sudo /etc/init.d/php-fpm restart
+
+  setupMagento:
+    - cmd[cp]: |-
+        cd /var/www/webroot/ROOT/bin && chmod a+x magento
+          /usr/bin/php magento setup:install -s '--backend-frontname=admin' '--db-host=DB'
+          '--db-name=magento' '--db-user=${globals.DB_USER}' '--db-password=${globals.DB_PASS}'
+          '--base-url=${env.url}' '--admin-firstname=admin' '--admin-lastname=adminlast'
+          '--admin-email=${user.email}' '--admin-user=admin' '--admin-password=${globals.DB_ADMIN}' &> /dev/null
+        /usr/bin/php magento indexer:reindex && /usr/bin/php magento cache:flush &> /dev/null
+        sed -i "162s/select]/select->limit(10000000000)]/"  /var/www/webroot/ROOT/vendor/magento/framework/Search/Adapter/Mysql/Mapper.php
+
+success:
+    text: 'Below you will find your admin panel link, username and password.</br></br>
+      <table style=''font-size:13px; border: none;''><tr><td width="70px">Admin URL:</td><td
+      style=''padding-left: 10px;''><a href=''${env.url}index.php/admin/'' target=''_blank''>${env.url}index.php/admin/</a></td></tr>  <tr><td>Admin
+      name:</td><td style=''padding-left: 10px;''>admin</td></tr><tr><td>Password:</td><td
+      style=''padding-left: 10px;''>${globals.DB_ADMIN}</td></tr></table></br>To add
+      custom domain name for your Magento installation follow the steps described
+      in our <a href=''http://docs.jelastic.com/custom-domains'' target=''_blank''>documentation</a>'
+    email: 'Below you will find your admin panel link, username and password.</br></br>
+      <table style=''font-size:13px; border: none;''><tr><td width="70px">Admin URL:</td><td
+      style=''padding-left: 10px;''><a href=''${env.url}index.php/admin/'' target=''_blank''>${env.url}index.php/admin/</a></td></tr>  <tr><td>Admin
+      name:</td><td style=''padding-left: 10px;''>admin</td></tr><tr><td>Password:</td><td
+      style=''padding-left: 10px;''>${globals.DB_ADMIN}</td></tr></table></br>To add
+      custom domain name for your Magento installation follow the steps described
+      in our <a href=''http://docs.jelastic.com/custom-domains'' target=''_blank''>documentation</a>'
