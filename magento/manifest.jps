@@ -20,11 +20,15 @@ globals:
 
 ssl: false
 nodes:
-  - nodeType: nginxphp
+  - nodeType: nginxphp-dockerized
+    tag: 1.14.2-php-7.2.14
     count: 1
-    cloudlets: 8
+    cloudlets: 16
     nodeGroup: cp
     links: sqldb:DB
+    env:
+      PHPFPM_MAX_CHILDREN: 5
+
 
   - nodeType: mysql
     count: 1
@@ -45,7 +49,7 @@ actions:
 
   deployMagento:
     - deploy:
-        archive: https://github.com/sych74/magento/raw/master/magento/dumps/Magento-CE-2.3.0.tar.bz2
+        archive: https://github.com/sych74/magento-cluster/raw/master/releases/Magento-CE-2.3.0.tar.bz2
         name: Magento-CE-2.3.0.tar.bz2
         context: ROOT
 
