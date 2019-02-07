@@ -1,57 +1,100 @@
-type: install
-jpsVersion: 0.3
+jpsType: install
+jpsVersion: '1.5.2'
 id: magento
 name: Magento
-version: 2.1.6
 logo: https://raw.githubusercontent.com/jelastic-jps/magento/master/magento/images/magento.png
 categories:
-- apps/e-commerce
-- apps/sales-and-marketing
+    - apps/e-commerce
+    - apps/sales-and-marketing
 homepage: http://www.magentocommerce.com/
-description: Magento is the eCommerce software and platform trusted by the world's
-  leading brands. Grow your online business with Magento!
-env:
-  engine: php5.6
-  nodes:
-  - cloudlets: 8
-    nodeType: apache2
-  - nodeType: mysql5
+description:
+  en: Magento is the eCommerce software and platform trusted by the world's leading
+      brands. Grow your online business with Magento!
+
+baseUrl: https://raw.githubusercontent.com/jelastic-jps/magento/master
+
+settings:
+  fields:
+    name: magento_version
+    caption: Magento version
+    type: list
+    values:
+      Magento-CE-2.3.0.tar.bz2: Magento CE 2.3.x
+      Magento-CE-1.9.4.tar.bz2: Magento CE 1.9.4.x
+    default: Magento-CE-2.3.0.tar.bz2
+
+globals:
+  DB_USER: jelastic-${fn.random}
+  DB_PASS: ${fn.password(20)}
+  ADMIN_PASSWD: ${fn.password(20)}
+  CONFIGS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master
+
+ssl: false
+nodes:
+  - nodeType: nginxphp-dockerized
+    tag: 1.14.2-php-7.2.14
+    count: 1
+    cloudlets: 16
+    nodeGroup: cp
+    links: sqldb:DB
+
+  - nodeType: mysql
+    count: 1
     cloudlets: 8
+    nodeGroup: sqldb
+
 onInstall:
-  - deployApp
-  - createDb
-  - replaceInFiles
-  - bindDomain
+    - createDb
+    - deployMagento
+    - setupMagento
+
 actions:
-  deployApp:
-  - deploy:
-      nodeMission: cp
-      archive: https://github.com/jelastic-jps/magento/blob/master/magento/dumps/Magento-CE-2.1.6-2017-03-29-12-40-05.zip?raw=true
-      name: Magento-2.1.6.zip
-      context: ROOT
   createDb:
-  - prepareSqlDatabase:
-    - nodeMission: sqldb
-      loginCredentials:
-        user: root
-        password: ${nodes.mysql5.password}
-      newDatabaseName: magento
-      newDatabaseUser:
-        name: magento
-        password: magento
-  replaceInFiles:
-  - replaceInFile [cp]:
-    - nodeMission: cp
-      path: ${SYSTEM_ETC}/php.ini
-      replacements:
-      - pattern: ;extension=gd.so
-        replacement: extension=gd.so \rextension=intl.so \rextension=xsl.so
-  - restartNodes:
-      nodeMission: cp
-  bindDomain:
-  - cmd [cp]:
-    - cd /var/www/webroot/ROOT/bin && chmod a+x magento
-    - /usr/bin/php magento setup:install -s '--backend-frontname=admin' '--db-host=${nodes.mysql5.address}' '--db-name=magento' '--db-user=root' '--db-password=${nodes.mysql5.password}' '--base-url=${env.url}' '--admin-firstname=admin' '--admin-lastname=adminlast'       '--admin-email=${user.email}' '--admin-user=admin' '--admin-password=${user.appPassword}'      &> /dev/null
-    - /usr/bin/php magento indexer:reindex && /usr/bin/php magento cache:flush &> /dev/null
-    - sed -i "162s/select]/select->limit(10000000000)]/"  /var/www/webroot/ROOT/vendor/magento/framework/Search/Adapter/Mysql/Mapper.php
-success: 'Below you will find your admin panel link, username and password.</br></br> <table style=''font-size:13px; border: none;''><tr><td width="70px">Admin URL:</td><td   style=''padding-left: 10px;''><a href=''${env.url}index.php/admin/'' target=''_blank''>${env.url}index.php/admin/</a></td></tr>  <tr><td>Admin name:</td><td style=''padding-left: 10px;''>admin</td></tr><tr><td>Password:</td><td style=''padding-left: 10px;''>${user.appPassword}</td></tr></table></br>To add custom domain name for your Magento installation follow the steps described in our <a href=''http://docs.jelastic.com/custom-domains'' target=''_blank''>documentation</a>'
+    - cmd [sqldb]: |-
+        wget https://raw.githubusercontent.com/jelastic-jps/mysql-cluster/master/scripts/setupUser.sh -O ~/setupUser.sh &>> /var/log/run.log
+        bash ~/setupUser.sh ${globals.DB_USER} ${globals.DB_PASS} &>> /var/log/run.log
+        mysql -u${globals.DB_USER} -p${globals.DB_PASS} -e "CREATE DATABASE IF NOT EXISTS magento;"
+      user: root
+
+  deployMagento:
+    - deploy:
+        archive: https://github.com/jelastic-jps/magento-cluster/raw/master/releases/${settings.magento_version}
+        name: ${settings.magento_version}
+        context: ROOT
+
+  setupMagento:
+    - if (/Magento-CE-1.9/.test("${settings.magento_version}")):
+        cmd[cp]:
+          - wget ${globals.CONFIGS_PATH}/configs/nginx/site-default-mg19.conf -O /etc/nginx/conf.d/site-default.conf
+          - wget ${globals.CONFIGS_PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf
+          - wget ${globals.CONFIGS_PATH}/configs/php/extensions.ini -O /etc/php.d/extensions.ini;
+          - sudo /etc/init.d/nginx restart;
+          - wget ${globals.CONFIGS_PATH}/scripts/setupMG19.sh -O /tmp/setupMG19.sh && bash -x /tmp/setupMG19.sh
+            ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASSWD}
+            /var/www/webroot/ROOT ${env.url} ${user.email} &>> /var/log/run.log
+
+    - if (/Magento-CE-2/.test("${settings.magento_version}")):
+        cmd[cp]:
+          - wget ${globals.CONFIGS_PATH}/configs/nginx/site-default-mg2.conf -O /etc/nginx/conf.d/site-default.conf
+          - wget ${globals.CONFIGS_PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf
+          - wget ${globals.CONFIGS_PATH}/configs/php/extensions.ini -O /etc/php.d/extensions.ini;
+          - sudo /etc/init.d/nginx restart;
+          - wget ${globals.CONFIGS_PATH}/scripts/setupMG2.sh -O /tmp/setupMG2.sh && bash -x /tmp/setupMG2.sh
+            ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASSWD}
+            /var/www/webroot/ROOT ${env.url} ${user.email} &>> /var/log/run.log
+
+success:
+    text: 'Below you will find your admin panel link, username and password.</br></br>
+      <table style=''font-size:13px; border: none;''><tr><td width="70px">Admin URL:</td><td
+      style=''padding-left: 10px;''><a href=''${env.url}index.php/admin/'' target=''_blank''>${env.url}index.php/admin/</a></td></tr>  <tr><td>Admin
+      name:</td><td style=''padding-left: 10px;''>admin</td></tr><tr><td>Password:</td><td
+      style=''padding-left: 10px;''>${globals.DB_ADMIN}</td></tr></table></br>To add
+      custom domain name for your Magento installation follow the steps described
+      in our <a href=''http://docs.jelastic.com/custom-domains'' target=''_blank''>documentation</a>'
+    email: 'Below you will find your admin panel link, username and password.</br></br>
+      <table style=''font-size:13px; border: none;''><tr><td width="70px">Admin URL:</td><td
+      style=''padding-left: 10px;''><a href=''${env.url}index.php/admin/'' target=''_blank''>${env.url}index.php/admin/</a></td></tr>  <tr><td>Admin
+      name:</td><td style=''padding-left: 10px;''>admin</td></tr><tr><td>Password:</td><td
+      style=''padding-left: 10px;''>${globals.DB_ADMIN}</td></tr></table></br>To add
+      custom domain name for your Magento installation follow the steps described
+      in our <a href=''http://docs.jelastic.com/custom-domains'' target=''_blank''>documentation</a>'
