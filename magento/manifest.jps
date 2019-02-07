@@ -13,10 +13,21 @@ description:
 
 baseUrl: https://raw.githubusercontent.com/sych74/magento/master
 
+settings:
+  fields:
+    name: magento_version
+    caption: Magento version
+    type: list
+    values:
+      Magento-CE-2.3.0.tar.bz2: Magento CE 2.3.x
+      Magento-CE-1.9.4.tar.bz2: Magento CE 1.9.4.x
+    default: Magento-CE-2.3.0.tar.bz2
+
 globals:
   DB_USER: jelastic-${fn.random}
   DB_PASS: ${fn.password(20)}
   ADMIN_PASSWD: ${fn.password(20)}
+  CONFIGS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/configs
 
 ssl: false
 nodes:
@@ -26,9 +37,6 @@ nodes:
     cloudlets: 16
     nodeGroup: cp
     links: sqldb:DB
-    env:
-      PHPFPM_MAX_CHILDREN: 5
-
 
   - nodeType: mysql
     count: 1
@@ -37,27 +45,28 @@ nodes:
 
 onInstall:
     - createDb
+    - setupCP
     - deployMagento
-    - replaceInFiles
-    - bindDomain
+    - setupMagento
 
 actions:
   createDb:
-    - cmd[sqldb]: |-
-        mysql -uroot -p${nodes.mysql.password} -e "CREATE DATABASE IF NOT EXISTS magento;"
-        mysql -uroot -p${nodes.mysql.password} -e "CREATE USER '${globals.DB_USER}'@'%' IDENTIFIED BY '${globals.DB_PASS}'; GRANT ALL ON magento.* TO '${globals.DB_USER}'@'%'; FLUSH PRIVILEGES;"
+    - cmd [sqldb]: |-
+        wget https://raw.githubusercontent.com/jelastic-jps/mysql-cluster/master/scripts/setupUser.sh -O ~/setupUser.sh &>> /var/log/run.log
+        bash ~/setupUser.sh ${globals.DB_USER} ${globals.DB_PASS} &>> /var/log/run.log
+        mysql -u${globals.DB_USER} -p${globals.DB_PASS} -e "CREATE DATABASE IF NOT EXISTS magento;"
+      user: root
 
   deployMagento:
     - deploy:
-        archive: https://github.com/sych74/magento-cluster/raw/master/releases/Magento-CE-2.3.0.tar.bz2
-        name: Magento-CE-2.3.0.tar.bz2
+        archive: https://github.com/jelastic-jps/magento-cluster/raw/master/releases/${settings.magento_version}
+        name: ${settings.magento_version}
         context: ROOT
 
-
   setupCP:
-    - cmd[cp]: 
-        sed -i "s/;extension=gd.so/extension=gd.so/g" /etc/php.ini
-        sudo /etc/init.d/php-fpm restart
+    - cmd[cp]: |-
+        wget ${globals.CONFIGS_PATH}/php/extensions.ini -O /etc/php.d/extensions.ini;
+        sudo /etc/init.d/nginx restart;
 
   setupMagento:
     - cmd[cp]: |-
