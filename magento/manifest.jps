@@ -27,7 +27,7 @@ globals:
   DB_USER: jelastic-${fn.random}
   DB_PASS: ${fn.password(20)}
   ADMIN_PASSWD: ${fn.password(20)}
-  CONFIGS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/configs
+  CONFIGS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master
 
 ssl: false
 nodes:
@@ -45,7 +45,6 @@ nodes:
 
 onInstall:
     - createDb
-    - setupCP
     - deployMagento
     - setupMagento
 
@@ -63,20 +62,26 @@ actions:
         name: ${settings.magento_version}
         context: ROOT
 
-  setupCP:
-    - cmd[cp]: |-
-        wget ${globals.CONFIGS_PATH}/php/extensions.ini -O /etc/php.d/extensions.ini;
-        sudo /etc/init.d/nginx restart;
-
   setupMagento:
-    - cmd[cp]: |-
-        cd /var/www/webroot/ROOT/bin && chmod a+x magento
-          /usr/bin/php magento setup:install -s '--backend-frontname=admin' '--db-host=DB'
-          '--db-name=magento' '--db-user=${globals.DB_USER}' '--db-password=${globals.DB_PASS}'
-          '--base-url=${env.url}' '--admin-firstname=admin' '--admin-lastname=adminlast'
-          '--admin-email=${user.email}' '--admin-user=admin' '--admin-password=${globals.DB_ADMIN}' &> /dev/null
-        /usr/bin/php magento indexer:reindex && /usr/bin/php magento cache:flush &> /dev/null
-        sed -i "162s/select]/select->limit(10000000000)]/"  /var/www/webroot/ROOT/vendor/magento/framework/Search/Adapter/Mysql/Mapper.php
+    - if (/Magento-CE-1.9/.test("${settings.magento_version}")):
+        cmd[cp]:
+          - wget ${globals.CONFIGS_PATH}/configs/nginx/site-default-mg19.conf -O /etc/nginx/conf.d/site-default.conf
+          - wget ${globals.CONFIGS_PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf
+          - wget ${globals.CONFIGS_PATH}/configs/php/extensions.ini -O /etc/php.d/extensions.ini;
+          - sudo /etc/init.d/nginx restart;
+          - wget ${globals.CONFIGS_PATH}/scripts/setupMG19.sh -O /tmp/setupMG19.sh && bash -x /tmp/setupMG19.sh
+            ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASSWD}
+            /var/www/webroot/ROOT ${env.url} ${user.email} &>> /var/log/run.log
+
+    - if (/Magento-CE-2/.test("${settings.magento_version}")):
+        cmd[cp]:
+          - wget ${globals.CONFIGS_PATH}/configs/nginx/site-default-mg2.conf -O /etc/nginx/conf.d/site-default.conf
+          - wget ${globals.CONFIGS_PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf
+          - wget ${globals.CONFIGS_PATH}/configs/php/extensions.ini -O /etc/php.d/extensions.ini;
+          - sudo /etc/init.d/nginx restart;
+          - wget ${globals.CONFIGS_PATH}/scripts/setupMG2.sh -O /tmp/setupMG2.sh && bash -x /tmp/setupMG2.sh
+            ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASSWD}
+            /var/www/webroot/ROOT ${env.url} ${user.email} &>> /var/log/run.log
 
 success:
     text: 'Below you will find your admin panel link, username and password.</br></br>
