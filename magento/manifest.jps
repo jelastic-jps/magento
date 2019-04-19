@@ -57,10 +57,16 @@ actions:
       user: root
 
   deployMagento:
-    - deploy:
-        archive: https://github.com/jelastic-jps/magento-cluster/raw/master/releases/${settings.magento_version}
-        name: ${settings.magento_version}
-        context: ROOT
+    - if (/61ae85fbcfc249b4e63bd38efbb8945f/.test("${settings.magento_version}")):
+      - deploy:
+          archive: ${settings.magento_version}
+          name: Magento-CE-1.9.4.tar.bz2
+          context: ROOT
+    - if (/cd1bdcd50edf11ceda77836881cd35e9/.test("${settings.magento_version}")):
+      - deploy:
+          archive: ${settings.magento_version}
+          name: Magento-CE-2.3.1.tar.bz2
+          context: ROOT
 
   setupMagento:
     - if (/61ae85fbcfc249b4e63bd38efbb8945f/.test("${settings.magento_version}")):
