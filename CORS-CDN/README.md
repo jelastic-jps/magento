@@ -4,12 +4,12 @@ Installing the **Edgeport - Premium CDN Add-On** on Magento 2 application, you w
       
 There are several ways how to overcome this issue. One of them we describe here.
    
-1. Upload **cors.conf** file from repository directory **CDN-CORS** to **/etc/nginx/** directory.
+1. Upload **cors.conf** file from repository directory **CORS-CDN** to **/etc/nginx/** directory.
    
 2. Open **cors.conf** , find line #5 and replace **magentohostname** with your environment hostname and **magentocdnhostname** with magento CDN hostname obtained upon Add-On installation.
    
 For example: **if ($http_origin ~* 'https?://(localhost|magento\\.jelastic\\.com|magento\\.cdn\\.edgeport\\.net)')** 
    
-3. Replace **/etc/nginx/conf.d/site-default.conf** with **site-default.conf** from repository directory **CDN-CORS**.
+3. Replace **/etc/nginx/conf.d/site-default.conf** with **site-default.conf** from repository directory **CORS-CDN**.
    
 4. The changes added as lines **67, 79** and **104** to **site-default.conf**.
