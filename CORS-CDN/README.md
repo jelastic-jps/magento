@@ -1,6 +1,6 @@
 ## CORS issue fixing
 
-Installing Edgeport - Premium CDN Add-On on Magento 2 application, you will be experiencing [**Cross-Origin Resource Sharing (CORS)**](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) issue which is invoked when a web application executes a cross-origin HTTP request when it requests a resource that has a different origin (domain, protocol, and port) than its own origin.
+Installing the **Edgeport - Premium CDN Add-On** on Magento 2 application, you will be experiencing [**Cross-Origin Resource Sharing (CORS)**](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) issue which is invoked when a web application executes a cross-origin HTTP request when it requests a resource that has a different origin (domain, protocol, and port) than its own origin.
       
 There are several ways how to overcome this issue. One of them we describe here.
    
