@@ -17,5 +17,5 @@ For example: **if ($http_origin ~* 'https?://(localhost|magento\\.jelastic\\.com
 5. Change the URLs in magento admin panel like as on the picture below.
 
 <p align="left"> 
-<img src="./images/CORS-CDN/urls-example.png" width="600">
+<img src="images/urls-example.png" width="600">
 </p>
