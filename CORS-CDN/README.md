@@ -12,10 +12,10 @@ For example: **if ($http_origin ~* 'https?://(localhost|magento\\.jelastic\\.com
    
 3. Replace **/etc/nginx/conf.d/site-default.conf** with **site-default.conf** from repository directory **CORS-CDN**.
    
-4. The changes added as lines **67, 79** and **104** to **site-default.conf**.
+4. The changes added as lines **67, 79, 104** and **113** to **site-default.conf**.
 
-5. Change the URLs in magento admin panel like as on the picture below.
+5. Change the URLs in magento admin panel like as on the example picture below.
 
 <p align="left"> 
-<img src="images/urls-example.png" width="600">
+<img src="../images/urls-example.png" width="600">
 </p>
