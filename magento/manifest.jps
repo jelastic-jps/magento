@@ -19,9 +19,9 @@ settings:
     caption: Magento version
     type: list
     values:
-      Magento-CE-2.3.0.tar.bz2: Magento CE 2.3.x
-      Magento-CE-1.9.4.tar.bz2: Magento CE 1.9.4.x
-    default: Magento-CE-2.3.0.tar.bz2
+      https://download.jelastic.com/public.php?service=files&t=cd1bdcd50edf11ceda77836881cd35e9&download: Magento CE 2.3.x
+      https://download.jelastic.com/public.php?service=files&t=61ae85fbcfc249b4e63bd38efbb8945f&download: Magento CE 1.9.4.x
+    default: https://download.jelastic.com/public.php?service=files&t=cd1bdcd50edf11ceda77836881cd35e9&download
 
 globals:
   DB_USER: jelastic-${fn.random}
@@ -57,13 +57,19 @@ actions:
       user: root
 
   deployMagento:
-    - deploy:
-        archive: https://github.com/jelastic-jps/magento-cluster/raw/master/releases/${settings.magento_version}
-        name: ${settings.magento_version}
-        context: ROOT
+    - if (/61ae85fbcfc249b4e63bd38efbb8945f/.test("${settings.magento_version}")):
+      - deploy:
+          archive: ${settings.magento_version}
+          name: Magento-CE-1.9.4.tar.bz2
+          context: ROOT
+    - if (/cd1bdcd50edf11ceda77836881cd35e9/.test("${settings.magento_version}")):
+      - deploy:
+          archive: ${settings.magento_version}
+          name: Magento-CE-2.3.1.tar.bz2
+          context: ROOT
 
   setupMagento:
-    - if (/Magento-CE-1.9/.test("${settings.magento_version}")):
+    - if (/61ae85fbcfc249b4e63bd38efbb8945f/.test("${settings.magento_version}")):
         cmd[cp]:
           - wget ${globals.CONFIGS_PATH}/configs/nginx/site-default-mg19.conf -O /etc/nginx/conf.d/site-default.conf
           - wget ${globals.CONFIGS_PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf
@@ -73,7 +79,7 @@ actions:
             ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASSWD}
             /var/www/webroot/ROOT ${env.url} ${user.email} &>> /var/log/run.log
 
-    - if (/Magento-CE-2/.test("${settings.magento_version}")):
+    - if (/cd1bdcd50edf11ceda77836881cd35e9/.test("${settings.magento_version}")):
         cmd[cp]:
           - wget ${globals.CONFIGS_PATH}/configs/nginx/site-default-mg2.conf -O /etc/nginx/conf.d/site-default.conf
           - wget ${globals.CONFIGS_PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf
