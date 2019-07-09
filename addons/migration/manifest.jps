@@ -1,64 +1,58 @@
-{
-    "jpsType": "update",
-    "name": "Magento Data Migration",
-    "logo": "https://raw.githubusercontent.com/jelastic-jps/magento/master/addons/migration/images/magento-migration.png",
-    "homepage": "https://github.com/jelastic-jps/magento/tree/master/addons/migration",
-    "description":  {
-        "text": "This add-on allows to migrate data from a standalone Magento installation to the <a href=\"https://github.com/jelastic-jps/magento/tree/master/magento19-php7-varnish-mysql-redis-storage\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">Auto-Scalable Magento Cluster</a> by Jelastic.<br><br>Choose either <b>Demo data</b> option to test the migration process with a sample data or <b>User data</b> to integrate your own Magento <i>Database</i> dump and <i>Content</i> archives by providing the appropriate URLs. ",
-        "short": "Migrate data from a standalone Magento installation to the Auto-Scalable Magento Cluster by Jelastic."
-    },
-    "success": "Your Magento data was successfully migrated to Jelastic. Check the import details within the <b>migration.log</b> file on the Admin Node.",
-    "settings": {
-        "fields": [{
-            "default": "demo",
-            "values": {
-                "demo": {
-                    "en": "Demo data"
-                },
-                "user": {
-                    "en": "User data"
-                }
-            },
-            "name": "optional",
-            "showIf": {
-                "demo": [{
-                    "name": "magento-database",
-                    "caption": "Database",
-                    "type": "string",
-                    "value": "https://www.dropbox.com/s/jkie6zeeongouwx/sample-database.tar.gz?dl=0"
-                }, {
-                    "name": "magento-data",
-                    "caption": "Content",
-                    "type": "string",
-                    "value": "https://www.dropbox.com/s/puk044nbnirz6ni/sample-data.tar.gz?dl=0"
-                }],
-                "user": [{
-                    "name": "magento-database",
-                    "caption": "Database",
-                    "type": "string",
-                    "default": "",
-                    "required": true
-                }, {
-                    "name": "magento-data",
-                    "caption": "Content",
-                    "type": "string",
-                    "default": "",
-                    "required": true
-                }]
-            },
-            "type": "radio-fieldset"
-        }]
-    },
-    "onInstall": [{
-        "cmd[admin]": [
-            "rm -rf /tmp/magento-data; mkdir /tmp/magento-data; wget -qO- '${settings.magento-data}' | tar xz -C /tmp/magento-data",
-            "rm -rf /tmp/magento-database; mkdir /tmp/magento-database; wget -qO- '${settings.magento-database}' | tar xz -C /tmp/magento-database",
-            "wget https://raw.githubusercontent.com/jelastic-jps/magento/master/addons/migration/migrationMG.sh -O /tmp/migrationMG.sh",
-            "bash /tmp/migrationMG.sh &>> /var/log/migration.log"
-        ]
-    }, {
-        "cmd[rdc,rds]": [
-            "redis-cli flushall"
-        ]
-    }]
-}
+jpsType: update
+name: Magento Data Migration
+id: magento-data-migration
+logo: https://raw.githubusercontent.com/jelastic-jps/magento/master/addons/migration/images/magento-migration.png
+homepage: https://github.com/jelastic-jps/magento/tree/master/addons/migration
+description:
+  text: 'This add-on allows to migrate data from a standalone Magento installation
+    to the <a href="https://github.com/jelastic-jps/magento/tree/master/magento19-php7-varnish-mysql-redis-storage"
+    target="_blank" rel="noopener noreferrer nofollow">Auto-Scalable Magento Cluster</a>
+    by Jelastic.<br><br>Choose either <b>Demo data</b> option to test the migration
+    process with a sample data or <b>User data</b> to integrate your own Magento <i>Database</i>
+    dump and <i>Content</i> archives by providing the appropriate URLs. '
+  short: Migrate data from a standalone Magento installation to the Auto-Scalable
+    Magento Cluster by Jelastic.
+success: Your Magento data was successfully migrated to Jelastic. Check the import
+  details within the <b>migration.log</b> file on the Admin Node.
+settings:
+  fields:
+  - default: demo
+    values:
+      demo:
+        en: Demo data
+      user:
+        en: User data
+    name: optional
+    showIf:
+      demo:
+      - name: magento-database
+        caption: Database
+        type: string
+        value: https://www.dropbox.com/s/jkie6zeeongouwx/sample-database.tar.gz?dl=0
+      - name: magento-data
+        caption: Content
+        type: string
+        value: https://www.dropbox.com/s/puk044nbnirz6ni/sample-data.tar.gz?dl=0
+      user:
+      - name: magento-database
+        caption: Database
+        type: string
+        default: ''
+        required: true
+      - name: magento-data
+        caption: Content
+        type: string
+        default: ''
+        required: true
+    type: radio-fieldset
+onInstall:
+- cmd[admin]:
+  - rm -rf /tmp/magento-data; mkdir /tmp/magento-data; wget -qO- '${settings.magento-data}'
+    | tar xz -C /tmp/magento-data
+  - rm -rf /tmp/magento-database; mkdir /tmp/magento-database; wget -qO- '${settings.magento-database}'
+    | tar xz -C /tmp/magento-database
+  - wget https://raw.githubusercontent.com/jelastic-jps/magento/master/addons/migration/migrationMG.sh
+    -O /tmp/migrationMG.sh
+  - bash /tmp/migrationMG.sh &>> /var/log/migration.log
+- cmd[rdc,rds]:
+  - redis-cli flushall
