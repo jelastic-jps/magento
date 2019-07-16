@@ -3,7 +3,7 @@
 Use the following credentials to access the admin panel:
 
 **Admin Panel**: [${globals.PROTOCOL}://${settings.envName}.${globals.REGION-DOMAIN}/admin/](${globals.PROTOCOL}://${settings.envName}.${globals.REGION-DOMAIN}/admin/)  
-**Login**: ${user.email}  
+**Login**: admin  
 **Password**: ${globals.ADMIN_PASS}  
 
 Manage the database nodes using the next credentials:
