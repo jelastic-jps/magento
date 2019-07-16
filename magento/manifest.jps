@@ -44,7 +44,9 @@ onInstall:
   - install:
     - jps: /topology/${globals.APP_SERVER}.jps?_r=${fn.random}
       envName: ${settings.envName}
+      loggerName: ${settings.envName}
       region: ${globals.REGION}
+      envGroups: ${response.envGroups}
       settings:
         magento_version: ${settings.magento_version}
         db_user: ${globals.DB_USER}
@@ -54,4 +56,3 @@ onInstall:
 success:
   email: success/email/success.md?_r=${fn.random}
   text: success/text/success.md?_r=${fn.random}
-  
