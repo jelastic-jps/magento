@@ -13,7 +13,7 @@ description:
 
 baseUrl: https://raw.githubusercontent.com/sych74/magento/master/magento
 
-onBeforeInit: /scripts/settings.js
+onBeforeInit: scripts/settings.js
 
 globals:
   DB_USER: jelastic-${fn.random}
