@@ -8,6 +8,8 @@ globals:
   ADMIN_PASS: ${settings.admin_pass}
   MAGENTO_VERSION: ${settings.magento_version}
   PROTOCOL: ${settings.protocol}
+  SCRIPTS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/scripts
+  CONFIGS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/configs
 
 skipNodeEmails: true
 nodes:
@@ -52,20 +54,20 @@ actions:
   setupMagento:
     - if (/61ae85fbcfc249b4e63bd38efbb8945f/.test("${globals.MAGENTO_VERSION}")):
         cmd[cp]:
-          - wget ${globals.CONFIGS_PATH}/configs/nginx/site-default-mg19.conf -O /etc/nginx/conf.d/site-default.conf
-          - wget ${globals.CONFIGS_PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf
-          - wget ${globals.CONFIGS_PATH}/configs/php/extensions.ini -O /etc/php.d/extensions.ini;
+          - wget ${globals.CONFIGS_PATH}/nginx/site-default-mg19.conf -O /etc/nginx/conf.d/site-default.conf
+          - wget ${globals.CONFIGS_PATH}/nginx/nginx.conf -O /etc/nginx/nginx.conf
+          - wget ${globals.CONFIGS_PATH}/php/extensions.ini -O /etc/php.d/extensions.ini;
           - sudo /etc/init.d/nginx restart;
-          - wget ${globals.CONFIGS_PATH}/scripts/setupMG19.sh -O /tmp/setupMG19.sh && bash -x /tmp/setupMG19.sh
-            ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASSWD}
+          - wget ${globals.SCRIPTS_PATH}/setupMG19.sh -O /tmp/setupMG19.sh && bash -x /tmp/setupMG19.sh
+            ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASS}
             /var/www/webroot/ROOT ${env.url} ${user.email} &>> /var/log/run.log
 
     - if (/cd1bdcd50edf11ceda77836881cd35e9/.test("${globals.MAGENTO_VERSION}")):
         cmd[cp]:
-          - wget ${globals.CONFIGS_PATH}/configs/nginx/site-default-mg2.conf -O /etc/nginx/conf.d/site-default.conf
-          - wget ${globals.CONFIGS_PATH}/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf
-          - wget ${globals.CONFIGS_PATH}/configs/php/extensions.ini -O /etc/php.d/extensions.ini;
+          - wget ${globals.CONFIGS_PATH}/nginx/site-default-mg2.conf -O /etc/nginx/conf.d/site-default.conf
+          - wget ${globals.CONFIGS_PATH}/nginx/nginx.conf -O /etc/nginx/nginx.conf
+          - wget ${globals.CONFIGS_PATH}/php/extensions.ini -O /etc/php.d/extensions.ini;
           - sudo /etc/init.d/nginx restart;
-          - wget ${globals.CONFIGS_PATH}/scripts/setupMG2.sh -O /tmp/setupMG2.sh && bash -x /tmp/setupMG2.sh
-            ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASSWD}
+          - wget ${globals.SCRIPTS_PATH}//setupMG2.sh -O /tmp/setupMG2.sh && bash -x /tmp/setupMG2.sh
+            ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASS}
             /var/www/webroot/ROOT ${env.url} ${user.email} &>> /var/log/run.log
