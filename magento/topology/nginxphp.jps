@@ -27,9 +27,12 @@ nodes:
     nodeGroup: sqldb
 
 onInstall:
-    - createDb
-    - deployMagento
-    - setupMagento
+  - log: Set Node Display Name
+  - setNodeDisplayName [cp]: AppServer
+  - setNodeDisplayName [sqldb]: DataBase
+  - createDb
+  - deployMagento
+  - setupMagento
 
 actions:
   createDb:
