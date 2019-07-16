@@ -11,7 +11,7 @@ description:
   en: Magento is the eCommerce software and platform trusted by the world's leading
       brands. Grow your online business with Magento!
 
-baseUrl: https://raw.githubusercontent.com/sych74/magento/master
+baseUrl: https://raw.githubusercontent.com/sych74/magento/master/magento
 
 onBeforeInit: /scripts/settings.js
 
