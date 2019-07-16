@@ -1,0 +1,27 @@
+fields:
+- name: magento_version
+  caption: Magento version
+  type: list
+  values:
+      https://download.jelastic.com/public.php?service=files&t=cd1bdcd50edf11ceda77836881cd35e9&download: Magento CE 2.3.x
+      https://download.jelastic.com/public.php?service=files&t=61ae85fbcfc249b4e63bd38efbb8945f&download: Magento CE 1.9.4.x
+  default: https://download.jelastic.com/public.php?service=files&t=cd1bdcd50edf11ceda77836881cd35e9&download
+
+- caption: Regions
+  type: regionlist
+  name: regions
+  disableInactive: true
+  selectFirstAvailable: true
+  multiSelect: false
+
+- caption: Environment
+  type: envname
+  name: envName
+  randomName: true
+  showFullDomain: true
+  required: true
+
+- caption: Additions
+  type: displayfield
+  name: displayfield
+  markup:
