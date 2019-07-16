@@ -48,11 +48,12 @@ onInstall:
         resp = resp.array;
         for (var i = 0, n = resp.length; i < n; i++) {
           for (var k = 0, l = resp[i].hardNodeGroups.length; k < l; k++) {
-            if (resp[i].hardNodeGroups[k].uniqueName == '${this.region}') {
+            if (resp[i].hardNodeGroups[k].uniqueName == '${globals.REGION}') {
               return {result: 0, domain: resp[i].domain}
             }
           }
         }
+  
   - setGlobals:
         REGION-DOMAIN: ${response.domain}
  
