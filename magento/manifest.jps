@@ -39,7 +39,8 @@ onInstall:
         }
 
   - setGlobals:
-      REGION: ${response.regions[0]}  
+      REGION: ${response.regions[0]}
+      ENVGROUP: ${response.envGroups}
  
   - script: |
         var resp, result;
@@ -56,13 +57,13 @@ onInstall:
   
   - setGlobals:
         REGION-DOMAIN: ${response.domain}
- 
+  
   - install:
     - jps: /topology/${globals.APP_SERVER}.jps?_r=${fn.random}
       envName: ${settings.envName}
       loggerName: ${settings.envName}
       region: ${globals.REGION}
-      envGroups: ${response.envGroups}
+      envGroups: ${globals.ENVGROUP}
       settings:
         magento_version: ${settings.magento_version}
         db_user: ${globals.DB_USER}
