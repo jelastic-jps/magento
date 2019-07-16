@@ -1,4 +1,4 @@
-**Magento environment**: [${globals.PROTOCOL}://${settings.envName}.${globals.REGION/](${globals.PROTOCOL}://${settings.envName}.${globals.REGION}/)
+**Magento environment**: [${globals.PROTOCOL}://${settings.envName}.${globals.REGION}/](${globals.PROTOCOL}://${settings.envName}.${globals.REGION}/)
 
 Use the following credentials to access the admin panel:
 
