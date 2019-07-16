@@ -12,7 +12,7 @@ globals:
 skipNodeEmails: true
 nodes:
   - nodeType: litespeedphp
-    tag: 5.3.8-7.2.18
+    tag: 5.3.8-php-7.2.18
     count: 1
     cloudlets: 16
     nodeGroup: cp
