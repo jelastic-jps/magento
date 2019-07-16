@@ -16,6 +16,7 @@ nodes:
     count: 1
     cloudlets: 16
     nodeGroup: cp
+    links: sqldb:DB
     env:
       SERVER_WEBROOT: /var/www/webroot/ROOT
 
