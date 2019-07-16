@@ -41,6 +41,21 @@ onInstall:
   - setGlobals:
       REGION: ${response.regions[0]}  
  
+  - script: |
+        var resp, result;
+        resp = jelastic.env.control.GetRegions(appid, session);
+        if (resp.result != 0) return resp;
+        resp = resp.array;
+        for (var i = 0, n = resp.length; i < n; i++) {
+          for (var k = 0, l = resp[i].hardNodeGroups.length; k < l; k++) {
+            if (resp[i].hardNodeGroups[k].uniqueName == '${this.region}') {
+              return {result: 0, domain: resp[i].domain}
+            }
+          }
+        }
+  - setGlobals:
+        REGION-DOMAIN: ${response.domain}
+ 
   - install:
     - jps: /topology/${globals.APP_SERVER}.jps?_r=${fn.random}
       envName: ${settings.envName}
