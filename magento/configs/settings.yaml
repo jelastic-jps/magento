@@ -20,6 +20,7 @@ fields:
   randomName: true
   showFullDomain: true
   required: true
+  dependsOn: regions
 
 - caption: Additions
   type: displayfield
