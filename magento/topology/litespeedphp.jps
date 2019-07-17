@@ -19,6 +19,7 @@ nodes:
     links: sqldb:DB
 
   - nodeType: mariadb-dockerized
+    tag: 10.3.16
     count: 1
     cloudlets: 8
     nodeGroup: sqldb
