@@ -13,6 +13,7 @@ globals:
 skipNodeEmails: true
 nodes:
   - nodeType: nginxphp-dockerized
+    tag: 1.16.0-php-7.2.19
     count: 1
     cloudlets: 16
     nodeGroup: cp
