@@ -65,7 +65,7 @@ actions:
           - wget ${baseUrl}../configs/nginx/CORS-CDN/cors.conf -O /etc/nginx/conf.d/CORS/cors.conf
           - wget ${globals.CONFIGS_PATH}/php/extensions.ini -O /etc/php.d/extensions.ini;
           - sudo jem service restart;
-          - wget ${baseUrl}../scripts/setupMG19.sh -O /tmp/setupMG19.sh && bash -x /tmp/setupMG19.sh
+          - wget ${baseUrl}../scripts/setupMG19.sh -O /tmp/setupMG19.sh && bash /tmp/setupMG19.sh
             ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASS}
             /var/www/webroot/ROOT ${env.url} ${user.email} &>> /var/log/run.log
 
@@ -80,6 +80,6 @@ actions:
           - wget ${baseUrl}../configs/nginx/CORS-CDN/cors.conf -O /etc/nginx/conf.d/CORS/cors.conf
           - wget ${globals.CONFIGS_PATH}/php/extensions.ini -O /etc/php.d/extensions.ini;
           - sudo jem service restart;
-          - wget ${baseUrl}../scripts/setupMG2.sh -O /tmp/setupMG2.sh && echo "/tmp/setupMG2.sh
+          - wget ${baseUrl}../scripts/setupMG2.sh -O /tmp/setupMG2.sh && bash /tmp/setupMG2.sh
             ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASS}
-            /var/www/webroot/ROOT ${env.url} ${user.email}"
+            /var/www/webroot/ROOT ${env.url} ${user.email} &>> /var/log/run.log
