@@ -31,26 +31,7 @@ if (group.groupType == 'trial') {
         }, {
             "type": "displayfield",
             "cls": "x-item-disabled",
-            "value": cdnText
-        }]
-    }, {
-        "type": "compositefield",
-        "hideLabel": true,
-        "pack": "left",
-        "itemCls": "deploy-manager-grid",
-        "cls": "x-grid3-row-unselected",
-        "items": [{
-            "type": "spacer",
-            "width": 4
-        }, {
-            "type": "displayfield",
-            "cls": "x-grid3-row-checker x-item-disabled",
-            "width": 30,
-            "height": 20
-        }, {
-            "type": "displayfield",
-            "cls": "x-item-disabled",
-            "value": sslText
+            "value": lsText
         }]
     });
 } else {
