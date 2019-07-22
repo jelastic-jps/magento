@@ -42,7 +42,7 @@ if (group.groupType == 'trial') {
             caption: "Additions",
             type: "displayfield",
             name: "displayfield",
-            markup:
+            markup: ""
         }, {
             type: "checkbox",
             name: "ls-addon",
