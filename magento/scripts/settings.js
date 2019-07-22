@@ -39,6 +39,11 @@ if (group.groupType == 'trial') {
     var isLS = jelastic.dev.apps.GetApp(lsAppid);
     if (isLS.result == 0 || isLS.result == Response.PERMISSION_DENIED) {
         settings.fields.push({
+            caption: "Additions",
+            type: "displayfield",
+            name: "displayfield",
+            markup:
+        }, {
             type: "checkbox",
             name: "ls-addon",
             caption: lsText,
