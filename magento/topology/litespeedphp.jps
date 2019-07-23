@@ -56,15 +56,15 @@ actions:
   setupMagento:
     - if (/24c0bc7c960d565fc6125e13a76ee5b8/.test("${settings.magento_version}")):
         cmd[cp]:
-          - wget ${baseUrl}../scripts/setupMG19.sh?_r=${fn.random} -O /tmp/setupMG19.sh && echo "/tmp/setupMG19.sh
+          - wget ${baseUrl}../scripts/setupMG19.sh?_r=${fn.random} -O /tmp/setupMG19.sh && bash /tmp/setupMG19.sh
             ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASS}
-            /var/www/webroot/ROOT ${env.url} ${user.email}"
+            /var/www/webroot/ROOT ${env.url} ${user.email} &>> /var/log/run.log
 
     - if (/4946dcdb1a124dda759aac9eed09deb7/.test("${settings.magento_version}")):
         cmd[cp]:
-          - wget ${baseUrl}../scripts/setupMG2.sh?_r=${fn.random} -O /tmp/setupMG2.sh && echo "/tmp/setupMG2.sh
+          - wget ${baseUrl}../scripts/setupMG2.sh?_r=${fn.random} -O /tmp/setupMG2.sh && bash /tmp/setupMG2.sh
             ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASS}
-            /var/www/webroot/ROOT ${env.url} ${user.email}"
+            /var/www/webroot/ROOT ${env.url} ${user.email} &>> /var/log/run.log
           - wget ${baseUrl}../configs/litespeed/root-htaccess -O /var/www/webroot/ROOT/.htaccess
           - wget ${baseUrl}../configs/litespeed/pub-htaccess -O /var/www/webroot/ROOT/pub/static/.htaccess
   
