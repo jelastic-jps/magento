@@ -18,6 +18,7 @@ onBeforeInit: /scripts/settings.js
 globals:
   DB_USER: jelastic-${fn.random}
   DB_PASS: ${fn.password(10)}
+  IS_JELASTIC_SSL: false
   PROTOCOL: http
   ADMIN_PASS: ${fn.password(10)}
 
@@ -35,9 +36,13 @@ onInstall:
         return {
           result:0,
           regions:'${settings.regions}'.split(','),
-          envGroups:eval('(' + MANIFEST + ')').envGroups
+          envGroups:eval('(' + MANIFEST + ')').envGroups,
+          ssl: jelastic.billing.account.GetQuotas('environment.jelasticssl.enabled').array[0].value
         }
-
+  - if (${response.ssl}):
+      setGlobals:
+        IS_JELASTIC_SSL: true
+        PROTOCOL: https
   - setGlobals:
       REGION: ${response.regions[0]}
       ENVGROUP: ${response.envGroups}
@@ -64,6 +69,7 @@ onInstall:
       loggerName: ${settings.envName}
       region: ${globals.REGION}
       envGroups: ${globals.ENVGROUP}
+      ssl: ${globals.IS_JELASTIC_SSL}
       settings:
         magento_version: ${settings.magento_version}
         db_user: ${globals.DB_USER}
