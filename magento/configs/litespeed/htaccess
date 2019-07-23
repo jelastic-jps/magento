@@ -49,7 +49,7 @@
 ############################################
 ## enable resulting html compression
 
-    #php_flag zlib.output_compression on
+    php_flag zlib.output_compression on
 
 ###########################################
 # disable user agent verification to not break multiple image upload
