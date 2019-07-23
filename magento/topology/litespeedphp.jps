@@ -10,7 +10,6 @@ globals:
   PROTOCOL: ${settings.protocol}
 
 skipNodeEmails: true
-ssl: true
 nodes:
   - nodeType: litespeedphp
     tag: 5.3.8-php-7.2.18
