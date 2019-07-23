@@ -59,7 +59,6 @@ actions:
           - wget ${baseUrl}../scripts/setupMG19.sh?_r=${fn.random} -O /tmp/setupMG19.sh && bash -x /tmp/setupMG19.sh
             ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASS}
             /var/www/webroot/ROOT ${env.url} ${user.email} &>> /var/log/run.log
-          - wget ${baseUrl}../configs/litespeed/htaccess -O /var/www/webroot/ROOT/.htaccess
 
     - if (/4946dcdb1a124dda759aac9eed09deb7/.test("${settings.magento_version}")):
         cmd[cp]:
