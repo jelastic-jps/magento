@@ -32,7 +32,6 @@ onInstall:
   - createDb
   - deployMagento
   - setupMagento
-  - generateCerts
 
 actions:
   createDb:
