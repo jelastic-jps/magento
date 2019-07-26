@@ -83,11 +83,3 @@ actions:
           - wget ${baseUrl}../scripts/setupMG2.sh -O /tmp/setupMG2.sh && bash /tmp/setupMG2.sh
             ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASS}
             /var/www/webroot/ROOT ${env.url} ${user.email} &>> /var/log/run.log
-  generateCerts:
-    cmd[cp]:
-      - mkdir -p /var/lib/jelastic/SSL;
-      - openssl genrsa -out /var/lib/jelastic/SSL/jelastic.key 2048 2>/dev/null;
-      - openssl req -new -x509 -key /var/lib/jelastic/SSL/jelastic.key -out /var/lib/jelastic/SSL/jelastic.chain -days 10000 -subj "/CN=Server Administrator/O=Acme/C=GB" 2>/dev/null;
-      - rm -f /etc/nginx/conf.d/ssl.conf && cp /etc/nginx/conf.d/ssl.conf.disabled /etc/nginx/conf.d/ssl.conf;
-      - jem service restart;	
-    user: root
