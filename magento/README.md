@@ -17,6 +17,7 @@ Layer                |     Server    | Number of CTs <br/> by default | Cloudlet
 CP                   | LiteSpeed Web Server/NGINX |       1                        |           1 / 16                          | -
 DB                   |    MariaDB      |       1                        |           1 / 8                           | -
 
+* [Layer](https://docs.jelastic.com/paas-components-definition#layer) - set of similar containers within environment
 * CP - PHP Application server (AS PHP)
 * DB - Database 
 * CT - Container
