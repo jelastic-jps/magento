@@ -24,7 +24,7 @@ DB                   |    MariaDB      |       1                        |       
 
 **Magento Version**: 2.3.2 or 1.9.4<br/>
 **PHP Engine**: PHP 7.2.18<br/>
-**MariaDB Database**: 10.3.162.3.2
+**MariaDB Database**: 10.3.16
 
 ### Deployment
 
