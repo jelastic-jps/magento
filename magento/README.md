@@ -14,7 +14,7 @@ This package is designed to deploy Magento environment which represents an open-
 
 Layer                |     Server    | Number of CTs <br/> by default | Cloudlets per CT <br/> (reserved/dynamic) | Options
 -------------------- | --------------| :----------------------------: | :---------------------------------------: | :-----:
-CP                   | LiteSpeed Web Server/NGINX |       1                        |           1 / 16                          | -
+CP                   | LiteSpeed Web Server or NGINX |       1                        |           1 / 16                          | -
 DB                   |    MariaDB      |       1                        |           1 / 8                           | -
 
 * [Layer](https://docs.jelastic.com/paas-components-definition#layer) - set of similar containers within environment
