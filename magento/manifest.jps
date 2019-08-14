@@ -59,6 +59,7 @@ onInstall:
             }
           }
         }
+        return {result: 0, domain: resp[0].domain}
   
   - setGlobals:
         REGION-DOMAIN: ${response.domain}
