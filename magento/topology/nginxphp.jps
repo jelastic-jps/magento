@@ -18,7 +18,9 @@ nodes:
     cloudlets: 16
     nodeGroup: cp
     links: sqldb:DB
-    
+    env: 
+      REDIS_ENABLED: true
+
   - nodeType: mariadb-dockerized
     tag: 10.3.16
     count: 1
