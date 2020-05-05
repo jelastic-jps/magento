@@ -2,7 +2,7 @@
 
 WORK_DIR=/var/www/webroot/ROOT;
 MG="php ${WORK_DIR}/bin/magento"
-CUSTOM_DATA_DIR=$(find /tmp/magento-data -type f -name mage -printf '%h\n');
+CUSTOM_DATA_DIR="/tmp/magento-data";
 CUSTOM_DB_DUMP=$(find /tmp/magento-database -type f -name *.sql);
 
 MYSQL=`which mysql`;
@@ -23,7 +23,7 @@ web_secure_base_url=$(${MG} config:show web_secure_base_url)
 
 ##### Move content ####
 rm -rf $WORK_DIR/* $WORK_DIR/.ht*
-find $CUSTOM_DATA_DIR -maxdepth 1 -mindepth 1 -exec mv -t $WORK_DIR {} +;
+find $CUSTOM_DATA_DIR/ -mindepth 1 -maxdepth 1 -exec mv -t $WORK_DIR/ -- {} +
 
 ##### Deploy DB dump #######
 MYSQL_ARG="-u$db_username -p$db_password -h$db_host"
