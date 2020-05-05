@@ -43,6 +43,6 @@ chmod -R 777 $WORK_DIR/media $WORK_DIR/var $WORK_DIR/app/etc
 
 #### Cache cleaning and context reindexing
 rm -rf $WORK_DIR/var/{cache,report,session, page_cache}
-${MG} indexer:reindex &>> /var/log/run.log;
+php -d memory_limit=-1 $WORK_DIR/bin/magento setup:upgrade
 echo 'Magento data was migrated' &>> /var/log/run.log;
 #####
