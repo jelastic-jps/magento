@@ -1,5 +1,6 @@
 jpsType: update
 name: Magento Data Migration
+id: magento-data-migration
 logo: https://raw.githubusercontent.com/jelastic-jps/magento/master/addons/migration/images/magento-migration.png
 homepage: https://github.com/jelastic-jps/magento/tree/master/addons/migration
 description:
