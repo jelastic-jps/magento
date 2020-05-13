@@ -12,7 +12,7 @@ description:
     dump and <i>Content</i> archives by providing the appropriate URLs. '
   short: Migrate data from a standalone Magento installation to the Auto-Scalable
     Magento Cluster by Jelastic.
-baseUrl: https://raw.githubusercontent.com/sych74/magento/master
+baseUrl: https://raw.githubusercontent.com/jelastic-jps/magento/master
 success: Your Magento data was successfully migrated to Jelastic. Check the import
   details within the <b>migration.log</b> file on the Admin Node.
 settings:
