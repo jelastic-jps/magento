@@ -12,6 +12,7 @@ description:
     dump and <i>Content</i> archives by providing the appropriate URLs. '
   short: Migrate data from a standalone Magento installation to the Auto-Scalable
     Magento Cluster by Jelastic.
+baseUrl: https://raw.githubusercontent.com/sych74/magento/master
 success: Your Magento data was successfully migrated to Jelastic. Check the import
   details within the <b>migration.log</b> file on the Admin Node.
 settings:
@@ -28,11 +29,11 @@ settings:
       - name: magento-database
         caption: Database
         type: string
-        value: https://www.dropbox.com/s/jkie6zeeongouwx/sample-database.tar.gz?dl=0
+        value: https://www.dropbox.com/s/4at76y4mgvv5gx9/magento-database.tar.gz?dl=0
       - name: magento-data
         caption: Content
         type: string
-        value: https://www.dropbox.com/s/puk044nbnirz6ni/sample-data.tar.gz?dl=0
+        value: https://www.dropbox.com/s/deh7ixhfzyzvs1y/magento-data.tar.gz?dl=0
       user:
       - name: magento-database
         caption: Database
@@ -46,13 +47,8 @@ settings:
         required: true
     type: radio-fieldset
 onInstall:
-- cmd[admin]:
-  - rm -rf /tmp/magento-data; mkdir /tmp/magento-data; wget -qO- '${settings.magento-data}'
-    | tar xz -C /tmp/magento-data
-  - rm -rf /tmp/magento-database; mkdir /tmp/magento-database; wget -qO- '${settings.magento-database}'
-    | tar xz -C /tmp/magento-database
-  - wget https://raw.githubusercontent.com/jelastic-jps/magento/master/addons/migration/migrationMG.sh
-    -O /tmp/migrationMG.sh
-  - bash /tmp/migrationMG.sh &>> /var/log/migration.log
-- cmd[rdc,rds]:
-  - redis-cli flushall
+  - cmd[${nodes.cp.master.id}]: |-
+      rm -rf /tmp/magento-data; mkdir /tmp/magento-data; wget -qO- '${settings.magento-data}'| tar xz -C /tmp/magento-data
+      rm -rf /tmp/magento-database; mkdir /tmp/magento-database; wget -qO- '${settings.magento-database}'| tar xz -C /tmp/magento-database
+      wget ${baseUrl}/addons/migration/migrationMG2.sh -O /tmp/migrationMG2.sh
+      bash /tmp/migrationMG2.sh &>> /var/log/run.log
