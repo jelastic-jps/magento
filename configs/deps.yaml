@@ -1,8 +1,8 @@
 tags:
   litespeed:
     litespeed:
-      digest: sha256:2b5ac0c24e48acea59dc5c6ff26a73e947b33e3fc19debe41c0cc44c8e7d066c
-      version: 5.4.8-php-7.3.21
+      digest: sha256:56289df8b38a671cbba6f9db95e0813de910c32fa67a8e577d5a3bc29e209f1b
+      version: 5.4.9-php-7.4.9
   mariadb:
     mariadb5:
       digest: sha256:756014f61e0226fdfa32459c93c2aefabfae0dd47d4641cb82849cbc032cfa0f
