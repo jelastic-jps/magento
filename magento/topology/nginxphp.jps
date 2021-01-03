@@ -13,7 +13,7 @@ globals:
 skipNodeEmails: true
 nodes:
   - nodeType: nginxphp-dockerized
-    tag: 1.16.1-php-7.2.28
+    engine: php7.4
     count: 1
     cloudlets: 16
     nodeGroup: cp
@@ -22,7 +22,6 @@ nodes:
       REDIS_ENABLED: true
 
   - nodeType: mariadb-dockerized
-    tag: 10.3.22
     count: 1
     cloudlets: 8
     nodeGroup: sqldb
