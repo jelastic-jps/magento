@@ -13,7 +13,7 @@ globals:
 skipNodeEmails: true
 nodes:
   - nodeType: nginxphp-dockerized
-    engine: php7.4
+    engine: php7.3
     count: 1
     cloudlets: 16
     nodeGroup: cp
@@ -48,10 +48,10 @@ actions:
           archive: ${settings.magento_version}
           name: Magento-CE-1.9.4.tar.bz2
           context: ROOT
-    - if (/7536b3f49a99a4d0b9a4ee36ed8e1abe/.test("${globals.MAGENTO_VERSION}")):
+    - if (/24c0bc7c960d565fc6125e13a76ee5b8/.test("${globals.MAGENTO_VERSION}")):
       - deploy:
           archive: ${settings.magento_version}
-          name: Magento-CE-2.4.1.tar.bz2
+          name: Magento-CE-2.3.2.tar.bz2
           context: ROOT
 
   setupMagento:
@@ -70,7 +70,7 @@ actions:
             ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASS}
             /var/www/webroot/ROOT ${env.url} ${user.email} &>> /var/log/run.log
 
-    - if (/7536b3f49a99a4d0b9a4ee36ed8e1abe/.test("${globals.MAGENTO_VERSION}")):
+    - if (/24c0bc7c960d565fc6125e13a76ee5b8/.test("${globals.MAGENTO_VERSION}")):
         cmd[cp]:
           - mkdir -p /etc/nginx/conf.d/SITES_ENABLED;
           - mkdir -p /etc/nginx/conf.d/CORS;
