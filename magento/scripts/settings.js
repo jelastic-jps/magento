@@ -3,7 +3,7 @@ import org.yaml.snakeyaml.Yaml;
 import com.hivext.api.core.utils.Transport;
 
 var lsAppid = "9e6afcf310004ac84060f90ff41a5aba";
-var baseUrl = "https://raw.githubusercontent.com/jelastic-jps/magento/v1.0.0/magento";
+var baseUrl = "https://raw.githubusercontent.com/sych74/magento/v1.0.0/magento";
 var lsText = "Install LiteSpeed High-Performance Web Server";
 var group = jelastic.billing.account.GetAccount(appid, session);
 
