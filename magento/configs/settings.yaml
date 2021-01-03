@@ -3,9 +3,9 @@ fields:
   caption: Magento version
   type: list
   values:
-      https://download.jelastic.com/public.php?service=files&t=24c0bc7c960d565fc6125e13a76ee5b8&download: Magento CE 2.3.x
+      https://download.jelastic.com/public.php?service=files&t=7536b3f49a99a4d0b9a4ee36ed8e1abe&download: Magento CE 2.4.x
       https://download.jelastic.com/public.php?service=files&t=4946dcdb1a124dda759aac9eed09deb7&download: Magento CE 1.9.4.x
-  default: https://download.jelastic.com/public.php?service=files&t=24c0bc7c960d565fc6125e13a76ee5b8&download
+  default: https://download.jelastic.com/public.php?service=files&t=7536b3f49a99a4d0b9a4ee36ed8e1abe&download
 
 - caption: Regions
   type: regionlist
