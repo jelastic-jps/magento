@@ -12,7 +12,7 @@ globals:
 
 skipNodeEmails: true
 nodes:
-  - nodeType: nginxphp-dockerized
+  - nodeType: nginxphp
     engine: php7.3
     count: 1
     cloudlets: 16
