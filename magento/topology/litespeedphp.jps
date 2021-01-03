@@ -47,10 +47,10 @@ actions:
           archive: ${settings.magento_version}
           name: Magento-CE-1.9.4.tar.bz2
           context: ROOT
-    - if (/24c0bc7c960d565fc6125e13a76ee5b8/.test("${settings.magento_version}")):
+    - if (/b33bcd8ca64a0dcc1f5cf9218e06ff88/.test("${settings.magento_version}")):
       - deploy:
           archive: ${settings.magento_version}
-          name: Magento-CE-2.3.2.tar.bz2
+          name: Magento-CE-2.3.6.tar.bz2
           context: ROOT
 
   setupMagento:
@@ -60,7 +60,7 @@ actions:
             ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASS}
             /var/www/webroot/ROOT ${env.url} ${user.email} &>> /var/log/run.log
 
-    - if (/24c0bc7c960d565fc6125e13a76ee5b8/.test("${settings.magento_version}")):
+    - if (/b33bcd8ca64a0dcc1f5cf9218e06ff88/.test("${settings.magento_version}")):
         cmd[cp]:
           - wget ${baseUrl}../scripts/setupMG2.sh?_r=${fn.random} -O /tmp/setupMG2.sh && bash /tmp/setupMG2.sh
             ${globals.DB_USER} ${globals.DB_PASS} DB magento ${globals.ADMIN_PASS}
