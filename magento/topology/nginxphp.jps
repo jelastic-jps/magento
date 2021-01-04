@@ -8,7 +8,7 @@ globals:
   ADMIN_PASS: ${settings.admin_pass}
   MAGENTO_VERSION: ${settings.magento_version}
   PROTOCOL: ${settings.protocol}
-  CONFIGS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/configs
+  CONFIGS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/v1.0.0/configs
 
 skipNodeEmails: true
 nodes:
