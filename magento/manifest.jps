@@ -2,7 +2,7 @@ jpsType: install
 jpsVersion: '1.5.2'
 id: magento
 name: Magento Standalone
-logo: https://raw.githubusercontent.com/jelastic-jps/v1.0.0/master/magento/images/magento.png
+logo: https://raw.githubusercontent.com/jelastic-jps/magento/v1.0.0/magento/images/magento.png
 categories:
     - apps/e-commerce
     - apps/sales-and-marketing
