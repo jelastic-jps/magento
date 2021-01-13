@@ -2,8 +2,3 @@ jps: https://github.com/ihorstep/magento/blob/master/magento/manifest.jps
 component: magento
 subfolders:
   - magento
-  - magento19-php7-varnish-mysql-redis-storage
-  - magento2-php7-varnish-mysql-redis-memcache-storage
-  - magento21-apache-php56-mysql
-  - magento21-php56-varnish-memcache-storage
-  - magento21-php7-varnish-memcache-storage
