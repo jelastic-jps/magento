@@ -1,4 +1,4 @@
-jps: https://github.com/ihorstep/magento/blob/master/magento/manifest.jps
+jps: https://github.com/jelastic-jps/magento/blob/master/magento/manifest.jps
 component: magento
 subfolders:
   - magento
