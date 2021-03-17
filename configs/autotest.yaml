@@ -2,3 +2,14 @@ jps: https://github.com/jelastic-jps/magento/blob/master/magento/manifest.jps
 component: magento
 subfolders:
   - magento
+stack:
+  - nodeType: nginxphp
+    nodeGroup: cp
+    optimization: false
+    options:
+      - ls-addon: false
+  - nodeType: litespeedphp
+    nodeGroup: cp
+    optimization: false
+    options:
+      - ls-addon: true
