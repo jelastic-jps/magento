@@ -33,7 +33,7 @@ Redis node for the Magento content cache storing, which results in the shortened
 
 * _Database_ (DB) - MySQL 5.7.-_latest_ (_[jelastic/mysql](https://hub.docker.com/r/jelastic/mysql/)_)
 
-Two MySQL database servers with asynchronous master-slave replication to ensure high availability, increase data security, and alleviate system failures
+Two MySQL database servers with asynchronous primary-secondary (previously known as master-slave) replication to ensure high availability, increase data security, and alleviate system failures
 
 ![magento2-topology](images/magento2-topology.png)
 

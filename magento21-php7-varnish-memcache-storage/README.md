@@ -34,7 +34,7 @@ ST     |  Shared Storage |          1                     |           1/8       
 **Memcached Version**: 1.4.24
 
 ### Additional functionality:
-* pair of MySQL databases with either configured asynchronous master-slave replication with extra slave DB instance for backups;
+* pair of MySQL databases with either configured asynchronous primary-secondary (previously known as master-slave) replication with extra secondary DB instance for backups;
 * horizontal scaling enabled on compute nodes by CPU load. New AppServer will be added while 70% loading;
 * Memcached HA for session storage.
 
@@ -48,7 +48,7 @@ In order to get this solution instantly deployed, click the "Deploy to Jelastic"
 
 **Note** that for the given packages to be properly deployed, you need to have a billing account already registered and upgraded at any of Jelastic Platform installations, as the number of required servers and needed functionality exceed the usual trial account limits. To give a try of Magento in Jelastic with a trial account for free, start with deployment of a [non-clustered Magento solution](https://github.com/jelastic-jps/magento/tree/master/magento), which represents a bundle of application server and database instance.
 
-To deploy Magento cluster with additional slave MySQL instance for backups:
+To deploy Magento cluster with additional secondary MySQL instance for backups:
 
 [![Deploy](https://github.com/jelastic-jps/git-push-deploy/raw/master/images/deploy-to-jelastic.png)](https://jelastic.com/install-application/?manifest=https%3A%2F%2Fraw.githubusercontent.com%2Fjelastic-jps%2Fmagento%2Fmaster%2Fmagento21-php7-varnish-memcache-storage%2Fmanifest.jps)
 
