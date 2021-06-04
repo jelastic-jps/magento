@@ -16,7 +16,13 @@ if ('${settings.ls_addon:false}'== 'true') {
       SERVER_WEBROOT: "/var/www/webroot/ROOT",
       REDIS_ENABLED: "true",
       WAF: "${settings.waf:false}",
-      WP_PROTECT: "OFF"
+      WP_PROTECT: "OFF",
+      ON_ENV_INSTALL: {
+        jps: "https://raw.githubusercontent.com/jelastic-jps/litespeed/master/addons/license-v2.yml",
+        settings: {
+          modules: "true"
+        }
+      }
     }
   })
 } else {
