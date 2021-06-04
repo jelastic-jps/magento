@@ -1,20 +1,18 @@
 jpsType: install
 jpsVersion: '1.7.4'
-id: magento-cluster-v200
-homepage: https://github.com/jelastic-jps/magento-cluster/tree/master
+id: magento-v200
+name: Magento Standalone
+homepage: http://www.magentocommerce.com/
 description:
-  text: Auto-scalable and highly-available Magento eCommerce cluster with out-of-box
-    auto-scaling, even load and traffic distribution, Galera cluster,
-    page caching and user session storage on certified Jelastic dockerized stack templates.
-  short: Auto-scalable and highly-available Magento cluster with load balancing, data
-    replication, content caching and user session storage.
+  en: Magento is the eCommerce software and platform trusted by the world's leading
+      brands. Grow your online business with Magento!
 categories:
-- apps/clusters
-- apps/e-commerce
-name: Auto-Scalable Magento Cluster
+    - apps/e-commerce
+    - apps/sales-and-marketing
+
 logo: /images/magento.png
 
-baseUrl: https://raw.githubusercontent.com/sych74/magento-cluster/v2.0.0
+baseUrl: https://raw.githubusercontent.com/sych74/magento/v2.0.0
 
 onBeforeInstall: /scripts/beforeinstall.js?_r=${fn.random}
 onBeforeInit: /scripts/beforeinit.js?_r=${fn.random}
@@ -23,26 +21,6 @@ skipNodeEmails: true
 
 settings:
   fields:
-    - caption: Scaling Strategy
-      type: list
-      name: loadGrowth
-      default: slow
-      required: true
-      width: 225
-      tooltip: | 
-        Configure auto-scaling triggers, i.e. how fast the system responds to load spikes by adding or removing nodes.
-        <p>Read more about <a href="https://docs.jelastic.com/automatic-horizontal-scaling">Automatic Horizontal Scaling</a></p>
-      values:        
-        - value: slow
-          caption: Low Load
-          tooltip: <h2>Low load scaling strategy</h2>add 1 new node when CPU > 70% <p>remove when CPU < 20%</p>
-        - value: medium
-          caption: Medium Load
-          tooltip: <h3>Medium load scaling strategy</h3>add 1 new node when CPU > 50% <p>remove when CPU < 20%</p>
-        - value: fast
-          caption: High Load
-          tooltip: <h3>High load scaling strategy</h3>add 2 new nodes when CPU > 30% <p>remove when CPU < 10%</p>
-  
     - caption: Advanced Features
       type: displayfield
       name: displayfield
@@ -93,15 +71,8 @@ settings:
       markup:
 
 mixins:
- - https://raw.githubusercontent.com/jelastic-jps/magento-cluster/master/configs/vers.yaml
-
-onAfterScaleIn[cp]: updateTriggers
-  
-onAfterScaleOut[nodeGroup:cp]: updateTriggers
-       
-onAfterStart: 
-  cmd[cp]: sudo jem service restart
-  
+ - https://raw.githubusercontent.com/jelastic-jps/magento/master/configs/vers.yaml
+         
 onAfterInstallAddon [nodeGroup:bl, id:cdn]: setupEdgeportCDN
  
 onAfterInstallAddon [nodeGroup:bl, id:letsencrypt-ssl-addon]:
@@ -127,10 +98,10 @@ onAfterMigrate:
         domain: ${env.domain}
 
 globals:
-  PATH: ${baseUrl}
+  SCRIPTS_PATH: https://raw.githubusercontent.com/sych74/magento-cluster/v2.0.0/scripts
   DB_USER: jelastic-${fn.random}
   DB_PASS: ${fn.password(10)}
-  DB_HOST: sqldb
+  DB_HOST: 127.0.0.1
   ES_PASS: ${fn.password(10)}
   PROTOCOL: http
   MG_ADMIN_PASS: ${fn.password(10)}
@@ -143,50 +114,22 @@ onInstall:
       setGlobals:
         PROTOCOL: https
 
-  - script: /scripts/idna.js
+  - script: ${globals.SCRIPTS_PATH}/idna.js
   - setGlobals:
       DOMAIN: ${response.domain}         
-
-  - if (${settings.is_trigger:true}):
-    - log: Auto Scaling Triggers
-    - script: /scripts/addTriggers.js
-      nodeGroup: cp
-      resourceType: CPU
-      loadGrowth: ${settings.loadGrowth}
-      cleanOldTriggers: true
-      scaleDownLimit: ${nodes.cp.length}
-
-  - mountStorage
    
   - log: Nodes configurations
-  - install:
-    - jps: https://raw.githubusercontent.com/jelastic/templates/master/config_v2.jps?_r=${fn.random}
-      settings:
-        targetGroup: bl
-        targetNodes: bl
-        optimization: magento
-
-    - jps: https://raw.githubusercontent.com/jelastic/templates/master/config_v2.jps?_r=${fn.random}
-      settings:
-        targetGroup: cp
-        targetNodes: cp
-        optimization: magento
+  - install: https://raw.githubusercontent.com/jelastic/templates/master/config_v2.jps?_r=${fn.random}
+    settings:
+      targetGroup: cp
+      targetNodes: cp
+      optimization: magento
   
-  - cmd[cp, bl]: if test -f /usr/local/sbin/optimization.sh; then bash /usr/local/sbin/optimization.sh &>> /var/log/run.log; fi
+  - cmd[cp]: if test -f /usr/local/sbin/optimization.sh; then bash /usr/local/sbin/optimization.sh &>> /var/log/run.log; fi
   
-  - if (/litespeed/.test("${nodes.cp.nodeType}")):
-    - cmd[cp, bl]: jem passwd set -p ${globals.LS_ADMIN_PASS}
+  - if (/llsmp/.test("${nodes.cp.nodeType}")):
+    - cmd[cp]: jem passwd set -p ${globals.LS_ADMIN_PASS}
       user: root
-    - cmd[bl]: |-
-        jem balancer clear;
-        jem balancer rebuildCommon;
-      user: root
-
-  - if (/nginxphp/.test("${nodes.cp.nodeType}")):
-    - forEach(nodes.cp):
-        - cmd[bl]: jem balancer addCommonHost -h ${@i.intIP}
-          user: root
-        - cmd[bl]: sudo service varnish reload &>> /var/log/run.log
   
   - cmd[elasticsearch]: |-
       echo "discovery.type: single-node" >> /usr/share/elasticsearch/config/elasticsearch.yml;
@@ -203,7 +146,7 @@ onInstall:
         if ('${settings.le_addon:false}' == 'true')
           actions.push({
             jps: "https://github.com/jelastic-jps/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}?_r=${fn.random}",
-            nodeGroup: "bl",
+            nodeGroup: "cp",
             skipEmail: "true",
             settings: {
               customDomains: "${globals.DOMAIN}",
@@ -213,7 +156,7 @@ onInstall:
         if ('${settings.cdn_addon:false}' == 'true')
           actions.push({
             jps: "https://raw.githubusercontent.com/edgeport/cdn/master/manifest.yml?_r=${fn.random}",
-            nodeGroup: "bl",
+            nodeGroup: "cp",
             skipEmail: "true",
             settings: {
               note: "${settings.noteCDN:}"
@@ -273,20 +216,11 @@ actions:
     - cmd[${nodes.cp.master.id}]: bash ~/bin/japp.sh cachePurge
     
   initLEwebroot:
-    - cmd[cp, bl]: |-
+    - cmd[cp]: |-
         [ ! -d /var/lib/jelastic/keys/letsencrypt ] && mkdir -p /var/lib/jelastic/keys/letsencrypt;
         echo "webroot=true" > /var/lib/jelastic/keys/letsencrypt/settings-custom;
         echo "webrootPath=/var/www/webroot/ROOT" >> /var/lib/jelastic/keys/letsencrypt/settings-custom;
       user: root
-
-  setupLEwebroot:
-    - if (/litespeed/.test("${nodes.cp.nodeType}")):
-      - cmd[bl]: |-
-          /usr/bin/xmlstarlet ed --inplace -s "loadBalancerConfig/loadBalancerList/loadBalancer[name = 'webroot']/workerGroupList/workerGroup"  -t elem -n "pingUrl" -v "http://${nodes.cp.master.address}:80/" /var/www/conf/lslbd_config.xml;
-          /usr/bin/xmlstarlet ed --inplace -s "loadBalancerConfig/loadBalancerList/loadBalancer[name = 'webroot']/workerGroupList/workerGroup"  -t elem -n "nodeAddresses" -v "${nodes.cp.master.address}" /var/www/conf/lslbd_config.xml;
-          sudo jem service restart;
-    - if (/nginxphp/.test("${nodes.cp.nodeType}")):
-      - forEach(nodes.cp):
   
   setupEdgeportCDN:
     - script: return jelastic.dev.scripting.Eval("c05ffa5b45628a2a0c95467ebca8a0b4", session, "cdn.info", {partnerCode:1})
@@ -297,7 +231,7 @@ actions:
     - cmd[${nodes.cp.master.id}]: bash ~/bin/japp.sh edgeportCDN --cdn-url ${globals.CDN}
 
   installMagento:
-    - install: /scripts/install.jps
+    - install: ${globals.SCRIPTS_PATH}/install.jps
       settings:
         db_host: ${globals.DB_HOST}
         db_user: ${globals.DB_USER}
@@ -308,24 +242,6 @@ actions:
         mg_url: ${globals.PROTOCOL}://${globals.DOMAIN}/
         version: ${globals.version_magento}
         user_email: ${user.email}
-
-  updateTriggers:
-    if (!${event.params.auto:true}):
-      - log: update scaling trigger
-      - script: /scripts/updateTriggers.js
-        count: ${nodes.cp.length}
-
-  mountStorage:
-    - log: Mount Storage
-    - api:
-      - method: jelastic.environment.file.AddMountPointByGroup
-        params:
-          nodeGroup: cp
-          sourceNodeId: ${nodes.storage.master.id}
-          sourcePath: /data
-          path: /var/www/webroot/ROOT
-          sourceAddressType: NODE_GROUP
-          protocol: NFS4
 
 success:
   email: success/email/${nodes.cp.master.nodeType}/oneregion-${globals.EMAIL}.md?_r=${fn.random}
