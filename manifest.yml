@@ -15,7 +15,6 @@ logo: /images/magento.png
 baseUrl: https://raw.githubusercontent.com/sych74/magento/v2.0.0
 
 onBeforeInstall: /scripts/beforeinstall.js?_r=${fn.random}
-onBeforeInit: /scripts/beforeinit.js?_r=${fn.random}
 nodes: definedInOnBeforeInstall
 skipNodeEmails: true
 
