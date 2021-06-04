@@ -140,7 +140,9 @@ onInstall:
   - restartContainers [elasticsearch]
   
   - installMagento
-    
+  
+  - initLEwebroot
+  
   - if (('${settings.le_addon:false}' == 'true') || ('${settings.cdn_addon:false}' == 'true')):
     - script: |
         var actions = [];
@@ -151,7 +153,9 @@ onInstall:
             skipEmail: "true",
             settings: {
               customDomains: "${globals.DOMAIN}",
-              fallbackToX1: "true"
+              fallbackToX1: "true",
+              webroot: "true",
+              webrootPath: "/var/www/webroot/ROOT"
             }
           });
         if ('${settings.cdn_addon:false}' == 'true')
