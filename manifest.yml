@@ -115,7 +115,9 @@ onInstall:
 
   - script: ${globals.SCRIPTS_PATH}/idna.js
   - setGlobals:
-      DOMAIN: ${response.domain}         
+      DOMAIN: ${response.domain}
+      
+  - createUserDB
    
   - log: Nodes configurations
   - install: https://raw.githubusercontent.com/jelastic/templates/master/config_v2.jps?_r=${fn.random}
@@ -213,6 +215,14 @@ actions:
 
   cachePurge:
     - cmd[${nodes.cp.master.id}]: bash ~/bin/japp.sh cachePurge
+    
+  createUserDB:
+    - log: Create user for DataBase
+    - cmd [cp]: |-
+        wget https://raw.githubusercontent.com/jelastic-jps/mysql-cluster/master/scripts/setupUser.sh -O ~/setupUser.sh &>> /var/log/run.log
+        bash ~/setupUser.sh ${globals.DB_USER} ${globals.DB_PASS} &>> /var/log/run.log
+        jem passwd set -p ${globals.DB_PASS} &>> /var/log/run.log 
+      user: root
     
   initLEwebroot:
     - cmd[cp]: |-
