@@ -20,7 +20,7 @@ if ('${settings.ls_addon:false}'== 'true') {
       ON_ENV_INSTALL: {
         jps: "https://raw.githubusercontent.com/jelastic-jps/litespeed/master/addons/license-v2.yml",
         settings: {
-          modules: "true"
+          lm: "true"
         }
       }
     }
