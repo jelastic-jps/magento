@@ -72,10 +72,10 @@ settings:
 mixins:
  - https://raw.githubusercontent.com/jelastic-jps/magento/master/configs/vers.yaml
          
-onAfterInstallAddon [nodeGroup:bl, id:cdn]: setupEdgeportCDN
+onAfterInstallAddon [nodeGroup:cp, id:cdn]: setupEdgeportCDN
  
-onAfterInstallAddon [nodeGroup:bl, id:letsencrypt-ssl-addon]:
-  - cmd[bl]: source /opt/letsencrypt/settings && echo $domain
+onAfterInstallAddon [nodeGroup:cp, id:letsencrypt-ssl-addon]:
+  - cmd[cp]: source /opt/letsencrypt/settings && echo $domain
   - setupDomain:
       domain: ${response.out}
 
