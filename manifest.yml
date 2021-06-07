@@ -109,9 +109,6 @@ globals:
   EMAIL: default
       
 onInstall:
-  - if ('${settings.le_addon:false}' == 'true'):
-      setGlobals:
-        PROTOCOL: https
 
   - script: ${globals.SCRIPTS_PATH}/idna.js
   - setGlobals:
@@ -170,7 +167,7 @@ onInstall:
         return { result: 0, onAfterReturn: { install: actions } };
    
   - if ('${settings.le_addon:false}' == 'true'):
-    - cmd[bl]: source /opt/letsencrypt/settings && echo $domain
+    - cmd[cp]: source /opt/letsencrypt/settings && echo $domain
     - setupDomain:
         domain: ${response.out}
         
