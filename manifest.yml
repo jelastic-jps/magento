@@ -78,13 +78,14 @@ onAfterInstallAddon [nodeGroup:cp, id:letsencrypt-ssl-addon]:
   - cmd[cp]: source /opt/letsencrypt/settings && echo $domain
   - setupDomain:
       domain: ${response.out}
+  - cmd[cp]: bash ~/bin/japp.sh ssl on;
 
 onAfterClone: 
   - setupDomain:
       domain: ${event.response.env.domain}
     
 onBeforeMigrate:
-  - cmd[${nodes.cp.master.id}]: wp option get siteurl --path=${SERVER_WEBROOT} | cut -d'/' -f3;
+  - cmd[${nodes.cp.master.id}]: php /var/www/webroot/ROOT/bin/magento config:show web/unsecure/base_url | cut -d'/' -f3;
   - if (/${response.out}/.test(env.domain)):
       cmd[${nodes.cp.master.id}]: echo true > ~/migrate
   - else:
@@ -170,6 +171,7 @@ onInstall:
     - cmd[cp]: source /opt/letsencrypt/settings && echo $domain
     - setupDomain:
         domain: ${response.out}
+    - cmd[cp]: bash ~/bin/japp.sh ssl on;
         
   - if ('${settings.cdn_addon:false}' == 'true'): setupEdgeportCDN
 
