@@ -172,6 +172,8 @@ onInstall:
     - setupDomain:
         domain: ${response.out}
     - cmd[cp]: bash ~/bin/japp.sh ssl on;
+    - setGlobals:
+        PROTOCOL: https
         
   - if ('${settings.cdn_addon:false}' == 'true'): setupEdgeportCDN
 
