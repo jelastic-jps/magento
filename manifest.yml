@@ -152,7 +152,7 @@ onInstall:
               customDomains: "${globals.DOMAIN}",
               fallbackToX1: "true",
               webroot: "true",
-              webrootPath: "/var/www/webroot/ROOT"
+              webrootPath: "/var/www/webroot/ROOT/pub"
             }
           });
         if ('${settings.cdn_addon:false}' == 'true')
@@ -229,7 +229,7 @@ actions:
     - cmd[cp]: |-
         [ ! -d /var/lib/jelastic/keys/letsencrypt ] && mkdir -p /var/lib/jelastic/keys/letsencrypt;
         echo "webroot=true" > /var/lib/jelastic/keys/letsencrypt/settings-custom;
-        echo "webrootPath=/var/www/webroot/ROOT" >> /var/lib/jelastic/keys/letsencrypt/settings-custom;
+        echo "webrootPath=/var/www/webroot/ROOT/pub" >> /var/lib/jelastic/keys/letsencrypt/settings-custom;
       user: root
   
   setupEdgeportCDN:
