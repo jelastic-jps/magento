@@ -31,7 +31,7 @@ if ('${settings.ls_addon:false}'== 'true') {
 } else {
   resp.nodes.push({
     nodeType: "lemp",
-    engine: "php7.4",
+    tag: "1.18.0-php-7.4.13",
     flexibleCloudlets: ${settings.cp_flexibleCloudlets:32},                  
     fixedCloudlets: ${settings.cp_fixedCloudlets:1},
     nodeGroup: "cp",
