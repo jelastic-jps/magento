@@ -81,8 +81,11 @@ onAfterInstallAddon [nodeGroup:cp, id:letsencrypt-ssl-addon]:
   - cmd[cp]: bash ~/bin/japp.sh ssl on;
 
 onAfterClone: 
-  - setupDomain:
-      domain: ${event.response.env.domain}
+    - install: 
+        jps: ${globals.SCRIPTS_PATH}/setupDomain.jps?_r=${fn.random}
+        envName: ${event.response.env.envName}
+        settings:
+          domain: ${event.response.env.domain}
     
 onBeforeMigrate:
   - cmd[${nodes.cp.master.id}]: php /var/www/webroot/ROOT/bin/magento config:show web/unsecure/base_url | cut -d'/' -f3;
@@ -94,8 +97,10 @@ onBeforeMigrate:
 onAfterMigrate:
   - cmd[${nodes.cp.master.id}]: if test -f ~/migrate; then cat ~/migrate; fi
   - if (/${response.out}/.test(true)):
-    - setupDomain:
-        domain: ${env.domain}
+    - install: 
+        jps: ${globals.SCRIPTS_PATH}/setupDomain.jps?_r=${fn.random}
+        settings:
+          domain: ${env.domain}
 
 globals:
   SCRIPTS_PATH: https://raw.githubusercontent.com/sych74/magento-cluster/v2.0.0/scripts
@@ -169,8 +174,10 @@ onInstall:
    
   - if ('${settings.le_addon:false}' == 'true'):
     - cmd[cp]: source /opt/letsencrypt/settings && echo $domain
-    - setupDomain:
-        domain: ${response.out}
+    - install: 
+        jps: ${globals.SCRIPTS_PATH}/setupDomain.jps?_r=${fn.random}
+        settings:
+          domain: ${response.out}
     - cmd[cp]: bash ~/bin/japp.sh ssl on;
     - setGlobals:
         PROTOCOL: https
@@ -214,9 +221,6 @@ addons:
         successText:  Cache has been successfully purged!                
         
 actions:
-
-  setupDomain:
-    - cmd[${nodes.cp.master.id}]: bash ~/bin/japp.sh domain ${this.domain}
 
   cachePurge:
     - cmd[${nodes.cp.master.id}]: bash ~/bin/japp.sh cachePurge
