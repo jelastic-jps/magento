@@ -183,48 +183,8 @@ onInstall:
         PROTOCOL: https
         
   - if ('${settings.cdn_addon:false}' == 'true'): setupEdgeportCDN
-
-addons:
-  - id: setup-site-url
-    type: update
-    name: Magento Base URL
-    description: Magento Base URL Configuration.
-    logo: ${globals.PATH}/images/magento.png
-    settings:
-      fields:
-        - type: string
-          name: magentoURL
-          caption: Configuration Base URL for Magento
-          default: ''
-          required: true
-          regex: "^https?:\\/\\/.+$"
-          regexText: Incorrect Base URL.
-
-    buttons:
-      - caption: Base URL
-        settings: main
-        action: setup-domain
-        loadingText: Applying...
-        confirmText: Do you want to change Base URL?
-        successText:  Base URL for Magento has been successfully applyed!        
-
-  - id: cache-purge
-    type: update
-    name: Cache Purge
-    description: Cache Purge.
-    logo: ${globals.PATH}/images/magento.png
-    buttons:
-      - caption: Cache Purge
-        action: cachePurge
-        loadingText: Purging...
-        confirmText: Do you want to purge cache?
-        successText:  Cache has been successfully purged!                
         
-actions:
-
-  cachePurge:
-    - cmd[${nodes.cp.master.id}]: bash ~/bin/japp.sh cachePurge
-    
+actions:    
   createUserDB:
     - log: Create user for DataBase
     - cmd [cp]: |-
