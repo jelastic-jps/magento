@@ -76,8 +76,10 @@ onAfterInstallAddon [nodeGroup:cp, id:cdn]: setupEdgeportCDN
  
 onAfterInstallAddon [nodeGroup:cp, id:letsencrypt-ssl-addon]:
   - cmd[cp]: source /opt/letsencrypt/settings && echo $domain
-  - setupDomain:
-      domain: ${response.out}
+  - install: 
+      jps: ${globals.SCRIPTS_PATH}/setupDomain.jps?_r=${fn.random}
+      settings:
+        domain: ${response.out}
   - cmd[cp]: bash ~/bin/japp.sh ssl on;
 
 onAfterClone: 
