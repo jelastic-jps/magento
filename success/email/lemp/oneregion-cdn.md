@@ -8,6 +8,12 @@ Use the following credentials to access the admin panel:
 **Login**: admin  
 **Password**: ${globals.MG_ADMIN_PASS}  
 
+Use the following credentials to access the Elasticsearch admin panel:
+
+**Admin Panel**: [http://docker${nodes.elasticsearch.master.id}-${env.domain}](http://docker${nodes.elasticsearch.master.id}-${env.domain})  
+**Username**: elastic  
+**Password**: ${globals.ES_PASS}  
+
 Manage the database nodes using the next credentials:
 
 **phpMyAdmin Panel**: [https://node${nodes.sqldb.master.id}-${env.domain}/](https://node${nodes.sqldb.master.id}-${env.domain}/)  
