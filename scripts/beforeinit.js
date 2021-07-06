@@ -94,8 +94,7 @@ if (!prod) {
 
 return {
     result: 0,
-    settings: settings,
-    markup: markup
+    settings: settings
 };
 
 function err(e, text, cur, override){
