@@ -8,8 +8,6 @@ var group = jelastic.billing.account.GetAccount(appid, session);
 var isCDN = jelastic.dev.apps.GetApp(cdnAppid);
 var isLS = jelastic.dev.apps.GetApp(lsAppid);
 
-var markup = "", cur = null, text = "used";
-
 var settings = jps.settings;
 var fields = {};
 for (var i = 0, field; field = jps.settings.fields[i]; i++)
