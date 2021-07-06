@@ -34,16 +34,28 @@ if (isCDN.result == 0 || isCDN.result == Response.PERMISSION_DENIED) {
 
 //checking quotas
 var extIP = "environment.externalip.enabled",
-      extIPperEnv = "environment.externalip.maxcount",
-      extIPperNode = "environment.externalip.maxcount.per.node",
-      markup = "", cur = null, text = "used", LE = true;
+    extIPperEnv = "environment.externalip.maxcount",
+    extIPperNode = "environment.externalip.maxcount.per.node",
+    maxCloudletsPerRec = "environment.maxcloudletsperrec",
+    isDocker = "environment.docker.enabled",
+    markup = "", cur = null, text = "used", LE = true, prod = true;
 
-var quotas = jelastic.billing.account.GetQuotas(extIP + ";"+extIPperEnv+";" + extIPperNode ).array;
+var quotas = jelastic.billing.account.GetQuotas(extIP + ";"+extIPperEnv+";" + extIPperNode +";" + maxCloudletsPerRec +";" + isDocker).array;
 for (var i = 0; i < quotas.length; i++){
     var q = quotas[i], n = toNative(q.quota.name);
-
-     if (n == extIP &&  !q.value){
+  
+    if (n == isDocker &&  !q.value){
         err(q, "required", 1, true);
+        prod  = false; 
+    }
+
+    if (n == maxCloudletsPerRec && q.value < 32){
+        if (!markup) err(q, "required", 32, true);
+        prod = false;
+    }
+
+    if (n == extIP &&  !q.value){
+        if (!markup) err(q, "required", 1, true);
         LE  = false; 
     }
     
@@ -69,6 +81,17 @@ if (!LE) {
   fields["bl_count"].cls = "warning";
   fields["bl_count"].hidden = false;
   fields["bl_count"].height = 30;  
+}
+
+if (!prod) {
+  fields["bl_count"].markup = "Magento standalone is not available. " + markup + "Please upgrade your account.";
+  fields["bl_count"].cls = "warning";
+  fields["bl_count"].hidden = false;
+  fields["bl_count"].height = 30;
+  
+  settings.fields.push(
+    {"type": "compositefield","height": 0,"hideLabel": true,"width": 0,"items": [{"height": 0,"type": "string","required": true}]}
+  );
 }
 
 return {
