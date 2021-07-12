@@ -1,7 +1,0 @@
-templates:
-  litespeed:
-    - ^litespeed
-  mariadb:
-    - ^mariadb10
-  nginxphp:
-    - ^nginxphp
