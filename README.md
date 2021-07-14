@@ -18,7 +18,7 @@ This package is designed to deploy Magento environment which represents an open-
  * **PHP Engine**: PHP 8.0.8<br/>
  * **MariaDB Database**: 10.5.8
  * **[LiteMage](https://www.litespeedtech.com/products/cache-plugins/magento-acceleration)** support for LiteSpeed topology. LiteMage - fast, full page caching solution that caches dynamic pages as static files 
- * **[Elasticsearch](https://www.elastic.co/elasticsearch/) ** search engine deployed from the official [docker image](https://hub.docker.com/_/elasticsearch) as a separate node . It provides a distributed, multitenant-capable full-text search engine
+ * **[Elasticsearch](https://www.elastic.co/elasticsearch/)** search engine deployed from the official [docker image](https://hub.docker.com/_/elasticsearch) as a separate node. It provides a distributed, multitenant-capable full-text search engine
  
 
 ### Deployment
@@ -37,7 +37,7 @@ If required use Advanced Features:
 
   * The *Magento* application can be handled by either **[LiteSpeed Web Server](https://jelastic.com/blog/litespeed-web-server/)**(if chosen) or **[NGINX PHP](https://docs.jelastic.com/nginx-php)** server  
   * **[Web Application Firewall](https://docs.jelastic.com/litespeed-web-server/)** will be enabled by the default if LiteSpeed Web Server will be installed
-  * **[Let's Encrypt SSL](https://jelastic.com/blog/free-ssl-certificates-with-lets-encrypt/)** Add-On allows to get your traffic secured and along with LiteSpeed Web Server provides **[HTTP/3](https://docs.jelastic.com/http3)** protocol support. This option stipulates the public IP address wil be added to your container  
+  * **[Let's Encrypt SSL](https://jelastic.com/blog/free-ssl-certificates-with-lets-encrypt/)** Add-On allows to get your traffic secured and along with LiteSpeed Web Server provides **[HTTP/3](https://docs.jelastic.com/http3)** protocol support. This option stipulates the public IP address will be added to your container  
   * **[Premium CDN](https://jelastic.com/blog/enterprise-cdn-verizon-integration/)** integration in order to provide Lightning-fast static assets loading  
 
 Upon successfull installation, you’ll see an appropriate pop-up with access credentials to your administration Magento panel, whilst the same information will be duplicated to your email box.
