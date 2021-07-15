@@ -89,7 +89,11 @@ onAfterClone:
       envName: ${event.response.env.envName}
       settings:
         domain: ${event.response.env.domain}
-    
+
+  - install: 
+      jps: ${globals.SCRIPTS_PATH}/setupCDN.jps?_r=${fn.random}
+      envName: ${event.response.env.envName}
+
 onBeforeMigrate:
   - cmd[${nodes.cp.master.id}]: php /var/www/webroot/ROOT/bin/magento config:show web/unsecure/base_url | cut -d'/' -f3;
   - if (/${response.out}/.test(env.domain)):
@@ -106,7 +110,7 @@ onAfterMigrate:
           domain: ${env.domain}
 
 globals:
-  SCRIPTS_PATH: https://raw.githubusercontent.com/sych74/magento-cluster/v2.0.0/scripts
+  SCRIPTS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/v2.0.0/scripts
   DB_USER: jelastic-${fn.random}
   DB_PASS: ${fn.password(10)}
   DB_HOST: 127.0.0.1
