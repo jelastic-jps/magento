@@ -15,7 +15,7 @@ or
 This package is designed to deploy Magento environment which represents an open-source e-commerce platform written in PHP.<br />Magento employs the MariaDB relational database management system, the PHP programming language, and elements of the Zend Framework. It applies the conventions of object-oriented programming and model–view–controller architecture. Magento also uses the entity–attribute–value model to store data.
 
  * **Magento Version**: 2.4<br/>
- * **PHP Engine**: PHP 8.0.8<br/>
+ * **PHP Engine**: PHP 7.4<br/>
  * **MariaDB Database**: 10.5.8
  * **[LiteMage](https://www.litespeedtech.com/products/cache-plugins/magento-acceleration)** support for LiteSpeed topology. LiteMage - fast, full page caching solution that caches dynamic pages as static files 
  * **[Elasticsearch](https://www.elastic.co/elasticsearch/)** search engine deployed from the official [docker image](https://hub.docker.com/_/elasticsearch) as a separate node. It provides a distributed, multitenant-capable full-text search engine
