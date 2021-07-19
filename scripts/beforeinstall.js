@@ -20,7 +20,7 @@ if ('${settings.ls_addon:false}'== 'true') {
         jps: "https://raw.githubusercontent.com/jelastic-jps/litespeed/master/addons/license-v2.yml",
         settings: {
           lm: "true",
-          modules: "litemagestandard",
+          modules: "litemage",
           workers: 1,
           domains: 5
         }
