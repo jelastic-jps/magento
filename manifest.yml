@@ -12,7 +12,7 @@ categories:
 
 logo: /images/magento.png
 
-baseUrl: https://raw.githubusercontent.com/jelastic-jps/magento/v2.0.0
+baseUrl: https://raw.githubusercontent.com/jelastic-jps/magento/v2.1.0
 
 onBeforeInit: /scripts/beforeinit.js?_r=${fn.random}
 onBeforeInstall: /scripts/beforeinstall.js?_r=${fn.random}
@@ -110,7 +110,7 @@ onAfterMigrate:
           domain: ${env.domain}
 
 globals:
-  SCRIPTS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/v2.0.0/scripts
+  SCRIPTS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/v2.1.0/scripts
   DB_USER: jelastic-${fn.random}
   DB_PASS: ${fn.password(10)}
   DB_HOST: 127.0.0.1
@@ -210,7 +210,7 @@ actions:
   setupEdgeportCDN:
     - script: return jelastic.dev.scripting.Eval("c05ffa5b45628a2a0c95467ebca8a0b4", session, "cdn.info", {partnerCode:1})
     - setGlobals:
-        CDN: ${env.envName}-${response.response.partnerCode}.cdn.edgeport.net
+        CDN: ${env.envName}-${response.response.partnerCode}.cdn.jelastic.net
         SUCCESS: success-cdn
         EMAIL: cdn
     - cmd[${nodes.cp.master.id}]: bash ~/bin/japp.sh edgeportCDN --cdn-url ${globals.CDN}
