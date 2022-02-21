@@ -12,7 +12,7 @@ categories:
 
 logo: /images/magento.png
 
-baseUrl: https://raw.githubusercontent.com/jelastic-jps/magento/v2.1.0
+baseUrl: https://raw.githubusercontent.com/sych74/magento/v2.2.0
 
 onBeforeInit: /scripts/beforeinit.js?_r=${fn.random}
 onBeforeInstall: /scripts/beforeinstall.js?_r=${fn.random}
@@ -110,7 +110,7 @@ onAfterMigrate:
           domain: ${env.domain}
 
 globals:
-  SCRIPTS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/v2.1.0/scripts
+  SCRIPTS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/v2.2.0/scripts
   DB_USER: jelastic-${fn.random}
   DB_PASS: ${fn.password(10)}
   DB_HOST: 127.0.0.1
