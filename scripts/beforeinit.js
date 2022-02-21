@@ -35,16 +35,17 @@ var extIP = "environment.externalip.enabled",
     extIPperEnv = "environment.externalip.maxcount",
     extIPperNode = "environment.externalip.maxcount.per.node",
     maxCloudletsPerRec = "environment.maxcloudletsperrec",
-    isDocker = "environment.docker.enabled",
+    maxEnvs = "environment.maxcount",
+    envsCount = jelastic.env.control.GetEnvs({lazy: true}).infos.length,
     markup = "", cur = null, text = "used", LE = true, prod = true;
 
-var quotas = jelastic.billing.account.GetQuotas(extIP + ";"+extIPperEnv+";" + extIPperNode +";" + maxCloudletsPerRec +";" + isDocker).array;
+var quotas = jelastic.billing.account.GetQuotas(extIP + ";"+extIPperEnv+";" + extIPperNode +";" + maxCloudletsPerRec +";" + maxEnvs).array;
 for (var i = 0; i < quotas.length; i++){
     var q = quotas[i], n = toNative(q.quota.name);
   
-    if (n == isDocker &&  !q.value){
-        err(q, "required", 1, true);
-        prod  = false; 
+    if (n == maxEnvs && envsCount >= q.value){
+        err(q, "already used", envsCount, true);
+        prod = false; break;
     }
 
     if (n == maxCloudletsPerRec && q.value < 32){
