@@ -44,18 +44,15 @@ if ('${settings.ls_addon:false}'== 'true') {
 }
 
 resp.nodes.push({
-  nodeType: "docker",
+  nodeType: "opensearch",
   count: 1,
   flexibleCloudlets: ${settings.st_flexibleCloudlets:16},
   fixedCloudlets: ${settings.st_fixedCloudlets:1},
-  nodeGroup: "elasticsearch",
-  dockerName: "elasticsearch",
-  dockerTag: "7.12.1",
-  displayName: "Elasticsearch",
-  env: {
-    ES_JAVA_OPTS: "-Xms512m -Xmx512m",
-    ELASTIC_PASSWORD: "${globals.ES_PASS}",
-    JELASTIC_EXPOSE: "9200"
+  nodeGroup: "nosqldb",
+  displayName: "OpenSearch",
+  cluster: {
+    is_opensearchdashboards: false,
+    success_email: false,
   }
 })
 
