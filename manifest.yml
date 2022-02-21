@@ -211,7 +211,7 @@ actions:
     - cmd[${nodes.cp.master.id}]: bash ~/bin/japp.sh edgeportCDN --cdn-url ${globals.CDN}
 
   installMagento:
-    - install: /scripts/install.jps
+    - install: ${globals.SCRIPTS_PATH}/install.jps
       settings:
         db_host: ${globals.DB_HOST}
         db_user: ${globals.DB_USER}
