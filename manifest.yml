@@ -142,12 +142,7 @@ onInstall:
     - cmd[cp]: jem passwd set -p ${globals.LS_ADMIN_PASS}
       user: root
   
-  - cmd[elasticsearch]: |-
-      echo "discovery.type: single-node" >> /usr/share/elasticsearch/config/elasticsearch.yml;
-      echo "xpack.security.enabled: true" >> /usr/share/elasticsearch/config/elasticsearch.yml;
-      systemctl stop firewalld;
-      systemctl disable firewalld;
-  - restartContainers [elasticsearch]
+  - setupOpenSearch  
   
   - installMagento
   
@@ -227,6 +222,21 @@ actions:
         mg_url: ${globals.PROTOCOL}://${globals.DOMAIN}/
         version: ${globals.version_magento}
         user_email: ${user.email}
+
+  setupOpenSearch:
+    - cmd[nosqldb]: |-
+        jem passwd set -p ${globals.ES_PASS}
+        sed -i "s/plugins.security.ssl.http.enabled.*/plugins.security.ssl.http.enabled: false/" /etc/opensearch/opensearch.yml;
+        iptables -t nat -I PREROUTING -p tcp -m tcp --dport 4949 -j REDIRECT --to-ports 9200;
+        iptables-save > /etc/sysconfig/iptables4-jelastic-nat;
+        jem service restart
+      user: root
+  
+    - env.control.ApplyNodeGroupData[nosqldb]:
+        data:
+          adminUrl: "http://node${nodes.nosqldb.master.id}-${env.domain}:4949"
+          validation : 
+            maxCount: 1
 
 success:
   email: success/email/${nodes.cp.master.nodeType}/oneregion-${globals.EMAIL}.md?_r=${fn.random}
