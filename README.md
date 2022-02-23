@@ -3,9 +3,9 @@
 
 Out-of-the-box automated Enterprise Magento application solution for large businesses and mission-critical sites. The JPS package deploys one of two-container topologies:
 
- - **LEMP** node and **OpenSearch** node
+ - **LEMP** node and **OpenSearch** node 
 or
- - **LLSMP** node and **OpenSearch** node
+ - **LLSMP** node and **OpenSearch** node 
 
 ### Highlights
 
