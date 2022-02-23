@@ -3,9 +3,11 @@
 
 Out-of-the-box automated Enterprise Magento application solution for large businesses and mission-critical sites. The JPS package deploys one of two-container topologies:
 
- - **LEMP** node and **Elasticsearch** node
+ - **LEMP** node and **OpenSearch** node
+
 or
- - **LLSMP** node and **Elasticsearch** node
+ 
+ - **LLSMP** node and **OpenSearch** node
 
 ### Highlights
 
@@ -19,14 +21,14 @@ This package is designed to deploy Magento environment which represents an open-
  * **PHP Engine**: PHP 7.4<br/>
  * **MariaDB Database**: 10.5.8
  * **[LiteMage](https://www.litespeedtech.com/products/cache-plugins/magento-acceleration)** support for LiteSpeed topology. LiteMage - fast, full page caching solution that caches dynamic pages as static files 
- * **[Elasticsearch](https://www.elastic.co/elasticsearch/)** search engine deployed from the official [docker image](https://hub.docker.com/_/elasticsearch) as a separate node. It provides a distributed, multitenant-capable full-text search engine
+ * **[OpenSearch](https://opensearch.org/)** is a community-driven, open source search engine as a separate node based on Jelastic OpenSearch certified template. It provides a distributed, multitenant-capable full-text search.
  
 
 ### Deployment
 
 In order to get this solution instantly deployed, click the **DEPLOY TO JELASTIC** button, specify your email address within the widget, choose one of the [Jelastic Public Cloud providers](https://jelastic.cloud) and press Install.
 
-[![GET IT HOSTED](https://raw.githubusercontent.com/jelastic-jps/jpswiki/master/images/getithosted.png)](https://jelastic.com/install-application/?manifest=https://raw.githubusercontent.com/jelastic-jps/magento/master/magento/manifest.yml)
+[![GET IT HOSTED](https://raw.githubusercontent.com/jelastic-jps/jpswiki/master/images/getithosted.png)](https://jelastic.com/install-application/?manifest=https://raw.githubusercontent.com/jelastic-jps/magento/v2.2.0/manifest.yml)
 
 To deploy this package to Jelastic Private Cloud, import [this JPS manifest](manifest.yml) within your dashboard ([detailed instruction](https://docs.jelastic.com/environment-export-import#import)).
 
