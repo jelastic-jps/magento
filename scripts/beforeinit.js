@@ -39,7 +39,23 @@ var extIP = "environment.externalip.enabled",
     envsCount = jelastic.env.control.GetEnvs({lazy: true}).infos.length,
     markup = "", cur = null, text = "used", LE = true, prod = true;
 
-var quotas = jelastic.billing.account.GetQuotas(extIP + ";"+extIPperEnv+";" + extIPperNode +";" + maxCloudletsPerRec +";" + maxEnvs).array;
+var hasCollaboration = (parseInt('${fn.compareEngine(7.0)}', 10) >= 0),
+    quotas = [], group;
+
+if (hasCollaboration) {
+    quotas = [
+        { quota : { name: extIP }, value: parseInt('${quota.environment.externalip.enabled}', 10) },
+        { quota : { name: extIPperEnv }, value: parseInt('${quota.environment.externalip.maxcount}', 10) },
+        { quota : { name: extIPperNode }, value: parseInt('${quota.environment.externalip.maxcount.per.node}', 10) },
+        { quota : { name: maxEnvs }, value: parseInt('${quota.environment.maxcount}', 10) },
+        { quota : { name: maxCloudletsPerRec }, value: parseInt('${quota.environment.maxcloudletsperrec}', 10) }        
+    ];
+    group = { groupType: '${account.groupType}' };
+} else {
+    quotas = jelastic.billing.account.GetQuotas(extIP + ";"+extIPperEnv+";" + extIPperNode + ";"+maxEnvs+";"  + ";"+maxCloudletsPerRec).array;
+    group = jelastic.billing.account.GetAccount(appid, session);
+}
+
 for (var i = 0; i < quotas.length; i++){
     var q = quotas[i], n = toNative(q.quota.name);
   
