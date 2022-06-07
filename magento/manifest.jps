@@ -1,89 +1,245 @@
 jpsType: install
-jpsVersion: '1.5.2'
+jpsVersion: '1.7.4'
 id: magento
 name: Magento Standalone
-logo: https://raw.githubusercontent.com/jelastic-jps/magento/v1.0.0/magento/images/magento.png
-categories:
-    - apps/e-commerce
-    - apps/sales-and-marketing
 homepage: http://www.magentocommerce.com/
 description:
   en: Magento is the eCommerce software and platform trusted by the world's leading
       brands. Grow your online business with Magento!
+categories:
+    - apps/e-commerce
+    - apps/sales-and-marketing
 
-baseUrl: https://raw.githubusercontent.com/jelastic-jps/magento/v1.0.0/magento
+logo: /images/magento.png
 
-onBeforeInit: /scripts/settings.js
+baseUrl: https://raw.githubusercontent.com/jelastic-jps/magento/v2.2.0
+
+onBeforeInit: /scripts/beforeinit.js?_r=${fn.random}
+onBeforeInstall: /scripts/beforeinstall.js?_r=${fn.random}
+nodes: definedInOnBeforeInstall
+skipNodeEmails: true
+
+settings:
+  fields:
+    - caption: Advanced Features
+      type: displayfield
+      name: displayfield
+      markup:
+ 
+    - caption: Install LiteSpeed High-Performance Web Server
+      type: checkbox
+      name: ls_addon
+      value: true
+      disabled: false
+      tooltip: "If this option is disabled, the cluster will be installed using NGINX load balancer and application servers"
+      showIf:
+        true:
+          - caption: Web Application Firewall
+            type: checkbox
+            name: waf
+            value: true
+            disabled: false
+            tooltip: "Protect web sites with <a href='https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:waf' target='_blank'>LiteSpeed built-in WAF</a> based on Free ModSecurity Rules from Comodo"
+
+        false:
+          - caption: Web Application Firewall
+            type: checkbox
+            name: waf
+            value: false
+            disabled: true
+            tooltip: "Protect web sites with <a href='https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:waf' target='_blank'>LiteSpeed built-in WAF</a> based on Free ModSecurity Rules from Comodo"
+                   
+    - caption: Install Let's Encrypt SSL with Auto-Renewal
+      type: checkbox
+      name: le_addon
+      value: true
+      disabled: false
+      tooltip: "Advanced integration with Let's Encrypt certificate authority that simplifies and automates the process of issuing, configuring and updating trusted custom SSL certificates."
+
+    - caption: Install Lightning-Fast Premium CDN
+      type: checkbox
+      name: cdn_addon
+      value: true
+      disabled: false
+      tooltip: "Jelastic CDN is an HTTP/3 premium content delivery network of 160+ Super PoPs (points of presence) with bandwidth capacity up to 115 Tbps, advanced caching and acceleration strategies based on best-in-class IP Anycast technology."
+
+    - type: displayfield
+      hideLabel: true
+      hidden: true
+      name: bl_count   
+      value: 1
+      markup:
+
+mixins:
+ - https://raw.githubusercontent.com/jelastic-jps/magento/master/configs/vers.yaml
+         
+onAfterInstallAddon [nodeGroup:cp, id:cdn]: setupEdgeportCDN
+ 
+onAfterInstallAddon [nodeGroup:cp, id:letsencrypt-ssl-addon]:
+  - cmd[cp]: source /opt/letsencrypt/settings && echo $domain
+  - install: 
+      jps: ${globals.SCRIPTS_PATH}/setupDomain.jps?_r=${fn.random}
+      settings:
+        domain: ${response.out}
+  - cmd[cp]: bash ~/bin/japp.sh ssl on;
+
+onAfterClone: 
+  - install: 
+      jps: ${globals.SCRIPTS_PATH}/setupDomain.jps?_r=${fn.random}
+      envName: ${event.response.env.envName}
+      settings:
+        domain: ${event.response.env.domain}
+
+  - install: 
+      jps: ${globals.SCRIPTS_PATH}/setupCDN.jps?_r=${fn.random}
+      envName: ${event.response.env.envName}
+
+onBeforeMigrate:
+  - cmd[${nodes.cp.master.id}]: php /var/www/webroot/ROOT/bin/magento config:show web/unsecure/base_url | cut -d'/' -f3;
+  - if (/${response.out}/.test(env.domain)):
+      cmd[${nodes.cp.master.id}]: echo true > ~/migrate
+  - else:
+      cmd[${nodes.cp.master.id}]: echo false > ~/migrate
+
+onAfterMigrate:
+  - cmd[${nodes.cp.master.id}]: if test -f ~/migrate; then cat ~/migrate; fi
+  - if (/${response.out}/.test(true)):
+    - install: 
+        jps: ${globals.SCRIPTS_PATH}/setupDomain.jps?_r=${fn.random}
+        settings:
+          domain: ${env.domain}
 
 globals:
+  SCRIPTS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/v2.2.0/scripts
   DB_USER: jelastic-${fn.random}
   DB_PASS: ${fn.password(10)}
-  IS_JELASTIC_SSL: false
+  DB_HOST: 127.0.0.1
+  ES_PASS: ${fn.password(10)}
   PROTOCOL: http
-  ADMIN_PASS: ${fn.password(10)}
-
+  MG_ADMIN_PASS: ${fn.password(10)}
+  LS_ADMIN_PASS: ${fn.password(10)}
+  SUCCESS: success
+  EMAIL: default
+      
 onInstall:
 
-  - if (!${settings.ls-addon:false}):
-      setGlobals:
-        APP_SERVER: nginxphp
-
-  - if (${settings.ls-addon:false}):
-      setGlobals:
-        APP_SERVER: litespeedphp
- 
-  - script: |
-        return {
-          result:0,
-          regions:'${settings.regions}'.split(','),
-          envGroups:eval('(' + MANIFEST + ')').envGroups,
-          ssl: jelastic.billing.account.GetQuotas('environment.jelasticssl.enabled').array[0].value
-        }
-  - if (${response.ssl}):
-      setGlobals:
-        IS_JELASTIC_SSL: true
-        PROTOCOL: https
+  - script: ${globals.SCRIPTS_PATH}/idna.js
   - setGlobals:
-      REGION: ${response.regions[0]}
-      ENVGROUP: ${response.envGroups}
- 
-  - script: |
-        var resp, result;
-        resp = jelastic.env.control.GetRegions(appid, session);
-        if (resp.result != 0) return resp;
-        resp = resp.array;
-        for (var i = 0, n = resp.length; i < n; i++) {
-          for (var k = 0, l = resp[i].hardNodeGroups.length; k < l; k++) {
-            if (resp[i].hardNodeGroups[k].uniqueName == '${globals.REGION}') {
-              return {result: 0, domain: resp[i].domain}
+      DOMAIN: ${response.domain}
+      
+  - createUserDB
+   
+  - log: Nodes configurations
+  - install: https://raw.githubusercontent.com/jelastic/templates/master/config_v2.jps?_r=${fn.random}
+    settings:
+      targetGroup: cp
+      targetNodes: cp
+      optimization: magento
+  
+  - cmd[cp]: if test -f /usr/local/sbin/optimization.sh; then bash /usr/local/sbin/optimization.sh &>> /var/log/run.log; fi
+  
+  - if (/llsmp/.test("${nodes.cp.nodeType}")):
+    - cmd[cp]: jem passwd set -p ${globals.LS_ADMIN_PASS}
+      user: root
+  
+  - setupOpenSearch  
+  
+  - installMagento
+  
+  - initLEwebroot
+  
+  - if (('${settings.le_addon:false}' == 'true') || ('${settings.cdn_addon:false}' == 'true')):
+    - script: |
+        var actions = [];
+        if ('${settings.le_addon:false}' == 'true')
+          actions.push({
+            jps: "https://github.com/jelastic-jps/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}?_r=${fn.random}",
+            nodeGroup: "cp",
+            skipEmail: "true",
+            settings: {
+              customDomains: "${globals.DOMAIN}",
+              fallbackToX1: "true",
+              webroot: "true",
+              webrootPath: "/var/www/webroot/ROOT/pub"
             }
-          }
-        }
-        return {result: 0, domain: resp[0].domain}
+          });
+        if ('${settings.cdn_addon:false}' == 'true')
+          actions.push({
+            jps: "https://raw.githubusercontent.com/edgeport/cdn/master/manifest.yml?_r=${fn.random}",
+            nodeGroup: "cp",
+            skipEmail: "true",
+            settings: {
+              note: "${settings.noteCDN:}"
+            }
+          });
+        return { result: 0, onAfterReturn: { install: actions } };
+   
+  - if ('${settings.le_addon:false}' == 'true'):
+    - cmd[cp]: source /opt/letsencrypt/settings && echo $domain
+    - install: 
+        jps: ${globals.SCRIPTS_PATH}/setupDomain.jps?_r=${fn.random}
+        settings:
+          domain: ${response.out}
+    - cmd[cp]: bash ~/bin/japp.sh ssl on;
+    - setGlobals:
+        PROTOCOL: https
+        
+  - if ('${settings.cdn_addon:false}' == 'true'): setupEdgeportCDN
+        
+actions:    
+  createUserDB:
+    - log: Create user for DataBase
+    - cmd [cp]: |-
+        wget https://raw.githubusercontent.com/jelastic-jps/mysql-cluster/master/scripts/setupUser.sh -O ~/setupUser.sh &>> /var/log/run.log
+        bash ~/setupUser.sh ${globals.DB_USER} ${globals.DB_PASS} &>> /var/log/run.log
+        jem passwd set -p ${globals.DB_PASS} &>> /var/log/run.log 
+      user: root
+    
+  initLEwebroot:
+    - cmd[cp]: |-
+        [ ! -d /var/lib/jelastic/keys/letsencrypt ] && mkdir -p /var/lib/jelastic/keys/letsencrypt;
+        echo "webroot=true" > /var/lib/jelastic/keys/letsencrypt/settings-custom;
+        echo "webrootPath=/var/www/webroot/ROOT/pub" >> /var/lib/jelastic/keys/letsencrypt/settings-custom;
+      user: root
   
-  - setGlobals:
-        REGION-DOMAIN: ${response.domain}
-  
-  - install:
-    - jps: /topology/${globals.APP_SERVER}.jps?_r=${fn.random}
-      envName: ${settings.envName}
-      loggerName: ${settings.envName}
-      region: ${globals.REGION}
-      envGroups: ${globals.ENVGROUP}
-      ssl: ${globals.IS_JELASTIC_SSL}
+  setupEdgeportCDN:
+    - script: return jelastic.dev.scripting.Eval("c05ffa5b45628a2a0c95467ebca8a0b4", session, "cdn.info", {partnerCode:1})
+    - setGlobals:
+        CDN: ${env.envName}-${response.response.partnerCode}.cdn.jelastic.net
+        SUCCESS: success-cdn
+        EMAIL: cdn
+    - cmd[${nodes.cp.master.id}]: bash ~/bin/japp.sh edgeportCDN --cdn-url ${globals.CDN}
+
+  installMagento:
+    - install: ${globals.SCRIPTS_PATH}/install.jps
       settings:
-        magento_version: ${settings.magento_version}
+        db_host: ${globals.DB_HOST}
         db_user: ${globals.DB_USER}
         db_pass: ${globals.DB_PASS}
-        admin_pass: ${globals.ADMIN_PASS}
-        
-  - api: jelastic.env.control.GetEnvInfo
-    envName: ${settings.envName}
-  - forEach(response.nodes):
-      if (${@i.ismaster} && '${@i.nodeGroup}' == 'sqldb'):
-        - setGlobals:
-            masterDB-ID: ${@i.id}
+        es_host: nosqldb
+        es_pass: ${globals.ES_PASS}
+        mg_admin_pass: ${globals.MG_ADMIN_PASS}
+        mg_url: ${globals.PROTOCOL}://${globals.DOMAIN}/
+        version: ${globals.version_magento}
+        user_email: ${user.email}
+
+  setupOpenSearch:
+    - cmd[nosqldb]: |-
+        jem passwd set -p ${globals.ES_PASS}
+        sed -i "s/plugins.security.ssl.http.enabled.*/plugins.security.ssl.http.enabled: false/" /etc/opensearch/opensearch.yml;
+        iptables -t nat -I PREROUTING -p tcp -m tcp --dport 4949 -j REDIRECT --to-ports 9200;
+        iptables-save > /etc/sysconfig/iptables4-jelastic-nat;
+        jem service restart
+      user: root
+  
+    - env.control.ApplyNodeGroupData[nosqldb]:
+        data:
+          adminUrl: "http://node${nodes.nosqldb.master.id}-${env.domain}:4949"
+          validation : 
+            maxCount: 1
 
 success:
-  email: success/email/success.md?_r=${fn.random}
-  text: success/text/success.md?_r=${fn.random}
+  email: success/email/${nodes.cp.master.nodeType}/oneregion-${globals.EMAIL}.md?_r=${fn.random}
+  text: success/text/oneregion/${globals.SUCCESS}.md?_r=${fn.random}
+
+startPage: ${globals.PROTOCOL}://${env.domain}/
