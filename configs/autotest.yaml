@@ -2,3 +2,12 @@ jps: https://github.com/jelastic-jps/magento/blob/master/magento/manifest.jps
 component: magento
 subfolders:
   - magento
+stack:
+  - nodeType: llsmp
+    nodeGroup: cp
+    options:
+      - ls_addon: true
+  - nodeType: lemp
+    nodeGroup: cp
+    options:
+      - ls_addon: false
