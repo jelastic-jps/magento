@@ -113,7 +113,7 @@ globals:
   SCRIPTS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/v2.2.0/scripts
   DB_USER: jelastic-${fn.random}
   DB_PASS: ${fn.password(10)}
-  DB_HOST: 127.0.0.1
+  DB_HOST: sqldb
   ES_PASS: ${fn.password(10)}
   PROTOCOL: http
   MG_ADMIN_PASS: ${fn.password(10)}
@@ -189,7 +189,7 @@ onInstall:
 actions:    
   createUserDB:
     - log: Create user for DataBase
-    - cmd [cp]: |-
+    - cmd [sqldb]: |-
         wget https://raw.githubusercontent.com/jelastic-jps/mysql-cluster/master/scripts/setupUser.sh -O ~/setupUser.sh &>> /var/log/run.log
         bash ~/setupUser.sh ${globals.DB_USER} ${globals.DB_PASS} &>> /var/log/run.log
         jem passwd set -p ${globals.DB_PASS} &>> /var/log/run.log 
