@@ -44,9 +44,8 @@ if ('${settings.ls_addon:false}'== 'true') {
 }
 
 resp.nodes.push({
-  nodeType: "mariadb-dockerized",
+  nodeType: "mariadb104",
   count: 1,
-  engine: "mariadb104",
   flexibleCloudlets: ${settings.st_flexibleCloudlets:8},
   fixedCloudlets: ${settings.st_fixedCloudlets:1},
   nodeGroup: "sqldb",
