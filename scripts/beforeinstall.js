@@ -6,7 +6,7 @@ var resp = {
 if ('${settings.ls_addon:false}'== 'true') {
   resp.nodes.push({
     nodeType: "llsmp",
-    engine: "php7.4",
+    engine: "php8.1",
     flexibleCloudlets: ${settings.cp_flexibleCloudlets:32},
     fixedCloudlets: ${settings.cp_fixedCloudlets:1},
     nodeGroup: "cp",
@@ -31,7 +31,7 @@ if ('${settings.ls_addon:false}'== 'true') {
 } else {
   resp.nodes.push({
     nodeType: "lemp",
-    engine: "php7.4",
+    engine: "php8.1",
     flexibleCloudlets: ${settings.cp_flexibleCloudlets:32},                  
     fixedCloudlets: ${settings.cp_fixedCloudlets:1},
     nodeGroup: "cp",
@@ -42,6 +42,17 @@ if ('${settings.ls_addon:false}'== 'true') {
     }
   })
 }
+
+resp.nodes.push({
+  nodeType: "mariadb-dockerized",
+  count: 1,
+  engine: "mariadb104"
+  flexibleCloudlets: ${settings.st_flexibleCloudlets:8},
+  fixedCloudlets: ${settings.st_fixedCloudlets:1},
+  nodeGroup: "sqldb",
+  displayName: "Database"
+})
+
 
 resp.nodes.push({
   nodeType: "opensearch",
