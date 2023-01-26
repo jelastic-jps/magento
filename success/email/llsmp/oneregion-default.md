@@ -14,7 +14,7 @@ Use the following credentials to access the LiteSpeed WEB Server admin console:
 
 Manage the database nodes using the next credentials:
 
-**phpMyAdmin Panel**: [https://${env.domain}:8443/](https://${env.domain}:8443/)  
+**phpMyAdmin Panel**: [https://node${nodes.sqldb.master.id}-${env.domain}/](https://node${nodes.sqldb.master.id}-${env.domain}/)  
 **Username**: ${globals.DB_USER}    
 **Password**: ${globals.DB_PASS}  
 
