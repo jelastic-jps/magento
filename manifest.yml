@@ -188,7 +188,7 @@ onInstall:
         
 actions:    
   addLimits:
-    - env.control.ApplyNodeGroupData[cp]:
+    - env.control.ApplyNodeGroupData[cp, sqldb]:
         data:
           validation : 
             maxCount: 1
