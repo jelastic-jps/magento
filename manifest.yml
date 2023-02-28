@@ -122,7 +122,7 @@ globals:
   EMAIL: default
       
 onInstall:
-
+  - addLimits
   - script: ${globals.SCRIPTS_PATH}/idna.js
   - setGlobals:
       DOMAIN: ${response.domain}
@@ -187,6 +187,12 @@ onInstall:
   - if ('${settings.cdn_addon:false}' == 'true'): setupEdgeportCDN
         
 actions:    
+  addLimits:
+    - env.control.ApplyNodeGroupData[cp, sqldb]:
+        data:
+          validation : 
+            maxCount: 1
+
   createUserDB:
     - log: Create user for DataBase
     - cmd [sqldb]: |-
