@@ -66,6 +66,7 @@
 	"onAfterScaleIn[nodeGroup:cp]": {
 		"forEach(event.response.nodes)": {
 			"cmd[bl]": [
+				"grep ${@i.intIP} /etc/varnish/default.vcl | grep -Po 'serv\\d*' | xargs -i sed -i '/{}/d' /etc/varnish/default.vcl",
 				"sed -i '/${@i.intIP}/d' /etc/varnish/default.vcl",
 				"/etc/init.d/varnish reload"
 			]
