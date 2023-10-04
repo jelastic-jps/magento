@@ -110,7 +110,7 @@ onAfterMigrate:
           domain: ${env.domain}
 
 globals:
-  SCRIPTS_PATH: https://raw.githubusercontent.com/sych74/magento-cluster/scripts
+  SCRIPTS_PATH: https://raw.githubusercontent.com/sych74/magento-cluster/JE-66684/scripts
   DB_USER: jelastic-${fn.random}
   DB_PASS: ${fn.password(10)}
   DB_HOST: sqldb
