@@ -71,7 +71,7 @@ settings:
       markup:
 
 mixins:
- - https://raw.githubusercontent.com/sych74/magento/master/configs/vers.yaml
+ - https://raw.githubusercontent.com/jelastic-jps/magento/master/configs/vers.yaml
          
 onAfterInstallAddon [nodeGroup:cp, id:cdn]: setupEdgeportCDN
  
