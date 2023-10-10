@@ -17,6 +17,7 @@ baseUrl: https://raw.githubusercontent.com/sych74/magento/JE-61990
 onBeforeInit: /scripts/beforeinit.js?_r=${fn.random}
 onBeforeInstall: /scripts/beforeInstall.js?_r=${fn.random}
 nodes: definedInOnBeforeInstall
+
 skipNodeEmails: true
 
 settings:
@@ -110,83 +111,32 @@ onAfterMigrate:
           domain: ${env.domain}
 
 globals:
-  SCRIPTS_PATH: https://raw.githubusercontent.com/sych74/magento-cluster/JE-66684/scripts
-  DB_USER: jelastic-${fn.random}
-  DB_PASS: ${fn.password(10)}
+  MG_SCRIPTS_PATH: https://raw.githubusercontent.com/sych74/magento-cluster/JE-66684/scripts
+  DB_USER: ${settings.DB_USER:user-[fn.random]}
+  DB_PASS: ${settings.DB_PASS:[fn.password(10)]}
   DB_HOST: sqldb
-  ES_PASS: ${fn.password(10)}
+  ES_PASS: ${settings.ES_PASS:[fn.password(10)]}
   PROTOCOL: http
-  MG_ADMIN_PASS: ${fn.password(10)}
-  LS_ADMIN_PASS: ${fn.password(10)}
+  MG_ADMIN_PASS: ${settings.MG_ADMIN_PASS:[fn.password(10)]}
+  LS_ADMIN_PASS: ${settings.LS_ADMIN_PASS:[fn.password(10)]}
   SUCCESS: success
   EMAIL: default
       
 onInstall:
   - addLimits
-  - script: ${globals.SCRIPTS_PATH}/idna.js
-  - setGlobals:
-      DOMAIN: ${response.domain}
-      
+  - initLEsettings  
+  - setupNode
+  - setupOpenSearch
+  - setProtocol
+  - setDomain            
   - createUserDB
-   
-  - log: Nodes configurations
-  - install: https://raw.githubusercontent.com/jelastic/templates/master/config_v2.jps?_r=${fn.random}
-    settings:
-      targetGroup: cp
-      targetNodes: cp
-      optimization: magento
-  
-  - cmd[cp]: if test -f /usr/local/sbin/optimization.sh; then bash /usr/local/sbin/optimization.sh &>> /var/log/run.log; fi
-  
-  - if (/llsmp/.test("${nodes.cp.nodeType}")):
-    - cmd[cp]: jem passwd set -p ${globals.LS_ADMIN_PASS}
-      user: root
-  
-  - setupOpenSearch  
-  
   - installMagento
-  
-  - initLEwebroot
-  
-  - if (('${settings.le_addon:false}' == 'true') || ('${settings.cdn_addon:false}' == 'true')):
-    - script: |
-        var actions = [];
-        if ('${settings.le_addon:false}' == 'true')
-          actions.push({
-            jps: "https://github.com/jelastic-jps/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}?_r=${fn.random}",
-            nodeGroup: "cp",
-            skipEmail: "true",
-            settings: {
-              test: false,
-              skipEmail: true,
-              customDomains: "${globals.DOMAIN}",
-              fallbackToX1: true,
-              webroot: true,
-              webrootPath: "/var/www/webroot/ROOT/pub"
-            }
-          });
-        if ('${settings.cdn_addon:false}' == 'true')
-          actions.push({
-            jps: "https://raw.githubusercontent.com/edgeport/cdn/master/manifest.yml?_r=${fn.random}",
-            nodeGroup: "cp",
-            skipEmail: true,
-            settings: {
-              note: "${settings.noteCDN:}"
-            }
-          });
-        return { result: 0, onAfterReturn: { install: actions } };
-   
-  - if ('${settings.le_addon:false}' == 'true'):
-    - cmd[cp]: source /opt/letsencrypt/settings && echo $domain
-    - install: 
-        jps: ${globals.SCRIPTS_PATH}/setupDomain.jps?_r=${fn.random}
-        settings:
-          domain: ${response.out}
-    - cmd[cp]: bash ~/bin/japp.sh ssl on;
-    - setGlobals:
-        PROTOCOL: https
-        
-  - if ('${settings.cdn_addon:false}' == 'true'): setupEdgeportCDN
+  - if (${settings.le_addon:false}): 
+    - installLEaddon
+    - setupLEdomain
+  - if (${settings.cdn_addon:false}):
+    - installCDN
+    - setupCDN
         
 actions:    
   addLimits:
@@ -195,6 +145,22 @@ actions:
           validation : 
             maxCount: 1
 
+  setProtocol:
+    - script: |
+        return {
+          result:0,
+          ssl: jelastic.billing.account.GetQuotas('environment.jelasticssl.enabled').array[0].value
+        }
+    - if (${response.ssl} || ${settings.le-addon:false}):
+        setGlobals:
+          PROTOCOL: https
+
+  setDomain:
+    - script: ${globals.MG_SCRIPTS_PATH}/scripts/idna.js
+      domains: ${env.domain}
+    - setGlobals:
+        DOMAIN: ${response.domains} 
+
   createUserDB:
     - log: Create user for DataBase
     - cmd [sqldb]: |-
@@ -202,16 +168,50 @@ actions:
         bash ~/setupUser.sh ${globals.DB_USER} ${globals.DB_PASS} &>> /var/log/run.log
         jem passwd set -p ${globals.DB_PASS} &>> /var/log/run.log 
       user: root
-    
-  initLEwebroot:
+  
+  installLEaddon:
+    - install: https://github.com/jelastic-jps/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}
+      nodeGroup: cp
+      skipEmail: true
+      settings:
+        test: false
+        skipEmail: true
+        fallbackToX1: true
+        withExtIp: ${globals.isExtIP}
+  
+  initLEsettings:
+    - script: |
+        return {
+          result:0,
+          extIP: Boolean(jelastic.billing.account.GetQuotas('environment.externalip.enabled').array[0].value)
+        }
+    - setGlobals:
+        isExtIP: ${response.extIP}
+
     - cmd[cp]: |-
         [ ! -d /var/lib/jelastic/keys/letsencrypt ] && mkdir -p /var/lib/jelastic/keys/letsencrypt;
         echo "webroot=true" > /var/lib/jelastic/keys/letsencrypt/settings-custom;
-        echo "webrootPath=/var/www/webroot/ROOT/pub" >> /var/lib/jelastic/keys/letsencrypt/settings-custom;
+        echo "webrootPath=/var/www/webroot/ROOT" >> /var/lib/jelastic/keys/letsencrypt/settings-custom;
         echo "test=false" >> /var/lib/jelastic/keys/letsencrypt/settings-custom;
+        echo "withExtIp=${globals.isExtIP}" >> /var/lib/jelastic/keys/letsencrypt/settings-custom;
       user: root
   
-  setupEdgeportCDN:
+  setupLEdomain:
+    - cmd[cp]: source /opt/letsencrypt/settings && echo $domain
+    - install: 
+        jps: ${globals.MG_SCRIPTS_PATH}/setupDomain.jps?_r=${fn.random}
+        settings:
+          domain: ${response.out}
+    - cmd[cp]: bash ~/bin/japp.sh ssl on;
+ 
+  installCDN:
+    - install: https://raw.githubusercontent.com/edgeport/cdn/master/manifest.yml?_r=${fn.random}
+      nodeGroup: cp
+      skipEmail: true
+      settings:
+        note: ${settings.noteCDN:}
+
+  setupCDN:
     - script: return jelastic.dev.scripting.Eval("c05ffa5b45628a2a0c95467ebca8a0b4", session, "cdn.info", {partnerCode:1})
     - setGlobals:
         CDN: ${env.envName}-${response.response.partnerCode}.cdn.jelastic.net
@@ -219,6 +219,20 @@ actions:
         EMAIL: cdn
     - cmd[${nodes.cp.master.id}]: bash ~/bin/japp.sh edgeportCDN --cdn-url ${globals.CDN}
 
+  setupNode:
+    - log: Nodes configurations
+    - install: https://raw.githubusercontent.com/jelastic/templates/master/config_v2.jps?_r=${fn.random}
+      settings:
+        targetGroup: cp
+        targetNodes: cp
+        optimization: magento
+        
+    - cmd[cp]: if test -f /usr/local/sbin/optimization.sh; then bash /usr/local/sbin/optimization.sh &>> /var/log/run.log; fi
+  
+    - if (/llsmp/.test("${nodes.cp.nodeType}")):
+      - cmd[cp]: jem passwd set -p ${globals.LS_ADMIN_PASS}
+        user: root
+  
   installMagento:
     - install: ${globals.SCRIPTS_PATH}/install.jps
       settings:
