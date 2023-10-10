@@ -156,7 +156,7 @@ actions:
           PROTOCOL: https
 
   setDomain:
-    - script: ${globals.MG_SCRIPTS_PATH}/scripts/idna.js
+    - script: ${globals.MG_SCRIPTS_PATH}/idna.js
       domains: ${env.domain}
     - setGlobals:
         DOMAIN: ${response.domains} 
