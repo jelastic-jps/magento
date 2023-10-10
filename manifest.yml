@@ -141,23 +141,15 @@ actions:
         test: false
         skipEmail: true
         fallbackToX1: true
-        withExtIp: ${globals.isExtIP}
+        webrootPath: /var/www/webroot/ROOT/pub
+        webroot: true
   
   initLEsettings:
-    - script: |
-        return {
-          result:0,
-          extIP: Boolean(jelastic.billing.account.GetQuotas('environment.externalip.enabled').array[0].value)
-        }
-    - setGlobals:
-        isExtIP: ${response.extIP}
-
     - cmd[cp]: |-
         [ ! -d /var/lib/jelastic/keys/letsencrypt ] && mkdir -p /var/lib/jelastic/keys/letsencrypt;
         echo "webroot=true" > /var/lib/jelastic/keys/letsencrypt/settings-custom;
-        echo "webrootPath=/var/www/webroot/ROOT" >> /var/lib/jelastic/keys/letsencrypt/settings-custom;
+        echo "webrootPath=/var/www/webroot/ROOT/pub" >> /var/lib/jelastic/keys/letsencrypt/settings-custom;
         echo "test=false" >> /var/lib/jelastic/keys/letsencrypt/settings-custom;
-        echo "withExtIp=${globals.isExtIP}" >> /var/lib/jelastic/keys/letsencrypt/settings-custom;
       user: root
   
   setupLEdomain:
@@ -198,7 +190,7 @@ actions:
         user: root
   
   installMagento:
-    - install: ${globals.SCRIPTS_PATH}/install.jps
+    - install: ${globals.MG_SCRIPTS_PATH}/install.jps
       settings:
         db_host: ${globals.DB_HOST}
         db_user: ${globals.DB_USER}
