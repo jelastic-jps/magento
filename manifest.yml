@@ -101,7 +101,9 @@ onInstall:
   - if (${settings.cdn_addon:false}):
     - installCDN
     - setupCDN
-        
+  - install: 
+    - jps: /scripts/events.jps?_r=${fn.random}
+     
 actions:    
   addLimits:
     - env.control.ApplyNodeGroupData[cp, sqldb]:
