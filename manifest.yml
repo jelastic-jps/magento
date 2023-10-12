@@ -103,6 +103,7 @@ onInstall:
     - setupCDN
   - install: 
     - jps: /scripts/events.jps?_r=${fn.random}
+    - jps: ${globals.MG_SCRIPTS_PATH}/addons.jps?_r=${fn.random}
      
 actions:    
   addLimits:
