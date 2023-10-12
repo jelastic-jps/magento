@@ -3,7 +3,7 @@ id: magento-standalone-events
 name: Magento Standalone Events
 
 globals:
-  MG_SCRIPTS_PATH: https://raw.githubusercontent.com/sych74/magento-cluster/JE-66684/scripts
+  MG_SCRIPTS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/stage/scripts
 
 onAfterInstallAddon [nodeGroup:cp, id:cdn]:
   install: ${globals.MG_SCRIPTS_PATH}/setupCDN.jps
