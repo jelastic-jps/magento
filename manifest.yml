@@ -12,7 +12,7 @@ categories:
 
 logo: /images/magento.png
 
-baseUrl: https://raw.githubusercontent.com/jelastic-jps/magento/stage
+baseUrl: https://raw.githubusercontent.com/sych74/magento/JE-66684
 
 onBeforeInit: /scripts/beforeinit.js?_r=${fn.random}
 onBeforeInstall: /scripts/beforeInstall.js?_r=${fn.random}
@@ -75,7 +75,7 @@ mixins:
  - https://raw.githubusercontent.com/sych74/magento/master/configs/vers.yaml
 
 globals:
-  MG_SCRIPTS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/stage/scripts
+  MG_SCRIPTS_PATH: https://raw.githubusercontent.com/sych74/magento-cluster/JE-66684/scripts
   DB_USER: ${settings.DB_USER:user-[fn.random]}
   DB_PASS: ${settings.DB_PASS:[fn.password(10)]}
   DB_HOST: sqldb
@@ -103,6 +103,7 @@ onInstall:
     - setupCDN
   - install: 
     - jps: /scripts/events.jps?_r=${fn.random}
+    - jps: ${globals.MG_SCRIPTS_PATH}/addons.jps?_r=${fn.random}
      
 actions:    
   addLimits:
