@@ -12,7 +12,7 @@ categories:
 
 logo: /images/magento.png
 
-baseUrl: https://raw.githubusercontent.com/jelastic-jps/magento/stage
+baseUrl: https://raw.githubusercontent.com/jelastic-jps/magento/v2.2.0
 
 onBeforeInit: /scripts/beforeinit.js?_r=${fn.random}
 onBeforeInstall: /scripts/beforeInstall.js?_r=${fn.random}
@@ -72,7 +72,7 @@ settings:
       markup:
 
 mixins:
- - https://raw.githubusercontent.com/sych74/magento/master/configs/vers.yaml
+ - https://raw.githubusercontent.com/jelastic-jps/magento/master/configs/vers.yaml
 
 globals:
   MG_SCRIPTS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/stage/scripts
