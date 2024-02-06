@@ -55,6 +55,7 @@ resp.nodes.push({
 
 resp.nodes.push({
   nodeType: "opensearch",
+  tag: "2.5.0-openjdk-11.0.18",
   count: 1,
   flexibleCloudlets: ${settings.st_flexibleCloudlets:16},
   fixedCloudlets: ${settings.st_fixedCloudlets:1},
