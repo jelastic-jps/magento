@@ -12,7 +12,7 @@ categories:
 
 logo: /images/magento.png
 
-baseUrl: https://raw.githubusercontent.com/sych74/magento/v2.2.0
+baseUrl: https://raw.githubusercontent.com/sych74/magento/JE-70387
 
 onBeforeInit: /scripts/beforeinit.js?_r=${fn.random}
 onBeforeInstall: /scripts/beforeInstall.js?_r=${fn.random}
