@@ -10,7 +10,6 @@ if ('${settings.ls_addon:false}'== 'true') {
     flexibleCloudlets: ${settings.cp_flexibleCloudlets:32},
     fixedCloudlets: ${settings.cp_fixedCloudlets:1},
     nodeGroup: "cp",
-    links: "elasticsearch:elasticsearch",
     env: {
       SERVER_WEBROOT: "/var/www/webroot/ROOT",
       REDIS_ENABLED: "true",
@@ -35,7 +34,6 @@ if ('${settings.ls_addon:false}'== 'true') {
     flexibleCloudlets: ${settings.cp_flexibleCloudlets:32},                  
     fixedCloudlets: ${settings.cp_fixedCloudlets:1},
     nodeGroup: "cp",
-    links: "elasticsearch:elasticsearch",
     env: {
       SERVER_WEBROOT: "/var/www/webroot/ROOT",
       REDIS_ENABLED: "true"
