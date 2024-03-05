@@ -10,7 +10,6 @@ if ('${settings.ls_addon:false}'== 'true') {
     flexibleCloudlets: ${settings.cp_flexibleCloudlets:32},
     fixedCloudlets: ${settings.cp_fixedCloudlets:1},
     nodeGroup: "cp",
-    links: "elasticsearch:elasticsearch",
     env: {
       SERVER_WEBROOT: "/var/www/webroot/ROOT",
       REDIS_ENABLED: "true",
@@ -35,7 +34,6 @@ if ('${settings.ls_addon:false}'== 'true') {
     flexibleCloudlets: ${settings.cp_flexibleCloudlets:32},                  
     fixedCloudlets: ${settings.cp_fixedCloudlets:1},
     nodeGroup: "cp",
-    links: "elasticsearch:elasticsearch",
     env: {
       SERVER_WEBROOT: "/var/www/webroot/ROOT",
       REDIS_ENABLED: "true"
@@ -55,7 +53,6 @@ resp.nodes.push({
 
 resp.nodes.push({
   nodeType: "opensearch",
-  tag: "1.3.1-openjdk-11.0.15",
   count: 1,
   flexibleCloudlets: ${settings.st_flexibleCloudlets:16},
   fixedCloudlets: ${settings.st_fixedCloudlets:1},
