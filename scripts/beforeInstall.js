@@ -6,7 +6,7 @@ var resp = {
 if ('${settings.ls_addon:false}'== 'true') {
   resp.nodes.push({
     nodeType: "llsmp",
-    engine: "php8.1",
+    engine: "php8.2",
     flexibleCloudlets: ${settings.cp_flexibleCloudlets:32},
     fixedCloudlets: ${settings.cp_fixedCloudlets:1},
     nodeGroup: "cp",
@@ -30,7 +30,7 @@ if ('${settings.ls_addon:false}'== 'true') {
 } else {
   resp.nodes.push({
     nodeType: "lemp",
-    engine: "php8.1",
+    engine: "php8.2",
     flexibleCloudlets: ${settings.cp_flexibleCloudlets:32},                  
     fixedCloudlets: ${settings.cp_fixedCloudlets:1},
     nodeGroup: "cp",
@@ -42,7 +42,7 @@ if ('${settings.ls_addon:false}'== 'true') {
 }
 
 resp.nodes.push({
-  nodeType: "mariadb104",
+  nodeType: "mariadb106",
   count: 1,
   flexibleCloudlets: ${settings.st_flexibleCloudlets:8},
   fixedCloudlets: ${settings.st_fixedCloudlets:1},
