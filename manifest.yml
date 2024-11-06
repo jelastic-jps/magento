@@ -72,10 +72,10 @@ settings:
       markup:
 
 mixins:
- - https://raw.githubusercontent.com/sych74/magento/master/configs/vers.yaml
+ - https://raw.githubusercontent.com/jelastic-jps/magento/master/configs/vers.yaml
 
 globals:
-  MG_SCRIPTS_PATH: https://raw.githubusercontent.com/sych74/magento-cluster/v2.2.0/scripts
+  MG_SCRIPTS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/v2.2.0/scripts
   DB_USER: ${settings.DB_USER:user-[fn.random]}
   DB_PASS: ${settings.DB_PASS:[fn.password(10)]}
   DB_HOST: sqldb
