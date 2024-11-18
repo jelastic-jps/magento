@@ -159,7 +159,7 @@ actions:
     - cmd[cp]: bash ~/bin/japp.sh ssl on;
  
   installCDN:
-    - install: https://raw.githubusercontent.com/edgeport/cdn/master/manifest.yml?_r=${fn.random}
+    - install: https://raw.githubusercontent.com/jelastic-jps/cdn/master/manifest.yml?_r=${fn.random}
       nodeGroup: cp
       skipEmail: true
       settings:
