@@ -109,7 +109,7 @@ onInstall:
      
 actions:    
   addLimits:
-    - env.control.ApplyData[cp, sqldb]:
+    - env.nodegroup.ApplyData[cp, sqldb]:
         data:
           validation : 
             maxCount: 1
