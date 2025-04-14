@@ -22,13 +22,8 @@ if (isLS.result == 0 || isLS.result == Response.PERMISSION_DENIED) {
   fields["ls_addon"].showIf = null;
 }
   
-if (isCDN.result == 0 || isCDN.result == Response.PERMISSION_DENIED) {
-  fields["cdn_addon"].hidden = false;
-  fields["cdn_addon"].value = true;
-} else {
-  fields["cdn_addon"].hidden = true;
-  fields["cdn_addon"].value = false;
-}
+fields["cdn_addon"].hidden = true;
+fields["cdn_addon"].value = false;
 
 //checking quotas
 var extIP = "environment.externalip.enabled",
