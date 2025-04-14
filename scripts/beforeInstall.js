@@ -6,11 +6,10 @@ var resp = {
 if ('${settings.ls_addon:false}'== 'true') {
   resp.nodes.push({
     nodeType: "llsmp",
-    engine: "php7.4",
+    engine: "php8.3",
     flexibleCloudlets: ${settings.cp_flexibleCloudlets:32},
     fixedCloudlets: ${settings.cp_fixedCloudlets:1},
     nodeGroup: "cp",
-    links: "elasticsearch:elasticsearch",
     env: {
       SERVER_WEBROOT: "/var/www/webroot/ROOT",
       REDIS_ENABLED: "true",
@@ -31,17 +30,26 @@ if ('${settings.ls_addon:false}'== 'true') {
 } else {
   resp.nodes.push({
     nodeType: "lemp",
-    engine: "php7.4",
+    engine: "php8.3",
     flexibleCloudlets: ${settings.cp_flexibleCloudlets:32},                  
     fixedCloudlets: ${settings.cp_fixedCloudlets:1},
     nodeGroup: "cp",
-    links: "elasticsearch:elasticsearch",
     env: {
       SERVER_WEBROOT: "/var/www/webroot/ROOT",
       REDIS_ENABLED: "true"
     }
   })
 }
+
+resp.nodes.push({
+  nodeType: "mariadb106",
+  count: 1,
+  flexibleCloudlets: ${settings.st_flexibleCloudlets:8},
+  fixedCloudlets: ${settings.st_fixedCloudlets:1},
+  nodeGroup: "sqldb",
+  displayName: "Database"
+})
+
 
 resp.nodes.push({
   nodeType: "opensearch",
