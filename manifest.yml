@@ -14,7 +14,7 @@ logo: /images/magento.png
 
 baseUrl: https://raw.githubusercontent.com/sych74/magento/JE-61518
 
-onBeforeInit: /scripts/beforeinit.js?_r=${fn.random}
+onBeforeInit: /scripts/beforeInit.js?_r=${fn.random}
 onBeforeInstall: /scripts/beforeInstall.js?_r=${fn.random}
 nodes: definedInOnBeforeInstall
 
@@ -77,7 +77,7 @@ mixins:
  - https://raw.githubusercontent.com/jelastic-jps/magento/master/configs/vers.yaml
 
 globals:
-  MG_SCRIPTS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/v2.2.0/scripts
+  MG_SCRIPTS_PATH: https://raw.githubusercontent.com/sych74/magento-cluster/JE-69964/scripts
   DB_USER: ${settings.DB_USER:user-[fn.random]}
   DB_PASS: ${settings.DB_PASS:[fn.password(10)]}
   DB_HOST: sqldb
@@ -109,7 +109,7 @@ onInstall:
      
 actions:    
   addLimits:
-    - env.control.ApplyNodeGroupData[cp, sqldb]:
+    - env.control.ApplyData[cp, sqldb]:
         data:
           validation : 
             maxCount: 1
