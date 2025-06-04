@@ -2,17 +2,16 @@ jpsType: install
 jpsVersion: '1.7.4'
 id: magento
 name: Magento Standalone
+categories:
+    - apps/e-commerce
+    - apps/sales-and-marketing
+logo: /images/magento.png
 homepage: http://www.magentocommerce.com/
 description:
   en: Magento is the eCommerce software and platform trusted by the world's leading
       brands. Grow your online business with Magento!
-categories:
-    - apps/e-commerce
-    - apps/sales-and-marketing
 
-logo: /images/magento.png
-
-baseUrl: https://raw.githubusercontent.com/jelastic-jps/magento/v2.2.0
+baseUrl: https://cdn.jsdelivr.net/gh/jelastic-jps/magento@2.2.0
 
 onBeforeInit: /scripts/beforeInit.js?_r=${fn.random}
 onBeforeInstall: /scripts/beforeInstall.js?_r=${fn.random}
@@ -77,7 +76,8 @@ mixins:
  - https://raw.githubusercontent.com/jelastic-jps/magento/master/configs/vers.yaml
 
 globals:
-  MG_SCRIPTS_PATH: https://raw.githubusercontent.com/jelastic-jps/magento-cluster/v2.2.0/scripts
+  cdnUrl: https://cdn.jsdelivr.net/gh
+  MG_SCRIPTS_PATH: https://cdn.jsdelivr.net/gh/jelastic-jps/magento-cluster@2.2.0/scripts
   DB_USER: ${settings.DB_USER:user-[fn.random]}
   DB_PASS: ${settings.DB_PASS:[fn.password(10)]}
   DB_HOST: sqldb
@@ -128,13 +128,13 @@ actions:
   createUserDB:
     - log: Create user for DataBase
     - cmd [sqldb]: |-
-        wget https://raw.githubusercontent.com/jelastic-jps/mysql-cluster/master/scripts/setupUser.sh -O ~/setupUser.sh &>> /var/log/run.log
+        wget ${globals.cdnUrl}/jelastic-jps/mysql-cluster@master/scripts/setupUser.sh -O ~/setupUser.sh &>> /var/log/run.log
         bash ~/setupUser.sh ${globals.DB_USER} ${globals.DB_PASS} &>> /var/log/run.log
         jem passwd set -p ${globals.DB_PASS} &>> /var/log/run.log 
       user: root
   
   installLEaddon:
-    - install: https://github.com/jelastic-jps/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}
+    - install: ${globals.cdnUrl}/jelastic-jps/lets-encrypt@master/manifest.jps?_r=${fn.random}
       nodeGroup: cp
       skipEmail: true
       settings:
@@ -161,7 +161,7 @@ actions:
     - cmd[cp]: bash ~/bin/japp.sh ssl on;
  
   installCDN:
-    - install: https://raw.githubusercontent.com/jelastic-jps/cdn/master/manifest.yml?_r=${fn.random}
+    - install: ${globals.cdnUrl}/jelastic-jps/cdn@master/manifest.yml?_r=${fn.random}
       nodeGroup: cp
       skipEmail: true
       settings:
@@ -177,7 +177,7 @@ actions:
 
   setupNode:
     - log: Nodes configurations
-    - install: https://raw.githubusercontent.com/jelastic/templates/master/config_v2.jps?_r=${fn.random}
+    - install: ${globals.cdnUrl}/jelastic/templates@master/config_v2.jps?_r=${fn.random}
       settings:
         targetGroup: cp
         targetNodes: cp
