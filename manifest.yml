@@ -73,7 +73,7 @@ settings:
       markup:
 
 mixins:
- - https://raw.githubusercontent.com/jelastic-jps/magento/master/configs/vers.yaml
+ - https://cdn.jsdelivr.net/gh/jelastic-jps/magento@master/configs/vers.yaml
 
 globals:
   cdnUrl: https://cdn.jsdelivr.net/gh
