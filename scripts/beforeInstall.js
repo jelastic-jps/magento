@@ -17,7 +17,7 @@ if ('${settings.ls_addon:false}'== 'true') {
       WP_PROTECT: "OFF",
       LITEMAGE: "ON",
       ON_ENV_INSTALL: {
-        jps: "https://raw.githubusercontent.com/jelastic-jps/litespeed/master/addons/license-v2.yml",
+        jps: "https://cdn.jsdelivr.net/gh/jelastic-jps/litespeed@master/addons/license-v2.yml",
         settings: {
           lm: "true",
           modules: "litemage",
